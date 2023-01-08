@@ -1,4 +1,5 @@
 from io import BytesIO
+import datetime
 
 import numpy as np
 import os
@@ -10,6 +11,9 @@ from werkzeug.utils import secure_filename
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(lecturer)
+
+now = datetime.datetime.now()
+now = now.strftime("%Y-%m-%d_%H-%M-%S")
 
 
 @lecturer.route("/lecturer", methods=["GET"])
@@ -27,38 +31,64 @@ def upload_video():
     if file.filename != '':
         # Save the file to the desired location
         # get the file name in the form of a string
+        ass_file = str(file.filename)
+        
         file_name = str(file.filename)
+        # get the file extension
+        file_extension= file_name.split('.')[-1]
+        file_names, file_extensions = os.path.splitext(file.filename)
+        # construct the new file name with the current datetime and the original file name
+        new_file_name = f"{file_names}-{now}{file_extensions}"
+        
+        
+        # check the file type
+        if 'assignment' in ass_file.lower():
+            file_type = 'assignment'
+        elif file_extension in ['doc', 'docx', 'pdf', 'txt', 'ppt', 'pptx', 'xls', 'xlsx']:
+            file_type = 'documents'
+        elif file_extension in ['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv']:
+            file_type = 'video'  
+            
+        else:
+            return 'Error: Invalid file type'
+        
+        # check if the file name contains "assignment"
+        
+
         if '501' in file_name:
             # save the file to the desired location
-            file.save(f"./frontend/static/courses/501/{file.filename}")
-            flash('Video uploaded successfully!')
+            file.save(f"./frontend/static/courses/501/{file_type}/{new_file_name}")
+            flash('File uploaded successfully!')
             return redirect(url_for("lecturer.show"))
 
         elif '503' in file_name:
-            file.save(f"./frontend/static/courses/503/{file.filename}")
-            return 'Video saved successfully!'
+            file.save(f"./frontend/static/courses/503/{file_type}/{new_file_name}")
+            flash('File uploaded successfully!')
+            return redirect(url_for("lecturer.show"))
         
         elif '515' in file_name:
-            file.save(f"./frontend/static/courses/515/{file.filename}")
-            return 'Video saved successfully!'
+            file.save(f"./frontend/static/courses/515/{file_type}/{new_file_name}")
+            flash('File uploaded successfully!')
+            return redirect(url_for("lecturer.show"))
         
         elif '507' in file_name:
-            file.save(f"./frontend/static/courses/507/{file.filename}")
-            return 'Video saved successfully!'
+            file.save(f"./frontend/static/courses/507/{file_type}/{new_file_name}")
+            flash('File uploaded successfully!')
+            return redirect(url_for("lecturer.show"))
         
         elif '511' in file_name:
-            file.save(f"./frontend/static/courses/511/{file.filename}")
-            return 'Video saved successfully!'
+            file.save(f"./frontend/static/courses/511/{file_type}/{new_file_name}")
+            flash('File uploaded successfully!')
+            return redirect(url_for("lecturer.show"))
         
         elif '505' in file_name:
-            file.save(f"./frontend/static/courses/505/{file.filename}")
-            return 'Video saved successfully!'
+            file.save(f"./frontend/static/courses/505/{file_type}/{new_file_name}")
+            flash('File uploaded successfully!')
+            return redirect(url_for("lecturer.show"))
         
         elif '519' in file_name:
-            file.save(f"./frontend/static/courses/519/{file.filename}")
+            file.save(f"./frontend/static/courses/519/{file_type}/{new_file_name}")
             
-            return 'Video saved successfully!'
-        # file.save(secure_filename(f".static/courses/file.filename))
-        # return 'Video saved successfully!'
+            flash('File uploaded successfully!')
+            return redirect(url_for("lecturer.show"))
     return 'No file selected!'
-

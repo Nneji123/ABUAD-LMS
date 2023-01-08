@@ -33,9 +33,7 @@ def cad():
 @login_required
 def list_docs_neuralnetworks():
     # Get a list of files from the directory
-    files = [f for f in os.listdir('frontend/static/courses/501') if f.endswith('.mp4','.doc')]
-    print(files)
-    # files = flash(files)
+    files = [f for f in os.listdir('frontend/static/courses/501/documents') if f.endswith(('.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.pdf', '.py', '.java', '.c', '.cpp', '.h'))]
     # Render the HTML template and pass the list of files
     return render_template('neural_networks.html', files=files)
 
@@ -43,7 +41,7 @@ def list_docs_neuralnetworks():
 @login_required
 def list_videos_neuralnetworks():
     # Get a list of videos from the directory
-    videos = [f for f in os.listdir('./frontend/static/courses/501') if f.endswith('.mp4')]
+    videos = [f for f in os.listdir('./frontend/static/courses/501/videos') if f.endswith('.mp4')]
     # Render the HTML template and pass the list of videos
     return render_template('neural_networks.html', videos=videos)
 
@@ -51,7 +49,7 @@ def list_videos_neuralnetworks():
 @login_required
 def list_docs_cad():
     # Get a list of files from the directory
-    files = [f for f in os.listdir('./frontend/static/courses/503') if f.endswith('.doc')]
+    files = [f for f in os.listdir('./frontend/static/courses/503/documents') if f.endswith('.doc')]
     print(files)
     # files = flash(files)
     # Render the HTML template and pass the list of files
@@ -63,7 +61,7 @@ def list_docs_cad():
 @login_required
 def list_videos_cad():
     # Get a list of videos from the directory
-    videos = [f for f in os.listdir('./frontend/static/courses/503') if f.endswith('.mp4')]
+    videos = [f for f in os.listdir('./frontend/static/courses/503/video') if f.endswith('.mp4')]
     # Render the HTML template and pass the list of videos
     return render_template('cad.html', videos=videos)
 

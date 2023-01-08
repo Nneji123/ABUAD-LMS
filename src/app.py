@@ -8,7 +8,7 @@ from flask_login import LoginManager
 from index import index
 from login import login
 from logout import logout
-from models import Users, db
+from models import Users, db, Students, Lecturers
 from register import register
 from lecturer import lecturer
 from student import student
@@ -49,9 +49,18 @@ app.register_blueprint(student)
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        return Users.query.get(int(user_id))
+        
+        return Users.query.get(int(user_id)) #Lecturers.query.get(int(user_id))
     except (sqlalchemy.exc.OperationalError) as e:
         return render_template("error.html", e="Database not found")
+    
+# @login_manager.user_loader
+# def load_lecturers(user_id):
+#     try:
+        
+#         return Lecturers.query.get(int(user_id)) #Lecturers.query.get(int(user_id))
+#     except (sqlalchemy.exc.OperationalError) as e:
+#         return render_template("error.html", e="Database not found")
 
 
 if __name__ == "__main__":
