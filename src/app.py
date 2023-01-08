@@ -10,7 +10,7 @@ from index import index
 from lecturer import lecturer
 from login import login
 from logout import logout
-from models import Lecturers, Students, Users, db
+from models import Users, db
 from register import register
 from student import student
 

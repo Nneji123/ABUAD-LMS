@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user
 from werkzeug.security import check_password_hash
 
-from models import Lecturers, Students, Users, db
+from models import Users, db
 
 login = Blueprint(
     "login", __name__, template_folder="./frontend", static_folder="./frontend"

@@ -15,6 +15,7 @@ login_manager.init_app(lecturer)
 
 now = datetime.datetime.now()
 now = now.strftime("%Y-%m-%d_%H-%M-%S")
+VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
 
 
 @lecturer.route("/lecturer", methods=["GET"])
@@ -34,85 +35,59 @@ def upload_video():
         # get the file name in the form of a string
         ass_file = str(file.filename)
 
+        print(ass_file.lower())
+
         file_name = str(file.filename)
         # get the file extension
         file_extension = file_name.split(".")[-1]
         file_names, file_extensions = os.path.splitext(file.filename)
         # construct the new file name with the current datetime and the original file name
         new_file_name = f"{file_names}-{now}{file_extensions}"
+        print(new_file_name)
+        
+        course_code = new_file_name.split("_")[0]
+        print(course_code)
+        
+        if course_code in VALID_COURSE_CODES:
 
-        # check the file type
-        if "assignment" in ass_file.lower() and file_extension in [
-            "mp4",
-            "avi",
-            "mov",
-            "wmv",
-            "flv",
-            "mkv",
-            "doc",
-            "docx",
-            "pdf",
-            "txt",
-            "ppt",
-            "pptx",
-            "xls",
-            "xlsx",
-            ".csv",
-        ]:
-            file_type = "assignment"
-        elif file_extension in [
-            "doc",
-            "docx",
-            "pdf",
-            "txt",
-            "ppt",
-            "pptx",
-            "xls",
-            "xlsx",
-        ]:
-            file_type = "documents"
-        elif file_extension in ["mp4", "avi", "mov", "wmv", "flv", "mkv"]:
-            file_type = "video"
+            # check the file type
+            if "assignment" in file_name.lower() and file_extension in [
+                "mp4",
+                "avi",
+                "mov",
+                "wmv",
+                "flv",
+                "mkv",
+                "doc",
+                "docx",
+                "pdf",
+                "txt",
+                "ppt",
+                "pptx",
+                "xls",
+                "xlsx",
+                ".csv",
+            ]:
+                file_type = "assignment"
+            elif file_extension in [
+                "doc",
+                "docx",
+                "pdf",
+                "txt",
+                "ppt",
+                "pptx",
+                "xls",
+                "xlsx",
+            ] and "assignment" not in ass_file.lower():
+                file_type = "documents"
+            elif file_extension in ["mp4", "avi", "mov", "wmv", "flv", "mkv"] and "assignment" not in ass_file.lower():
+                file_type = "video"
 
-        else:
-            return "Error: Invalid file type"
-
-        # check if the file name contains "assignment"
-
-        if "501" in file_name:
-            # save the file to the desired location
-            file.save(f"./frontend/static/courses/501/{file_type}/{new_file_name}")
+            else:
+                return "Error: Invalid file type"
+            
+            file.save(f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}")
             flash("File uploaded successfully!")
             return redirect(url_for("lecturer.show"))
-
-        elif "503" in file_name:
-            file.save(f"./frontend/static/courses/503/{file_type}/{new_file_name}")
-            flash("File uploaded successfully!")
-            return redirect(url_for("lecturer.show"))
-
-        elif "515" in file_name:
-            file.save(f"./frontend/static/courses/515/{file_type}/{new_file_name}")
-            flash("File uploaded successfully!")
-            return redirect(url_for("lecturer.show"))
-
-        elif "507" in file_name:
-            file.save(f"./frontend/static/courses/507/{file_type}/{new_file_name}")
-            flash("File uploaded successfully!")
-            return redirect(url_for("lecturer.show"))
-
-        elif "511" in file_name:
-            file.save(f"./frontend/static/courses/511/{file_type}/{new_file_name}")
-            flash("File uploaded successfully!")
-            return redirect(url_for("lecturer.show"))
-
-        elif "505" in file_name:
-            file.save(f"./frontend/static/courses/505/{file_type}/{new_file_name}")
-            flash("File uploaded successfully!")
-            return redirect(url_for("lecturer.show"))
-
-        elif "519" in file_name:
-            file.save(f"./frontend/static/courses/519/{file_type}/{new_file_name}")
-
-            flash("File uploaded successfully!")
-            return redirect(url_for("lecturer.show"))
+    
     return "No file selected!"
