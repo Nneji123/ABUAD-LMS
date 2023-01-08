@@ -1,7 +1,5 @@
 import os
-from io import BytesIO
 
-import numpy as np
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, current_user, login_required
 from werkzeug.utils import secure_filename
