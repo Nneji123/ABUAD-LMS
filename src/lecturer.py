@@ -45,49 +45,52 @@ def upload_video():
         new_file_name = f"{file_names}-{now}{file_extensions}"
         print(new_file_name)
         
-        course_code = new_file_name.split("_")[0]
+        course_code = str(file.filename)#.split("-")[0]
         print(course_code)
-        
+
+        # check the file type
+        if "assignment" in file_name.lower() and file_extension in [
+            "mp4",
+            "avi",
+            "mov",
+            "wmv",
+            "flv",
+            "mkv",
+            "doc",
+            "docx",
+            "pdf",
+            "txt",
+            "ppt",
+            "pptx",
+            "xls",
+            "xlsx",
+            ".csv",
+        ]:
+            file_type = "assignment"
+        elif file_extension in [
+            "doc",
+            "docx",
+            "pdf",
+            "txt",
+            "ppt",
+            "pptx",
+            "xls",
+            "xlsx",
+        ]:
+            file_type = "documents"
+        elif file_extension in ["mp4", "avi", "mov", "wmv", "flv", "mkv"]:
+            file_type = "video"
+
+        # check if the file name contains "assignment"
+
         if course_code in VALID_COURSE_CODES:
-
-            # check the file type
-            if "assignment" in file_name.lower() and file_extension in [
-                "mp4",
-                "avi",
-                "mov",
-                "wmv",
-                "flv",
-                "mkv",
-                "doc",
-                "docx",
-                "pdf",
-                "txt",
-                "ppt",
-                "pptx",
-                "xls",
-                "xlsx",
-                ".csv",
-            ]:
-                file_type = "assignment"
-            elif file_extension in [
-                "doc",
-                "docx",
-                "pdf",
-                "txt",
-                "ppt",
-                "pptx",
-                "xls",
-                "xlsx",
-            ] and "assignment" not in ass_file.lower():
-                file_type = "documents"
-            elif file_extension in ["mp4", "avi", "mov", "wmv", "flv", "mkv"] and "assignment" not in ass_file.lower():
-                file_type = "video"
-
-            else:
-                return "Error: Invalid file type"
-            
+            # save the file to the desired location
             file.save(f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}")
             flash("File uploaded successfully!")
             return redirect(url_for("lecturer.show"))
-    
-    return "No file selected!"
+        
+        else:
+            return "Error: Invalid file type"
+        
+    else:
+        return "No file selected!"
