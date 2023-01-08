@@ -13,9 +13,6 @@ VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
 def create_new_user(username, email, password, role):
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
-    # username = "ifeanyi"
-    # email = "ify@gmail.com"
-    # password = "linda321"
     hashed_password = generate_password_hash(password, method="sha256")
     cur.execute(
         "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
@@ -39,8 +36,8 @@ def make_dirs():
 def main():
     make_dirs()
     db.create_all()
-    create_new_user("test", "test@gmail.com", "linda321", "student")
-    create_new_user("test2", "test2@gmail.com", "linda321", "lecturer")
+    create_new_user("test", "test@gmail.com", "password", "student")
+    create_new_user("test2", "test2@gmail.com", "password", "lecturer")
 
 
 if __name__ == "__main__":

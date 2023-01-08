@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
 from flask_login import LoginManager
 
-# from home import home
 from index import index
 from lecturer import lecturer
 from login import login
@@ -42,7 +41,6 @@ app.register_blueprint(index)
 app.register_blueprint(login)
 app.register_blueprint(logout)
 app.register_blueprint(register)
-# app.register_blueprint(home)
 app.register_blueprint(lecturer)
 app.register_blueprint(student)
 
@@ -54,15 +52,6 @@ def load_user(user_id):
         return Users.query.get(int(user_id))  # Lecturers.query.get(int(user_id))
     except (sqlalchemy.exc.OperationalError) as e:
         return render_template("error.html", e="Database not found")
-
-
-# @login_manager.user_loader
-# def load_lecturers(user_id):
-#     try:
-
-#         return Lecturers.query.get(int(user_id)) #Lecturers.query.get(int(user_id))
-#     except (sqlalchemy.exc.OperationalError) as e:
-#         return render_template("error.html", e="Database not found")
 
 
 if __name__ == "__main__":
