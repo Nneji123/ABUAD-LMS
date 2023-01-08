@@ -10,15 +10,14 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String)
     role = db.Column(db.String(10))
-    
-    
 
-    
+
 class Students(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String)
+
 
 class Lecturers(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,4 +1,4 @@
-from database import create_new_student 
+from database import create_new_student
 
 # def get_files():
 #     # get the current working directory
@@ -9,7 +9,7 @@ from database import create_new_student
 #     # get a list of files in the courses folder
 #     files = os.listdir(path)
 #     print(files)
-    
+
 # get_files()
 
 create_new_student("ifeanyi2", "ifeanyinneji77@gmail.com", "linda321")

@@ -37,26 +37,26 @@
 #         elif '503' in file_name:
 #             file.save(f"static/courses/503/{file.filename}")
 #             return 'Video saved successfully!'
-        
+
 #         elif '515' in file_name:
 #             file.save(f"static/courses/515/{file.filename}")
 #             return 'Video saved successfully!'
-        
+
 #         elif '507' in file_name:
 #             file.save(f"static/courses/507/{file.filename}")
 #             return 'Video saved successfully!'
-        
+
 #         elif '511' in file_name:
 #             file.save(f"static/courses/511/{file.filename}")
 #             return 'Video saved successfully!'
-        
+
 #         elif '505' in file_name:
 #             file.save(f"static/courses/505/{file.filename}")
 #             return 'Video saved successfully!'
-        
+
 #         elif '519' in file_name:
 #             file.save(f"static/courses/519/{file.filename}")
-            
+
 #             return 'Video saved successfully!'
 #         # file.save(secure_filename(f".static/courses/file.filename))
 #         # return 'Video saved successfully!'

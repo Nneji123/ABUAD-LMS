@@ -1,8 +1,9 @@
+import sqlalchemy
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import LoginManager
-from models import Users, db
 from werkzeug.security import generate_password_hash
-import sqlalchemy
+
+from models import Users, db
 
 register = Blueprint("register", __name__, template_folder="./frontend")
 login_manager = LoginManager()
@@ -26,7 +27,7 @@ def show():
                         username=username,
                         email=email,
                         password=hashed_password,
-                        role = role
+                        role=role,
                     )
 
                     db.session.add(new_user)
