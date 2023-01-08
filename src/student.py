@@ -66,7 +66,7 @@ def list_videos_neuralnetworks():
     # Get a list of videos from the directory
     videos = [
         f
-        for f in os.listdir("./frontend/static/courses/501/videos")
+        for f in os.listdir("./frontend/static/courses/501/video")
         if f.endswith(".mp4")
     ]
     # Render the HTML template and pass the list of videos

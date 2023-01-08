@@ -3,3 +3,4 @@ database.db
 __pycache__/
 instance/
 *.mp4
+*.pdf
