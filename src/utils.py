@@ -1,32 +1,38 @@
+import csv
 import datetime
 import os
-import csv
+
+import cv2
 import face_recognition
 import numpy as np
-import cv2
+
+global capture, rec_frame, grey, switch, neg, face, rec, out
+capture = 0
+grey = 0
+neg = 0
+face = 0
+switch = 1
+rec = 0
 
 
-global capture,rec_frame, grey, switch, neg, face, rec, out 
-capture=0
-grey=0
-neg=0
-face=0
-switch=1
-rec=0
+# Load pretrained face detection model
+net = cv2.dnn.readNetFromCaffe(
+    "./saved_model/deploy.prototxt.txt",
+    "./saved_model/res10_300x300_ssd_iter_140000.caffemodel",
+)
 
-
-#Load pretrained face detection model    
-net = cv2.dnn.readNetFromCaffe('./saved_model/deploy.prototxt.txt', './saved_model/res10_300x300_ssd_iter_140000.caffemodel')
 
 def gen():
-    global capture,  out, face
+    global capture, out, face
     IMAGE_FILES = []
     filename = []
-    dir_path = './shots'
+    dir_path = "./shots"
 
     for imagess in os.listdir(dir_path):
         img_path = os.path.join(dir_path, imagess)
-        img_path = face_recognition.load_image_file(img_path)  # reading image and append to list
+        img_path = face_recognition.load_image_file(
+            img_path
+        )  # reading image and append to list
         IMAGE_FILES.append(img_path)
         filename.append(imagess.split(".", 1)[0])
 
@@ -54,21 +60,30 @@ def gen():
         # Check if the file already exists
         if not os.path.exists("attendance.csv"):
             # Write the headers
-            with open("attendance.csv", 'w', newline='') as attendance_file:
-                attendance_writer = csv.writer(attendance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                attendance_writer.writerow(["Name", "Matric Number", "Department", "Date", "Time"])
+            with open("attendance.csv", "w", newline="") as attendance_file:
+                attendance_writer = csv.writer(
+                    attendance_file,
+                    delimiter=",",
+                    quotechar='"',
+                    quoting=csv.QUOTE_MINIMAL,
+                )
+                attendance_writer.writerow(
+                    ["Name", "Matric Number", "Department", "Date", "Time"]
+                )
         # Write the attendance data
-        with open("attendance.csv", 'a', newline='') as attendance_file:
-            attendance_writer = csv.writer(attendance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            attendance_writer.writerow([name, matric_number, department, current_date, current_time])
-
-
+        with open("attendance.csv", "a", newline="") as attendance_file:
+            attendance_writer = csv.writer(
+                attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+            )
+            attendance_writer.writerow(
+                [name, matric_number, department, current_date, current_time]
+            )
 
     encodeListknown = encoding_img(IMAGE_FILES)
 
     cap = cv2.VideoCapture(0)
 
-    while True: 
+    while True:
         success, img = cap.read()
         imgc = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         # converting image to RGB from BGR
@@ -95,30 +110,39 @@ def gen():
                 # y1,x2,y2,x1 = y1*4,x2*4,y2*4,x1*4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
-                cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                cv2.putText(
+                    img,
+                    name,
+                    (x1 + 6, y2 - 6),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    1,
+                    (255, 255, 255),
+                    2,
+                )
                 save_attendance(name)  # taking name for attendence function above
 
-        frame = cv2.imencode('.jpg', img)[1].tobytes()
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        frame = cv2.imencode(".jpg", img)[1].tobytes()
+        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
         key = cv2.waitKey(20)
         if key == 27:
             break
 
 
 def gen_frames():  # generate frame by frame from camera
-    global out, capture,rec_frame, frame
+    global out, capture, rec_frame, frame
     while True:
         camera = cv2.VideoCapture(0)
-        success, frame = camera.read() 
-        if success:   
-            if(capture):
-                capture=0    
+        success, frame = camera.read()
+        if success:
+            if capture:
+                capture = 0
             try:
-                ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
+                ret, buffer = cv2.imencode(".jpg", cv2.flip(frame, 1))
                 frame = buffer.tobytes()
-                yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                yield (
+                    b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
+                )
             except Exception as e:
-                pass 
+                pass
         else:
             pass

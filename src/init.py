@@ -1,9 +1,9 @@
 import os
-
 import sqlite3
-from app import db
+
 from werkzeug.security import generate_password_hash
 
+from app import db
 
 # create a function to make new directories from a list of strings
 TYPES = ["video", "assignment", "documents"]

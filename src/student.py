@@ -97,4 +97,3 @@ def list_videos_cad():
     ]
     # Render the HTML template and pass the list of videos
     return render_template("cad.html", videos=videos)
-
