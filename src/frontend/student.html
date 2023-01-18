@@ -8,11 +8,24 @@
   <title>Document</title>
 </head>
 <body>
-  
+  <nav>
+    <li> <a href="#" class="hover2">Home</a></li> 
+    <li> <a href="#" class="hover2">Attendance </a></li> 
+    <li> <a href="#" class="selected">LMS</a></li> 
+    
+  </nav>
+
   <header>
-    LMS
+    
     <p>Learning Management System</p>
+    
+
   </header>
+
+  <div class="intro">
+    Hello {{current_user.username}}
+    
+  </div>
 
   <table>
     <th>S/N</th>
@@ -26,7 +39,7 @@
       <td>COE 501</td>
       <td>Neural Network and Fuzzy Logic Programming</td>
       <td>500</td>
-      <td><a href="/neuralnetworks"><button class="btn-upload" id="btn-upload"> View Course Home</td>
+      <td><a href="/neuralnetworks"><button class="btn-upload hover" id="btn-upload hover"> View Course Home</td>
     </tr>
 
     <tr>
@@ -34,7 +47,7 @@
       <td>COE 503</td>
       <td>Modelling and Simulation</td>
       <td>500</td>
-      <td><a href="/cad"><button class="btn-upload" id="btn-upload"> View Course Home</td>
+      <td><a href="/cad"><button class="btn-upload hover" id="btn-upload hover"> View Course Home</td>
       </tr>
 
     <tr>
@@ -42,7 +55,7 @@
       <td>COE 515</td>
       <td>Natural Language and Speech Processing</td>
       <td>500</td>
-      <td><button class="btn-upload">View Course Home</td>
+      <td><a href="/nlp"><button class="btn-upload hover">View Course Home</button></a></td>
     </tr>
 
     <tr>
@@ -50,7 +63,7 @@
       <td>COE 507</td>
       <td>Digital Signal Processing</td>
       <td>500</td>
-      <td><button class="btn-upload">View Course Home</td>
+      <td><a href="./dsp.html"></a><button class="btn-upload hover">View Course Home</td>
     </tr>
 
     <tr>
@@ -58,7 +71,7 @@
       <td>COE 505</td>
       <td>Software Engineering</td>
       <td>500</td>
-      <td><button class="btn-upload">View Course Home</td>
+      <td><a href="./softEng"></a><button class="btn-upload hover">View Course Home</td>
     </tr>
 
     <tr>
@@ -66,17 +79,21 @@
       <td>COE 511</td>
       <td>Computer Graphics and Animations</td>
       <td>500</td>
-      <td><button class="btn-upload">View Course Home</td>
+      <td><a href="./caomGraph.html"></a><button class="btn-upload hover">View Course Home</td>
     </tr>
 
     
 
   </table>
 
-</div>
-<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="{{ url_for('static',filename='main.js') }}"></script>
-<button><a href="/logout">Logout</a></button>
+
   
+  <button class="logout hover"><a href="/logout">Logout</a></button>
+
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="{{ url_for('static',filename='main.js') }}"></script>
   
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+
 </body>
 </html>

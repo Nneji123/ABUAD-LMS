@@ -18,7 +18,7 @@ def show():
 
 
 @student.route("/neuralnetworks", methods=["GET", "POST"])
-@login_required
+# @login_required
 def neuralnetworks():
     return render_template("neural_networks.html")
 
@@ -31,7 +31,7 @@ def cad():
 
 # get a list of files in the courses folder and pass it to the template
 @student.route("/neuralnetworks/documents", methods=["GET", "POST"])
-@login_required
+# @login_required
 def list_docs_neuralnetworks():
     # Get a list of files from the directory
     files = [
@@ -59,7 +59,7 @@ def list_docs_neuralnetworks():
 
 
 @student.route("/neuralnetworks/videos", methods=["GET", "POST"])
-@login_required
+# @login_required
 def list_videos_neuralnetworks():
     # Get a list of videos from the directory
     videos = [
