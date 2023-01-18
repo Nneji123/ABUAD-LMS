@@ -2,7 +2,7 @@ import os
 import shutil
 
 from flask import Blueprint, redirect, url_for
-from flask_login import LoginManager, current_user, login_required, logout_user
+from flask_login import LoginManager, login_required, logout_user
 
 logout = Blueprint("logout", __name__, template_folder="./frontend")
 login_manager = LoginManager()

@@ -36,7 +36,6 @@ def show():
                     return redirect(
                         url_for("register.show") + "?error=user-or-email-exists"
                     )
-
                 return redirect(url_for("login.show") + "?success=account-created")
         else:
             return redirect(url_for("register.show") + "?error=missing-fields")

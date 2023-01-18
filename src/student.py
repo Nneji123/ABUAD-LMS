@@ -17,16 +17,12 @@ def show():
     return render_template("student.html")
 
 
+### Neural Networks ###
+
 @student.route("/neuralnetworks", methods=["GET", "POST"])
 # @login_required
 def neuralnetworks():
     return render_template("neural_networks.html")
-
-
-@student.route("/cad", methods=["GET", "POST"])
-@login_required
-def cad():
-    return render_template("cad.html")
 
 
 # get a list of files in the courses folder and pass it to the template
@@ -71,6 +67,14 @@ def list_videos_neuralnetworks():
     return render_template("neural_networks.html", videos=videos)
 
 
+
+
+### CAD ###
+@student.route("/cad", methods=["GET", "POST"])
+@login_required
+def cad():
+    return render_template("cad.html")
+
 @student.route("/cad/documents", methods=["GET", "POST"])
 @login_required
 def list_docs_cad():
@@ -97,3 +101,34 @@ def list_videos_cad():
     ]
     # Render the HTML template and pass the list of videos
     return render_template("cad.html", videos=videos)
+
+### Digital Signal Processing ###
+@student.route("/dsp", methods=["GET", "POST"])
+@login_required
+def dsp():
+    return render_template("dsp.html")
+
+@student.route("/dsp/documents", methods=["GET", "POST"])
+@login_required
+def list_docs_dsp():
+    # Get a list of files from the directory
+    files = [
+        f
+        for f in os.listdir("./frontend/static/courses/507/documents")
+        if f.endswith(".doc")
+    ]
+    print(files)
+    # files = flash(files)
+    # Render the HTML template and pass the list of files
+    return render_template("dsp.html", files=files)
+
+@student.route("/dsp/videos", methods=["GET", "POST"])
+@login_required
+def list_videos_dsp():
+    videos = [
+            f
+            for f in os.listdir("./frontend/static/courses/507/video")
+            if f.endswith(".mp4")
+        ]
+    # Render the HTML template and pass the list of videos
+    return render_template("dsp.html", videos=videos)
