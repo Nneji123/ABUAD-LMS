@@ -1,10 +1,11 @@
 import csv
-import datetime
+# import datetime
 import os
 
 import cv2
 import face_recognition
 import numpy as np
+from datetime import datetime
 
 global capture, rec_frame, grey, switch, neg, face, rec, out
 capture = 0
@@ -20,6 +21,38 @@ net = cv2.dnn.readNetFromCaffe(
     "./saved_model/deploy.prototxt.txt",
     "./saved_model/res10_300x300_ssd_iter_140000.caffemodel",
 )
+
+
+def save_attendance(attendance_str):
+    # Split the input string into parts
+    parts = attendance_str.split("-")
+    name = parts[0]
+    matric_number = parts[1]
+    department = parts[2]
+    # Get the current date and time
+    now = datetime.now()
+    current_date = now.strftime("%Y-%m-%d")
+    current_time = now.strftime("%H:%M:%S")
+    # check if the file already exists
+    if os.path.exists("attendance.csv"):
+        with open("attendance.csv", 'r') as attendance_file:
+            attendance_reader = csv.reader(attendance_file)
+            # Check if the name and date is already in the file
+            for row in attendance_reader:
+                if name == row[0] and current_date == row[3]:
+                    print(f'Attendance for {name} on {current_date} already recorded')
+                    return
+    else:
+        # Write the headers
+        with open("attendance.csv", 'w', newline='') as attendance_file:
+            attendance_writer = csv.writer(attendance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            attendance_writer.writerow(["Name", "Matric Number", "Department", "Date", "Time"])
+    # Write the attendance data
+    with open("attendance.csv", 'a', newline='') as attendance_file:
+        attendance_writer = csv.writer(attendance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        attendance_writer.writerow([name, matric_number, department, current_date, current_time])
+
+
 
 
 def gen():
@@ -46,38 +79,6 @@ def gen():
             except Exception as e:
                 print(e)
         return encodeList
-
-    def save_attendance(attendance_str):
-        # Split the input string into parts
-        parts = attendance_str.split("-")
-        name = parts[0]
-        matric_number = parts[1]
-        department = parts[2]
-        # Get the current date and time
-        now = datetime.now()
-        current_date = now.strftime("%Y-%m-%d")
-        current_time = now.strftime("%H:%M:%S")
-        # Check if the file already exists
-        if not os.path.exists("attendance.csv"):
-            # Write the headers
-            with open("attendance.csv", "w", newline="") as attendance_file:
-                attendance_writer = csv.writer(
-                    attendance_file,
-                    delimiter=",",
-                    quotechar='"',
-                    quoting=csv.QUOTE_MINIMAL,
-                )
-                attendance_writer.writerow(
-                    ["Name", "Matric Number", "Department", "Date", "Time"]
-                )
-        # Write the attendance data
-        with open("attendance.csv", "a", newline="") as attendance_file:
-            attendance_writer = csv.writer(
-                attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-            )
-            attendance_writer.writerow(
-                [name, matric_number, department, current_date, current_time]
-            )
 
     encodeListknown = encoding_img(IMAGE_FILES)
 
@@ -119,6 +120,7 @@ def gen():
                     (255, 255, 255),
                     2,
                 )
+                ## Save the name only if the face is recognized and the name is not already in the list and the date is not already in the list
                 save_attendance(name)  # taking name for attendence function above
 
         frame = cv2.imencode(".jpg", img)[1].tobytes()
