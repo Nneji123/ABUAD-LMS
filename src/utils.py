@@ -40,8 +40,8 @@ def save_attendance(attendance_str):
             # Check if the name and date is already in the file
             for row in attendance_reader:
                 if name == row[0] and current_date == row[3]:
-                    print(f'Attendance for {name} on {current_date} already recorded')
-                    return
+                    # print(f'Attendance for {name} on {current_date} already recorded')
+                    return False
     else:
         # Write the headers
         with open("attendance.csv", 'w', newline='') as attendance_file:
@@ -79,7 +79,7 @@ def gen():
                 encode = face_recognition.face_encodings(img)[0]
                 encodeList.append(encode)
             except Exception as e:
-                print(e)
+                e = "error"
         return encodeList
 
     encodeListknown = encoding_img(IMAGE_FILES)
@@ -87,6 +87,7 @@ def gen():
 
     while True:
         success, img = cap.read()
+        
         imgc = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         # converting image to RGB from BGR
         imgc = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -108,20 +109,40 @@ def gen():
                 name = filename[matchindex].upper()
                 y1, x2, y2, x1 = faceloc
                 # Multiply locations by 4 because we reduced the webcam input image by 0.25
+                text = f"{name}" if save_attendance(name) != False else "Attendance already recorded"
+                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
+                text_x = int((img.shape[1] - text_size[0]) / 2)
+                text_y = int((img.shape[0] + text_size[1]) / 2)
                 y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
-                cv2.putText(
-                    img,
-                    name,
-                    (x1 + 6, y2 - 6),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    1,
-                    (255, 255, 255),
-                    2,
-                )
+                if save_attendance(name) != False:
+                    cv2.putText(
+                        img,
+                        text,
+                        (text_x, text_y),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        1,
+                        (255, 255, 255),
+                        2,
+                    )
+                else:
+                    cv2.putText(
+                        img,
+                        text,
+                        (text_x, text_y),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        1,
+                        (255, 255, 255),
+                        2,
+                    )
+                
                 ## Save the name only if the face is recognized and the name is not already in the list and the date is not already in the list
-                save_attendance(name)  # taking name for attendence function above
+                # save_attendance(name)
+                # if save_attendance(name) == False:
+                #     cv2
+                # taking name for attendence function above
+                # flash("Attendance recorded for " + name)
 
         frame = cv2.imencode(".jpg", img)[1].tobytes()
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")

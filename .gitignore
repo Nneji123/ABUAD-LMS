@@ -6,3 +6,4 @@ instance/
 *.pdf
 Camera_Flask_App/
 flask_session/
+attendance.csv
