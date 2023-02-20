@@ -14,7 +14,7 @@ from flask import (
 from flask_login import LoginManager, login_required
 from PIL import Image
 
-from utils import gen, gen_frames
+from utils import  gen_frames , gen
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
@@ -108,7 +108,7 @@ def show():
 
 
 @lecturer.route("/upload", methods=["POST"])
-@login_required
+# @login_required
 def upload_video():
     file = request.files["file"]
     if file.filename != "":
@@ -157,10 +157,20 @@ def upload_video():
         return "No file selected!"
 
 
+from threading import Thread
+
 ### Take Attendance
 @lecturer.route("/recognition")
 def take_attendance():
     return render_template("takeattendance.html")
+
+# def stream():
+#     global capture, out
+#     while True:
+#         if out is not None:
+#             frame = next(out)
+#             yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+
 
 
 def allowed_file(filename):

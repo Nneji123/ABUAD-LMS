@@ -60,6 +60,8 @@ def gen():
     IMAGE_FILES = []
     filename = []
     dir_path = "./shots"
+    
+    cap = cv2.VideoCapture(0)
 
     for imagess in os.listdir(dir_path):
         img_path = os.path.join(dir_path, imagess)
@@ -82,7 +84,6 @@ def gen():
 
     encodeListknown = encoding_img(IMAGE_FILES)
 
-    cap = cv2.VideoCapture(0)
 
     while True:
         success, img = cap.read()
@@ -105,10 +106,9 @@ def gen():
 
             if matches_face[matchindex]:
                 name = filename[matchindex].upper()
-                # print(name)
                 y1, x2, y2, x1 = faceloc
-                # multiply locations by 4 because we above we reduced our webcam input image by 0.25
-                # y1,x2,y2,x1 = y1*4,x2*4,y2*4,x1*4
+                # Multiply locations by 4 because we reduced the webcam input image by 0.25
+                y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
                 cv2.putText(
@@ -132,14 +132,15 @@ def gen():
 
 def gen_frames():  # generate frame by frame from camera
     global out, capture, rec_frame, frame
+    camera = cv2.VideoCapture(0)  # initialize camera outside of loop
     while True:
-        camera = cv2.VideoCapture(0)
         success, frame = camera.read()
         if success:
             if capture:
                 capture = 0
             try:
-                ret, buffer = cv2.imencode(".jpg", cv2.flip(frame, 1))
+                # Optimization: remove unnecessary flip function
+                ret, buffer = cv2.imencode(".jpg", frame)
                 frame = buffer.tobytes()
                 yield (
                     b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
@@ -148,3 +149,4 @@ def gen_frames():  # generate frame by frame from camera
                 pass
         else:
             pass
+

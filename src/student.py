@@ -12,7 +12,7 @@ login_manager.init_app(student)
 
 
 @student.route("/student", methods=["GET"])
-@login_required
+# @login_required
 def show():
     return render_template("student.html")
 
@@ -71,12 +71,12 @@ def list_videos_neuralnetworks():
 
 ### CAD ###
 @student.route("/cad", methods=["GET", "POST"])
-@login_required
+# @login_required
 def cad():
     return render_template("cad.html")
 
 @student.route("/cad/documents", methods=["GET", "POST"])
-@login_required
+# @login_required
 def list_docs_cad():
     # Get a list of files from the directory
     files = [
@@ -91,7 +91,7 @@ def list_docs_cad():
 
 
 @student.route("/cad/videos", methods=["GET", "POST"])
-@login_required
+# @login_required
 def list_videos_cad():
     # Get a list of videos from the directory
     videos = [
@@ -104,12 +104,12 @@ def list_videos_cad():
 
 ### Digital Signal Processing ###
 @student.route("/dsp", methods=["GET", "POST"])
-@login_required
+# @login_required
 def dsp():
     return render_template("dsp.html")
 
 @student.route("/dsp/documents", methods=["GET", "POST"])
-@login_required
+# @login_required
 def list_docs_dsp():
     # Get a list of files from the directory
     files = [
@@ -123,7 +123,7 @@ def list_docs_dsp():
     return render_template("dsp.html", files=files)
 
 @student.route("/dsp/videos", methods=["GET", "POST"])
-@login_required
+# @login_required
 def list_videos_dsp():
     videos = [
             f

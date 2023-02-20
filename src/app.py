@@ -2,7 +2,7 @@ import os
 
 import sqlalchemy
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, render_template
 from flask_login import LoginManager
 
 from index import index
@@ -12,6 +12,7 @@ from logout import logout
 from models import Users, db
 from register import register
 from student import student
+from admin import admin
 
 load_dotenv()
 
@@ -43,6 +44,7 @@ app.register_blueprint(logout)
 app.register_blueprint(register)
 app.register_blueprint(lecturer)
 app.register_blueprint(student)
+app.register_blueprint(admin)
 
 
 @login_manager.user_loader

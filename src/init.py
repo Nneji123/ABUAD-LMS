@@ -10,13 +10,13 @@ TYPES = ["video", "assignment", "documents"]
 VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
 
 
-def create_new_user(username, email, password, role):
+def create_new_user(username, email, password, role, is_admin):
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
     hashed_password = generate_password_hash(password, method="sha256")
     cur.execute(
-        "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
-        (username, email, hashed_password, role),
+        "INSERT INTO users (username, email, password, role, is_admin) VALUES (?, ?, ?, ?,?)",
+        (username, email, hashed_password, role, is_admin),
     )
     conn.commit()
     conn.close()
@@ -33,11 +33,15 @@ def make_dirs():
     print("Done")
 
 
+
+
+
 def main():
     make_dirs()
     db.create_all()
-    create_new_user("test", "test@gmail.com", "password", "student")
-    create_new_user("test2", "test2@gmail.com", "password", "lecturer")
+    create_new_user("test", "test@gmail.com", "password", "student", "False")
+    create_new_user("test2", "test2@gmail.com", "password", "lecturer", "False")
+    create_new_user("admin", "admin@gmail.com", "admin", "admin", "True" )
 
 
 if __name__ == "__main__":
