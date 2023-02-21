@@ -46,7 +46,7 @@ def save_attendance(attendance_str: str, location: str):
             # Check if the name and date is already in the file
             for row in attendance_reader:
                 if name == row[0] and current_date == row[3]:
-                    print(f'Attendance for {name} on {current_date} already recorded')
+                    # print(f'Attendance for {name} on {current_date} already recorded')
                     return False
     else:
         # print("False")

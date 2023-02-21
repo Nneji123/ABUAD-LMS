@@ -6,4 +6,5 @@ instance/
 *.pdf
 Camera_Flask_App/
 flask_session/
-*.csv
+# *.csv
+test.py
