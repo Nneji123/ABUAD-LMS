@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ATTENDANCE PAGE</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <style>
+      .facial {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .spinner {
+        display: none;
+        margin: 20px;
+        width: 100px;
+        height: 100px;
+        -webkit-animation-name: spin;
+        -webkit-animation-duration: 2000ms;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        -moz-animation-name: spin;
+        -moz-animation-duration: 2000ms;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-timing-function: linear;
+        -ms-animation-name: spin;
+        -ms-animation-duration: 2000ms;
+        -ms-animation-iteration-count: infinite;
+        -ms-animation-timing-function: linear;
+        animation-name: spin;
+        animation-duration: 2000ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+
+      @-ms-keyframes spin {
+        from {
+          -ms-transform: rotate(0deg);
+        }
+        to {
+          -ms-transform: rotate(360deg);
+        }
+      }
+
+      @-moz-keyframes spin {
+        from {
+          -moz-transform: rotate(0deg);
+        }
+        to {
+          -moz-transform: rotate(360deg);
+        }
+      }
+
+      @-webkit-keyframes spin {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .back-home {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        margin: 12px;
+        outline: none;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: rgb(225, 225, 229);
+      }
+
+      .none {
+        text-decoration: none;
+        color: black;
+      }
+    </style>
+
+    <div class="facial">
+      <div class="mx-auto" style="width: 700px">
+        <img class="vid-bar" src="/detect_face_feed/515" />
+      </div>
+
+  
+
+      <div id="spinner" class="spinner"></div>
+
+      <button type="submit" class="back-home">
+        <a href="/lecturer" class="none">&#8592;Back Home</a>
+      </button>
+    
+    <form method="POST" class="back-home">
+        <input type="submit" name="submit" value="start">
+        <input type="submit" name="submit" value="stop">
+    </form>
+
+
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="none"
+          stroke="#fff"
+          stroke-width="10"
+          r="35"
+          stroke-dasharray="164.93361431346415 56.97787143782138"
+          transform="rotate(350.874 50 50)"
+        >
+        <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;360 50 50"
+            keyTimes="0;1"
+          ></animateTransform>
+        </circle>
+  </svg>
+</div>
+
+<script>
+  window.onload = function() {
+    // Get the spinner element
+    const spinner = document.getElementById("spinner");
+    // Get the back home button element
+    const backHomeButton = document.querySelector(".back-home");
+    // Get the video feed element
+    const videoFeed = document.querySelector(".vid-bar");
+
+    // Wait for the video feed to load
+    videoFeed.addEventListener("load", () => {
+      // Hide the spinner
+      spinner.style.display = "none";
+    // Position the back home button below the video feed
+    backHomeButton.style.marginTop = "12px";
+    });
+    }
+</script>
+  </body>
+</html>

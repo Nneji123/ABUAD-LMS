@@ -157,30 +157,15 @@ def upload_video():
         return "No file selected!"
 
 
-from threading import Thread
 
-### Take Attendance
-@lecturer.route("/recognition")
-def take_attendance():
-    return render_template("takeattendance.html")
+@lecturer.route("/take_attendance/<course_code>")
+def take_attendance(course_code):
+    return render_template(f"/attendance_pages/takeattendance_{course_code}.html")
 
-# def stream():
-#     global capture, out
-#     while True:
-#         if out is not None:
-#             frame = next(out)
-#             yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+@lecturer.route("/detect_face_feed/<course_code>")
+def detect_face_feed(course_code):
+    return Response(gen(file_path=f"./frontend/static/attendance/{course_code}"), mimetype="multipart/x-mixed-replace; boundary=frame")
 
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-@lecturer.route("/detect_face_feed")
-def video_feeds():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 #### Registering Students
