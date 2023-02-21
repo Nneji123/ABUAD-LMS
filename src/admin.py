@@ -3,7 +3,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, current_user, login_required
 from werkzeug.security import generate_password_hash
 
-from models import Users, db
+from models import Students, Lecturers, Admins, db
 
 admin = Blueprint("admin", __name__, template_folder="./frontend")
 login_manager = LoginManager()
@@ -35,7 +35,7 @@ def add_user():
         else:
             is_admin = False
         try:
-            user = Users(
+            user = Students(
                 username=username,
                 password=hashed_password,
                 email=email,

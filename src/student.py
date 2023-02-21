@@ -5,7 +5,7 @@ from flask_login import LoginManager, current_user, login_required
 from werkzeug.utils import secure_filename
 
 from constants import COURSES_INFO
-from models import Users, db
+# from models import Users, db
 from utils import count_name_in_files
 
 student = Blueprint("student", __name__, template_folder="./frontend")

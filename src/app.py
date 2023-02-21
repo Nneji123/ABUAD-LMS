@@ -10,8 +10,8 @@ from index import index
 from lecturer import lecturer
 from login import login
 from logout import logout
-from models import Users, db
-from register import register
+from models import Students, Lecturers, Admins, db
+# from register import register
 from student import student
 
 load_dotenv()
@@ -41,7 +41,7 @@ app.app_context().push()
 app.register_blueprint(index)
 app.register_blueprint(login)
 app.register_blueprint(logout)
-app.register_blueprint(register)
+# app.register_blueprint(register)
 app.register_blueprint(lecturer)
 app.register_blueprint(student)
 app.register_blueprint(admin)
@@ -49,9 +49,16 @@ app.register_blueprint(admin)
 
 @login_manager.user_loader
 def load_user(user_id):
+    students = Students.query.get(user_id)
+    lecturers = Lecturers.query.get(user_id)
+    admins = Admins.query.get(user_id)
     try:
-
-        return Users.query.get(int(user_id))  # Lecturers.query.get(int(user_id))
+        if students:
+            return students
+        if lecturers:
+            return lecturers
+        if admins:
+            return admins
     except (sqlalchemy.exc.OperationalError) as e:
         return render_template("error.html", e="Database not found")
 

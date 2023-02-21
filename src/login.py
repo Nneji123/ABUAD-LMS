@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user
 from werkzeug.security import check_password_hash
 
-from models import Users, db
+from models import Students, Lecturers, Admins, db
 
 login = Blueprint(
     "login", __name__, template_folder="./frontend", static_folder="./frontend"
@@ -18,21 +18,29 @@ def show():
         password = request.form["password"]
         roling = request.form["role"]
 
-        user = Users.query.filter_by(username=username).first()
-        print(user)
-        roles = user.role
+        if roling == "student":
+            studs = Students.query.filter_by(username=username).first()
+            roles = studs.role
+        if roling == "lecturer":
+            lects = Lecturers.query.filter_by(username=username).first()
+            roles = lects.role
+        if roling == "admin":
+            admins = Admins.query.filter_by(username=username).first()
+            roles = admins.role
+        # print(user)
+        
 
-        if (roles == "student" and roling == "student") and user:
-            check_password_hash(user.password, password)
-            login_user(user)
+        if (roles == "student" and roling == "student") and studs:
+            check_password_hash(studs.password, password)
+            login_user(studs)
             return redirect(url_for("student.show"))
-        elif (roles == "lecturer" and roling == "lecturer") and user:
-            check_password_hash(user.password, password)
-            login_user(user)
+        elif (roles == "lecturer" and roling == "lecturer") and lects:
+            check_password_hash(lects.password, password)
+            login_user(lects)
             return redirect(url_for("lecturer.show"))
-        elif (roles == "admin" and roling == "admin") and user.is_admin == True:
-            check_password_hash(user.password, password)
-            login_user(user)
+        elif (roles == "admin" and roling == "admin") and admins.is_admin == True:
+            check_password_hash(admins.password, password)
+            login_user(admins)
             return redirect(url_for("admin.show"))
 
         else:
