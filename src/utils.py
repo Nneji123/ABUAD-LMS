@@ -1,13 +1,11 @@
 import csv
 import os
+from datetime import datetime
 
 import cv2
 import face_recognition
 import numpy as np
-from datetime import datetime
 import pandas as pd
-
-
 
 # Load pretrained face detection model
 net = cv2.dnn.readNetFromCaffe(
@@ -30,9 +28,9 @@ def save_attendance(attendance_str: str, location: str):
     filename = f"{date_string}-attendance.csv".capitalize()
     # check if the file already exists
     if os.path.exists(f"{location}/{filename}"):
-        
+
         # print("True")
-        with open(f"{location}/{filename}", 'r') as attendance_file:
+        with open(f"{location}/{filename}", "r") as attendance_file:
             attendance_reader = csv.reader(attendance_file)
             # Check if the name and date is already in the file
             for row in attendance_reader:
@@ -42,15 +40,21 @@ def save_attendance(attendance_str: str, location: str):
     else:
         # print("False")
         # Write the headers
-        with open(f"{location}/{filename}", 'w', newline='') as attendance_file:
-            attendance_writer = csv.writer(attendance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            attendance_writer.writerow(["Name", "Matric Number", "Department", "Date", "Time"])
+        with open(f"{location}/{filename}", "w", newline="") as attendance_file:
+            attendance_writer = csv.writer(
+                attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+            )
+            attendance_writer.writerow(
+                ["Name", "Matric Number", "Department", "Date", "Time"]
+            )
     # Write the attendance data
-    with open(f"{location}/{filename}", 'a', newline='') as attendance_file:
-        attendance_writer = csv.writer(attendance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        attendance_writer.writerow([name, matric_number, department, current_date, current_time])
-
-
+    with open(f"{location}/{filename}", "a", newline="") as attendance_file:
+        attendance_writer = csv.writer(
+            attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+        )
+        attendance_writer.writerow(
+            [name, matric_number, department, current_date, current_time]
+        )
 
 
 def gen(file_path):
@@ -58,7 +62,7 @@ def gen(file_path):
     IMAGE_FILES = []
     filename = []
     dir_path = "./registered_faces"
-    
+
     cap = cv2.VideoCapture(0)
 
     for imagess in os.listdir(dir_path):
@@ -82,10 +86,9 @@ def gen(file_path):
 
     encodeListknown = encoding_img(IMAGE_FILES)
 
-
     while True:
         success, img = cap.read()
-        
+
         imgc = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         # converting image to RGB from BGR
         imgc = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -107,14 +110,18 @@ def gen(file_path):
                 name = filename[matchindex].upper()
                 y1, x2, y2, x1 = faceloc
                 # Multiply locations by 4 because we reduced the webcam input image by 0.25
-                text = f"{name}" if save_attendance(name, file_path) != False else "Attendance already recorded"
+                text = (
+                    f"{name}"
+                    if save_attendance(name, file_path) != False
+                    else "Attendance already recorded"
+                )
                 text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
                 text_x = int((img.shape[1] - text_size[0]) / 2)
                 text_y = int((img.shape[0] + text_size[1]) / 2)
                 y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
-                
+
                 if save_attendance(name, file_path) != False:
                     cv2.putText(
                         img,
@@ -167,24 +174,28 @@ def gen_frames():  # generate frame by frame from camera
 def count_name_in_files(directory_path, name):
     count = 0
     num_files = 0
-    
+
     for dirpath, dirnames, filenames in os.walk(directory_path):
         for filename in filenames:
-            if filename.endswith('.csv'):
+            if filename.endswith(".csv"):
                 file_path = os.path.join(dirpath, filename)
-                with open(file_path, newline='') as csvfile:
+                with open(file_path, newline="") as csvfile:
                     reader = csv.reader(csvfile)
                     for row in reader:
                         if row and row[0] == name:
                             count += 1
                 num_files += 1
-    
+
     if num_files == 0:
         return 0
-        
-    message = f"{name}'s Attendance for this course is " + f"{str(count / num_files * 100)}% \nYou are eligible to write your exam!"
-    
+
+    message = (
+        f"{name}'s Attendance for this course is "
+        + f"{str(count / num_files * 100)}% \nYou are eligible to write your exam!"
+    )
+
     return message
+
 
 def get_total_attendance(directory_path):
     student_attendance = {}
@@ -192,7 +203,7 @@ def get_total_attendance(directory_path):
     for filename in os.listdir(directory_path):
         if filename.endswith(".csv"):
             file_path = os.path.join(directory_path, filename)
-            with open(file_path, newline='') as csvfile:
+            with open(file_path, newline="") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     name = row["Name"]
@@ -203,7 +214,7 @@ def get_total_attendance(directory_path):
                         student_attendance[name] = {
                             "Matric Number": matric_number,
                             "Department": department,
-                            "Attendance": 0
+                            "Attendance": 0,
                         }
 
                     student_attendance[name]["Attendance"] += 1
@@ -212,14 +223,18 @@ def get_total_attendance(directory_path):
     for name, attendance_data in student_attendance.items():
         total_classes = len(os.listdir(directory_path))
         attendance_percentage = attendance_data["Attendance"] / total_classes * 100
-        data.append({
-            "Name": name,
-            "Matric Number": attendance_data["Matric Number"],
-            "Department": attendance_data["Department"],
-            "Attendance Percentage": attendance_percentage
-        })
+        data.append(
+            {
+                "Name": name,
+                "Matric Number": attendance_data["Matric Number"],
+                "Department": attendance_data["Department"],
+                "Attendance Percentage": attendance_percentage,
+            }
+        )
 
-    df = pd.DataFrame(data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"])
+    df = pd.DataFrame(
+        data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"]
+    )
     # df.set_index("Name", inplace=True)
     df.to_csv("total_attendance.csv")
     return df

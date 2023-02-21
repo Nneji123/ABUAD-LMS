@@ -33,16 +33,19 @@ def make_dirs():
     print("Done")
 
 
-
-
-
 def main():
     make_dirs()
     db.create_all()
     create_new_user("test", "test@gmail.com", "password", "student", "False")
     create_new_user("test2", "test2@gmail.com", "password", "lecturer", "False")
-    create_new_user("NNEJI IFEANYI DANIEL", "ifeanyinneji777@gmail.com", "password", "student", "False")
-    create_new_user("admin", "admin@gmail.com", "admin", "admin", "True" )
+    create_new_user(
+        "NNEJI IFEANYI DANIEL",
+        "ifeanyinneji777@gmail.com",
+        "password",
+        "student",
+        "False",
+    )
+    create_new_user("admin", "admin@gmail.com", "admin", "admin", "True")
 
 
 if __name__ == "__main__":

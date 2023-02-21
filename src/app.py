@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_login import LoginManager
 
+from admin import admin
 from index import index
 from lecturer import lecturer
 from login import login
@@ -12,7 +13,6 @@ from logout import logout
 from models import Users, db
 from register import register
 from student import student
-from admin import admin
 
 load_dotenv()
 

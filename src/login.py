@@ -30,11 +30,11 @@ def show():
             check_password_hash(user.password, password)
             login_user(user)
             return redirect(url_for("lecturer.show"))
-        elif (roles == "admin" and roling == "admin") and user.is_admin==True:
+        elif (roles == "admin" and roling == "admin") and user.is_admin == True:
             check_password_hash(user.password, password)
             login_user(user)
             return redirect(url_for("admin.show"))
-        
+
         else:
             return redirect(
                 url_for("login.show") + "?error=incorrect-password-unauthorized"

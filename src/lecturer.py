@@ -14,8 +14,8 @@ from flask import (
 from flask_login import LoginManager, login_required
 from PIL import Image
 
-from utils import gen_frames , gen, get_total_attendance
 from constants import *
+from utils import gen, gen_frames, get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
@@ -24,6 +24,7 @@ login_manager.init_app(lecturer)
 
 now = datetime.datetime.now()
 now = now.strftime("%Y-%m-%d_%H-%M-%S")
+
 
 @lecturer.route("/lecturer", methods=["GET"])
 # @login_required
@@ -81,17 +82,19 @@ def upload_video():
         return "No file selected!"
 
 
-
 @lecturer.route("/take_attendance/<course_code>")
 # @login_required
 def take_attendance(course_code):
     return render_template(f"/attendance_pages/takeattendance_{course_code}.html")
 
+
 @lecturer.route("/detect_face_feed/<course_code>")
 # @login_required
 def detect_face_feed(course_code):
-    return Response(gen(file_path=f"./frontend/static/courses/{course_code}/attendance"), mimetype="multipart/x-mixed-replace; boundary=frame")
-
+    return Response(
+        gen(file_path=f"./frontend/static/courses/{course_code}/attendance"),
+        mimetype="multipart/x-mixed-replace; boundary=frame",
+    )
 
 
 #### Registering Students
@@ -143,8 +146,7 @@ def tasks():
     return render_template("/main_pages/face_register_attendance.html")
 
 
-
-@lecturer.route("/attendance/<course_code>")
+@lecturer.route("/view_attendance/<course_code>")
 def attendance(course_code):
     text = f"Attendance Report for COE {course_code}"
     df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
@@ -152,4 +154,4 @@ def attendance(course_code):
         html_table = df.to_html(index=False)
     else:
         html_table = "No attendance data available."
-    return render_template("attendance.html", html_table=html_table, text=text)
+    return render_template("/attendance_pages/attendance.html", html_table=html_table, text=text)
