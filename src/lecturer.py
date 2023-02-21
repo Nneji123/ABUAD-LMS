@@ -104,7 +104,7 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 @lecturer.route("/lecturer", methods=["GET"])
 # @login_required
 def show():
-    return render_template("lecturer.html")
+    return render_template("/main_pages/lecturer.html")
 
 
 @lecturer.route("/upload", methods=["POST"])
@@ -159,10 +159,12 @@ def upload_video():
 
 
 @lecturer.route("/take_attendance/<course_code>")
+# @login_required
 def take_attendance(course_code):
     return render_template(f"/attendance_pages/takeattendance_{course_code}.html")
 
 @lecturer.route("/detect_face_feed/<course_code>")
+# @login_required
 def detect_face_feed(course_code):
     return Response(gen(file_path=f"./frontend/static/attendance/{course_code}"), mimetype="multipart/x-mixed-replace; boundary=frame")
 
@@ -172,16 +174,19 @@ def detect_face_feed(course_code):
 
 
 @lecturer.route("/register_students")
+# @login_required
 def index():
-    return render_template("registerattendance.html")
+    return render_template("/main_pages/face_register_attendace.html")
 
 
 @lecturer.route("/video_feed")
+# @login_required
 def video_feed():
     return Response(gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @lecturer.route("/register_student", methods=["POST", "GET"])
+# @login_required
 def tasks():
     global switch, camera
     if request.method == "POST":
@@ -210,5 +215,5 @@ def tasks():
                 switch = 1
 
     elif request.method == "GET":
-        return render_template("registerattendance.html")
-    return render_template("registerattendance.html")
+        return render_template("/main_pages/face_register_attendance.html")
+    return render_template("/main_pages/face_register_attendance.html")

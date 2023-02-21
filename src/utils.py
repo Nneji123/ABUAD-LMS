@@ -16,6 +16,8 @@ switch = 1
 rec = 0
 
 
+
+
 # Load pretrained face detection model
 net = cv2.dnn.readNetFromCaffe(
     "./saved_model/deploy.prototxt.txt",

@@ -53,7 +53,7 @@ def add_user():
 def show_users():
     if current_user.is_authenticated and current_user.is_admin:   
         users = Users.query.all()
-        return render_template("/admin/users.html", users=users)
+        return render_template("/admin_pages/users.html", users=users)
     else:
         return redirect(url_for("login.show"))
 
@@ -117,7 +117,7 @@ def edit_user():
 @admin.route("/admin/search", methods=["POST", "GET"])
 def search_show():
     if current_user.is_authenticated and current_user.is_admin:   
-        return render_template("/admin/search.html")
+        return render_template("/admin_pages/search.html")
     else:
         flash("User is not authorised to view this page")
         return redirect(url_for("login.show"))
@@ -139,7 +139,7 @@ def search_users():
                     search = "%{}%".format(search)
                     users = Users.query.filter(Users.username.like(search)).all()
                     print(users)
-                    return render_template("/admin/search.html", users=users)
+                    return render_template("/admin_pages/search.html", users=users)
             except Exception as e:
                 print(str(e))
             finally:

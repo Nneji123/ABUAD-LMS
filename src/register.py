@@ -40,4 +40,4 @@ def show():
         else:
             return redirect(url_for("register.show") + "?error=missing-fields")
     else:
-        return render_template("register.html")
+        return render_template("/main_pages/register.html")
