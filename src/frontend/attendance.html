@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Attendance</title>
+  </head>
+  <body>
+    <h1>{{text}}</h1>
+    {% if html_table %}
+    {{ html_table|safe }}
+    {% else %}
+    <p>{{ message }}</p>
+    {% endif %}
+  </body>
+</html>

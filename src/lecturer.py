@@ -14,7 +14,7 @@ from flask import (
 from flask_login import LoginManager, login_required
 from PIL import Image
 
-from utils import  gen_frames , gen
+from utils import  gen_frames , gen, get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
@@ -166,7 +166,7 @@ def take_attendance(course_code):
 @lecturer.route("/detect_face_feed/<course_code>")
 # @login_required
 def detect_face_feed(course_code):
-    return Response(gen(file_path=f"./frontend/static/attendance/{course_code}"), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(gen(file_path=f"./frontend/static/courses/{course_code}/attendance"), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 
@@ -217,3 +217,15 @@ def tasks():
     elif request.method == "GET":
         return render_template("/main_pages/face_register_attendance.html")
     return render_template("/main_pages/face_register_attendance.html")
+
+
+
+@lecturer.route("/attendance/<course_code>")
+def attendance(course_code):
+    text = f"Attendance Report for COE {course_code}"
+    df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
+    if df is not None:
+        html_table = df.to_html(index=False)
+    else:
+        html_table = "No attendance data available."
+    return render_template("attendance.html", html_table=html_table, text=text)

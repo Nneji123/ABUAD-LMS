@@ -8,3 +8,4 @@ Pillow==9.4.0
 python-dotenv==0.21.0
 SQLAlchemy==1.4.45
 Werkzeug==2.2.2
+pandas==1.3.5

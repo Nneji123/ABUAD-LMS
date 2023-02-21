@@ -6,6 +6,7 @@ import cv2
 import face_recognition
 import numpy as np
 from datetime import datetime
+import pandas as pd
 
 global capture, rec_frame, grey, switch, neg, face, rec, out
 capture = 0
@@ -66,7 +67,7 @@ def gen(file_path):
     global capture, out, face
     IMAGE_FILES = []
     filename = []
-    dir_path = "./shots"
+    dir_path = "./registered_faces"
     
     cap = cv2.VideoCapture(0)
 
@@ -194,3 +195,41 @@ def count_name_in_files(directory_path, name):
     message = f"{name}'s Attendance for this course is " + f"{str(count / num_files * 100)}% \nYou are eligible to write your exam!"
     
     return message
+
+def get_total_attendance(directory_path):
+    student_attendance = {}
+
+    for filename in os.listdir(directory_path):
+        if filename.endswith(".csv"):
+            file_path = os.path.join(directory_path, filename)
+            with open(file_path, newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    name = row["Name"]
+                    matric_number = row["Matric Number"]
+                    department = row["Department"]
+
+                    if name not in student_attendance:
+                        student_attendance[name] = {
+                            "Matric Number": matric_number,
+                            "Department": department,
+                            "Attendance": 0
+                        }
+
+                    student_attendance[name]["Attendance"] += 1
+
+    data = []
+    for name, attendance_data in student_attendance.items():
+        total_classes = len(os.listdir(directory_path))
+        attendance_percentage = attendance_data["Attendance"] / total_classes * 100
+        data.append({
+            "Name": name,
+            "Matric Number": attendance_data["Matric Number"],
+            "Department": attendance_data["Department"],
+            "Attendance Percentage": attendance_percentage
+        })
+
+    df = pd.DataFrame(data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"])
+    # df.set_index("Name", inplace=True)
+    df.to_csv("total_attendance.csv")
+    return df
