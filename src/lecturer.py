@@ -11,7 +11,7 @@ from flask import (
     request,
     url_for,
 )
-from flask_login import LoginManager, login_required
+from flask_login import LoginManager, login_required, current_user
 from PIL import Image
 import pandas as pd
 

@@ -13,14 +13,14 @@ login_manager = LoginManager()
 login_manager.init_app(student)
 
 
-@student.route("/student", methods=["GET"])
 # @login_required
+@student.route("/student", methods=["GET"])
 def show():
     return render_template("/main_pages/student.html")
 
 
-@student.route("/<course_code>/documents", methods=["GET", "POST"])
 # @login_required
+@student.route("/<course_code>/documents", methods=["GET", "POST"])
 def list_docs(course_code):
     course_info = COURSES_INFO.get(course_code, {})
     doc_dir = course_info.get("doc_dir")

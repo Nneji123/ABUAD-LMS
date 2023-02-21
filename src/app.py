@@ -49,16 +49,18 @@ app.register_blueprint(admin)
 
 @login_manager.user_loader
 def load_user(user_id):
-    students = Students.query.get(user_id)
-    lecturers = Lecturers.query.get(user_id)
-    admins = Admins.query.get(user_id)
+    students = Students.query.filter_by(id=user_id).first()
+    lecturers = Lecturers.query.filter_by(id=user_id).first()
+    admins = Admins.query.filter_by(id=user_id).first()
     try:
         if students:
             return students
-        if lecturers:
+        elif lecturers:
             return lecturers
-        if admins:
+        elif admins:
             return admins
+        else:
+            return None
     except (sqlalchemy.exc.OperationalError) as e:
         return render_template("error.html", e="Database not found")
 

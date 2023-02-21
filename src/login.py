@@ -17,7 +17,7 @@ def show():
         username = request.form["username"]
         password = request.form["password"]
         roling = request.form["role"]
-
+        
         if roling == "student":
             studs = Students.query.filter_by(username=username).first()
             roles = studs.role
@@ -27,8 +27,7 @@ def show():
         if roling == "admin":
             admins = Admins.query.filter_by(username=username).first()
             roles = admins.role
-        # print(user)
-        
+
 
         if (roles == "student" and roling == "student") and studs:
             check_password_hash(studs.password, password)
@@ -38,10 +37,10 @@ def show():
             check_password_hash(lects.password, password)
             login_user(lects)
             return redirect(url_for("lecturer.show"))
-        elif (roles == "admin" and roling == "admin") and admins.is_admin == True:
+        elif (roles == "admin" and roling == "admin") and admins:
             check_password_hash(admins.password, password)
             login_user(admins)
-            return redirect(url_for("admin.show"))
+            return redirect(url_for("admin.show_users"))
 
         else:
             return redirect(

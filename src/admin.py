@@ -3,21 +3,13 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, current_user, login_required
 from werkzeug.security import generate_password_hash
 
-from models import Students, Lecturers, Admins, db
+from models import Admins, Students, Lecturers, db
 
 admin = Blueprint("admin", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(admin)
 
 
-# @login_required
-@admin.route("/admin", methods=["POST", "GET"])
-def show():
-    if current_user.is_authenticated and current_user.is_admin:
-        return redirect(url_for("admin.show_users"))
-    else:
-        flash("User is not authorised to view this page")
-        return redirect(url_for("login.show"))
 
 
 # @login_required
@@ -27,6 +19,7 @@ def add_user():
         username = request.form["username"]
         password = request.form["password"]
         email = request.form["email"]
+        role = request.form["role"]
         is_admin = request.form["is_admin"]
 
         hashed_password = generate_password_hash(password, method="sha256")
@@ -35,10 +28,10 @@ def add_user():
         else:
             is_admin = False
         try:
-            user = Students(
+            user = Admins(
                 username=username,
                 password=hashed_password,
-                email=email,
+                role=role,
                 is_admin=is_admin,
             )
             db.session.add(user)
@@ -55,12 +48,13 @@ def add_user():
         return redirect(url_for("admin.show_users"))
 
 
-# @login_required
+@login_required
+@admin.route("/admin")
 @admin.route("/admin/users", methods=["GET", "POST"])
 def show_users():
     if current_user.is_authenticated and current_user.is_admin:
-        users = Users.query.all()
-        return render_template("/admin_pages/users.html", users=users)
+        studs = Students.query.all()
+        return render_template("/admin_pages/users.html", users=studs)
     else:
         return redirect(url_for("login.show"))
 
