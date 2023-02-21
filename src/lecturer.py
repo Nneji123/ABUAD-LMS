@@ -126,7 +126,7 @@ def tasks():
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             im_pil = Image.fromarray(img)
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-            im_pil.save(f"./shots/{filenamess}")
+            im_pil.save(f"./registered_faces/{filenamess}")
             print("done")
         elif request.form.get("stop") == "Stop/Start":
 
