@@ -13,6 +13,7 @@ from flask import (
 )
 from flask_login import LoginManager, login_required
 from PIL import Image
+import pandas as pd
 
 from constants import *
 from utils import gen, gen_frames, get_total_attendance
@@ -147,6 +148,7 @@ def tasks():
 
 
 @lecturer.route("/view_attendance/<course_code>")
+# @login_required
 def attendance(course_code):
     text = f"Attendance Report for COE {course_code}"
     df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
@@ -155,3 +157,31 @@ def attendance(course_code):
     else:
         html_table = "No attendance data available."
     return render_template("/attendance_pages/attendance.html", html_table=html_table, text=text)
+
+
+@lecturer.route("/view_attendance/<course_code>/date", methods=["POST", "GET"])
+# @login_required
+def attendance_date(course_code):
+    if request.method == "POST":
+        year = request.form.get("year")
+        month = request.form.get("month")
+        day = request.form.get("day")
+        date = f"{year}-{month}-{day}"
+        # search for the attendance file for that date
+        filename = f"{date}-attendance.csv"
+        if os.path.exists(f"./frontend/static/courses/{course_code}/attendance/{filename}"):
+            text = f"Attendance Report for COE {course_code} on {date}"
+            df = pd.read_csv(filename)
+            if df is not None:
+                html_table = df.to_html(index=False)
+            else:
+                html_table = "No attendance data available."
+            return render_template(
+                "/attendance_pages/attendance.html", html_table=html_table, text=text
+            )
+        else:
+            return render_template("/attendance_pages/attendance.html", text="No attendance data available for this date")
+    else:
+        return render_template("/attendance_pages/attendance.html")
+    
+    
