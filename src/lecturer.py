@@ -14,92 +14,16 @@ from flask import (
 from flask_login import LoginManager, login_required
 from PIL import Image
 
-from utils import  gen_frames , gen, get_total_attendance
+from utils import gen_frames , gen, get_total_attendance
+from constants import *
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(lecturer)
 
-global capture, rec_frame, grey, switch, neg, face, rec, out
-capture = 0
-grey = 0
-neg = 0
-face = 0
-switch = 1
-rec = 0
-
-
-# Load pretrained face detection model
-net = cv2.dnn.readNetFromCaffe(
-    "./saved_model/deploy.prototxt.txt",
-    "./saved_model/res10_300x300_ssd_iter_140000.caffemodel",
-)
-
 
 now = datetime.datetime.now()
 now = now.strftime("%Y-%m-%d_%H-%M-%S")
-VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
-VIDEO_EXTENSIONS = [
-    "mp4",
-    "mkv",
-    "avi",
-    "mov",
-    "flv",
-    "wmv",
-    "webm",
-    "mpeg",
-    "mpg",
-    "m4v",
-    "3gp",
-    "3g2",
-    "f4v",
-    "f4p",
-    "f4a",
-    "f4b",
-]
-DOC_EXTENSIONS = [
-    "pdf",
-    "docx",
-    "doc",
-    "csv",
-]
-ASSIGNMENT_EXTENSIONS = [
-    "pdf",
-    "docx",
-    "doc",
-    "csv",
-    "txt",
-    "pptx",
-    "ppt",
-    "xlsx",
-    "xls",
-    "zip",
-    "rar",
-    "7z",
-    "tar",
-    "gz",
-    "bz2",
-    "xz",
-    "iso",
-    "mp4",
-    "mkv",
-    "avi",
-    "mov",
-    "flv",
-    "wmv",
-    "webm",
-    "mpeg",
-    "mpg",
-    "m4v",
-    "3gp",
-    "3g2",
-    "f4v",
-    "f4p",
-    "f4a",
-    "f4b",
-]
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-
 
 @lecturer.route("/lecturer", methods=["GET"])
 # @login_required

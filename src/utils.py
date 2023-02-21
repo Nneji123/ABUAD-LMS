@@ -1,5 +1,4 @@
 import csv
-# import datetime
 import os
 
 import cv2
@@ -7,15 +6,6 @@ import face_recognition
 import numpy as np
 from datetime import datetime
 import pandas as pd
-
-global capture, rec_frame, grey, switch, neg, face, rec, out
-capture = 0
-grey = 0
-neg = 0
-face = 0
-switch = 1
-rec = 0
-
 
 
 
@@ -118,7 +108,7 @@ def gen(file_path):
                 y1, x2, y2, x1 = faceloc
                 # Multiply locations by 4 because we reduced the webcam input image by 0.25
                 text = f"{name}" if save_attendance(name, file_path) != False else "Attendance already recorded"
-                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
+                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
                 text_x = int((img.shape[1] - text_size[0]) / 2)
                 text_y = int((img.shape[0] + text_size[1]) / 2)
                 y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4

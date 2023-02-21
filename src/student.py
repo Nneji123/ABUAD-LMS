@@ -6,31 +6,13 @@ from werkzeug.utils import secure_filename
 
 from models import Users, db
 from utils import count_name_in_files
+from constants import COURSES_INFO
 
 student = Blueprint("student", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(student)
 
-COURSES_INFO = {
-    "501": {
-        "doc_dir": "501/documents",
-        "doc_exts": (".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".py", ".java", ".c", ".cpp", ".h"),
-        "video_dir": "501/video",
-        "video_ext": ".mp4"
-    },
-    "503": {
-        "doc_dir": "503/documents",
-        "doc_exts": (".doc",),
-        "video_dir": "503/video",
-        "video_ext": ".mp4"
-    },
-    "507": {
-        "doc_dir": "507/documents",
-        "doc_exts": (".doc",),
-        "video_dir": "507/video",
-        "video_ext": ".mp4"
-    }
-}
+
 
 
 @student.route("/student", methods=["GET"])
