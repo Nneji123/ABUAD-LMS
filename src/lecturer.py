@@ -34,53 +34,53 @@ def show():
 
 
 @lecturer.route("/upload", methods=["POST"])
-# @login_required
 def upload_video():
     file = request.files["file"]
-    if file.filename != "":
-        file_name = str(file.filename)
-        file_extension = file_name.split(".")[-1]
-        file_names, file_extensions = os.path.splitext(file.filename)
-        new_file_name = f"{file_names}-{now}{file_extensions}"
-        course_code = file_names
-        print(course_code)
-
-        if any(course_code in VALID_COURSE_CODES for course_code in VALID_COURSE_CODES):
-            for course_code in VALID_COURSE_CODES:
-                if course_code in file_name:
-                    if (
-                        "assignment" in file_name.lower()
-                        and file_extension in ASSIGNMENT_EXTENSIONS
-                    ):
-                        print("assignment")
-                        file_type = "assignment"
-                        file.save(
-                            f"./frontend/static/courses/{course_code}/assignment/{new_file_name}"
-                        )
-                        flash("File uploaded successfully!")
-                        return redirect(url_for("lecturer.show"))
-                    elif (
-                        "assignment" not in course_code
-                        and file_extension in DOC_EXTENSIONS
-                    ):
-                        file_type = "documents"
-                    elif (
-                        "assignment" not in course_code
-                        and file_extension in VIDEO_EXTENSIONS
-                    ):
-
-                        file_type = "video"
-
-                    # save the file to the desired location
-                    file.save(
-                        f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}"
-                    )
-                    flash("File uploaded successfully!")
-                    return redirect(url_for("lecturer.show"))
-        else:
-            return "Error: Invalid file type"
-    else:
+    if file.filename == "":
         return "No file selected!"
+    file_name = str(file.filename)
+    file_names, file_extensions = os.path.splitext(file.filename)
+    new_file_name = f"{file_names}-{now}{file_extensions}"
+    course_code = file_names
+    print(course_code)
+
+    if all(
+        course_code not in VALID_COURSE_CODES
+        for course_code in VALID_COURSE_CODES
+    ):
+        return "Error: Invalid file type"
+    file_extension = file_name.split(".")[-1]
+    for course_code in VALID_COURSE_CODES:
+        if course_code in file_name:
+            if (
+                "assignment" in file_name.lower()
+                and file_extension in ASSIGNMENT_EXTENSIONS
+            ):
+                print("assignment")
+                file_type = "assignment"
+                file.save(
+                    f"./frontend/static/courses/{course_code}/assignment/{new_file_name}"
+                )
+                flash("File uploaded successfully!")
+                return redirect(url_for("lecturer.show"))
+            elif (
+                "assignment" not in course_code
+                and file_extension in DOC_EXTENSIONS
+            ):
+                file_type = "documents"
+            elif (
+                "assignment" not in course_code
+                and file_extension in VIDEO_EXTENSIONS
+            ):
+
+                file_type = "video"
+
+            # save the file to the desired location
+            file.save(
+                f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}"
+            )
+            flash("File uploaded successfully!")
+            return redirect(url_for("lecturer.show"))
 
 
 @lecturer.route("/take_attendance/<course_code>")
