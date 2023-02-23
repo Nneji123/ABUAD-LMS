@@ -104,7 +104,7 @@ def detect_face_feed(course_code):
 @lecturer.route("/register_students")
 # @login_required
 def index():
-    return render_template("/main_pages/face_register_attendace.html")
+    return render_template("/main_pages/face_register_attendance.html")
 
 
 @lecturer.route("/video_feed")

@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, flash
 from flask_login import LoginManager, login_user
 from werkzeug.security import check_password_hash
 
@@ -20,13 +20,26 @@ def show():
         
         if roling == "student":
             studs = Students.query.filter_by(username=username).first()
-            roles = studs.role
+            if studs:
+                roles = studs.role
+            else: 
+                message = flash("This user is not authorized to view this page!")
+                return render_template("/main_pages/login.html", message=message)
         if roling == "lecturer":
             lects = Lecturers.query.filter_by(username=username).first()
-            roles = lects.role
+            if lects:
+                roles = lects.role
+                
+            else: 
+                message = flash("This user is not authorized to view this page!")
+                return render_template("/main_pages/login.html", message=message)
         if roling == "admin":
             admins = Admins.query.filter_by(username=username).first()
-            roles = admins.role
+            if admins:
+                roles = admins.role
+            else: 
+                message = flash("This user is not authorized to view this page!")
+                return render_template("/main_pages/login.html", message=message)
 
 
         if (roles == "student" and roling == "student") and studs:

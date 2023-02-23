@@ -7,6 +7,8 @@ import face_recognition
 import numpy as np
 import pandas as pd
 
+from constants import *
+
 # Load pretrained face detection model
 net = cv2.dnn.readNetFromCaffe(
     "./saved_model/deploy.prototxt.txt",
