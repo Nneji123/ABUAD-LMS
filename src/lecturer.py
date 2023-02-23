@@ -1,7 +1,7 @@
 import datetime
 import os
 
-import cv2
+# import cv2
 from flask import (
     Blueprint,
     Response,
@@ -12,11 +12,11 @@ from flask import (
     url_for,
 )
 from flask_login import LoginManager, login_required, current_user
-from PIL import Image
-import pandas as pd
+# from PIL import Image
+# import pandas as pd
 
 from constants import *
-from utils import gen, gen_frames, get_total_attendance
+# from utils import gen, gen_frames, get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
@@ -116,73 +116,73 @@ def video_feed():
 @lecturer.route("/register_student", methods=["POST", "GET"])
 # @login_required
 def tasks():
-    global switch, camera
-    if request.method == "POST":
-        names = request.form.get("name")
-        matric = request.form.get("matric")
-        dept = request.form.get("dept")
-        print(names, matric, dept)
-        if request.form.get("click") == "Capture":
-            global capture
-            capture = 1
-            camera = cv2.VideoCapture(0)
-            m, img = camera.read()
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            im_pil = Image.fromarray(img)
-            filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-            im_pil.save(f"./registered_faces/{filenamess}")
-            print("done")
-        elif request.form.get("stop") == "Stop/Start":
+#     global switch, camera
+#     if request.method == "POST":
+#         names = request.form.get("name")
+#         matric = request.form.get("matric")
+#         dept = request.form.get("dept")
+#         print(names, matric, dept)
+#         if request.form.get("click") == "Capture":
+#             global capture
+#             capture = 1
+#             camera = cv2.VideoCapture(0)
+#             m, img = camera.read()
+#             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#             im_pil = Image.fromarray(img)
+#             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
+#             im_pil.save(f"./registered_faces/{filenamess}")
+#             print("done")
+#         elif request.form.get("stop") == "Stop/Start":
 
-            if switch == 1:
-                switch = 0
-                camera.release()
-                cv2.destroyAllWindows()
-            else:
-                camera = cv2.VideoCapture(0)
-                switch = 1
+#             if switch == 1:
+#                 switch = 0
+#                 camera.release()
+#                 cv2.destroyAllWindows()
+#             else:
+#                 camera = cv2.VideoCapture(0)
+#                 switch = 1
 
-    elif request.method == "GET":
-        return render_template("/main_pages/face_register_attendance.html")
+    # if request.method == "GET":
+    #     return render_template("/main_pages/face_register_attendance.html")
     return render_template("/main_pages/face_register_attendance.html")
 
 
 @lecturer.route("/view_attendance/<course_code>")
 # @login_required
 def attendance(course_code):
-    text = f"Attendance Report for COE {course_code}"
-    df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
-    if df is not None:
-        html_table = df.to_html(index=False)
-    else:
-        html_table = "No attendance data available."
+    # text = f"Attendance Report for COE {course_code}"
+    # df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
+    # if df is not None:
+    #     html_table = df.to_html(index=False)
+    # else:
+    #     html_table = "No attendance data available."
     return render_template("/attendance_pages/attendance.html", html_table=html_table, text=text)
 
 
 @lecturer.route("/view_attendance/<course_code>/date", methods=["POST", "GET"])
 # @login_required
 def attendance_date(course_code):
-    if request.method == "POST":
-        year = request.form.get("year")
-        month = request.form.get("month")
-        day = request.form.get("day")
-        date = f"{year}-{month}-{day}"
-        # search for the attendance file for that date
-        filename = f"{date}-attendance.csv"
-        file_path = f"./frontend/static/courses/{course_code}/attendance/{filename}"
-        if os.path.exists(file_path):
-            text = f"Attendance Report for COE {course_code} on {date}"
-            df = pd.read_csv(file_path)
-            if df is not None:
-                html_table = df.to_html(index=False)
-            else:
-                html_table = "No attendance data available."
-            return render_template(
-                "/attendance_pages/attendance_date.html", html_table=html_table, text=text
-            )
-        else:
-            return render_template("/attendance_pages/attendance_date.html", text="No attendance data available for this date")
-    else:
-        return render_template("/attendance_pages/attendance_date.html")
+    # if request.method == "POST":
+    #     year = request.form.get("year")
+    #     month = request.form.get("month")
+    #     day = request.form.get("day")
+    #     date = f"{year}-{month}-{day}"
+    #     # search for the attendance file for that date
+    #     filename = f"{date}-attendance.csv"
+    #     file_path = f"./frontend/static/courses/{course_code}/attendance/{filename}"
+    #     if os.path.exists(file_path):
+    #         text = f"Attendance Report for COE {course_code} on {date}"
+    #         df = pd.read_csv(file_path)
+    #         if df is not None:
+    #             html_table = df.to_html(index=False)
+    #         else:
+    #             html_table = "No attendance data available."
+    #         return render_template(
+    #             "/attendance_pages/attendance_date.html", html_table=html_table, text=text
+    #         )
+    #     else:
+    #         return render_template("/attendance_pages/attendance_date.html", text="No attendance data available for this date")
+    # else:
+    return render_template("/attendance_pages/attendance_date.html")
     
     
