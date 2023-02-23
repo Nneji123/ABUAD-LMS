@@ -1,8 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user
-from werkzeug.security import check_password_hash
 
-from models import Admins, Lecturers, Students, db
+from models import Admins, Lecturers, Students
 
 login = Blueprint(
     "login", __name__, template_folder="./frontend", static_folder="./frontend"
@@ -32,7 +31,7 @@ def show():
             flash("This user is not authorized to view this page!")
             return render_template("/main_pages/login.html")
 
-        if not check_password_hash(user.password, password):
+        if not user.check_password(password):
             flash("Incorrect password!")
             return render_template("/main_pages/login.html")
 
@@ -43,15 +42,7 @@ def show():
         elif role == "lecturer":
             return redirect(url_for("lecturer.show"))
         elif role == "admin":
-            return redirect(url_for("admin.show_users"))
+            return redirect(url_for("admin.index"))
 
     return render_template("/main_pages/login.html")
 
-@login.errorhandler(400)
-def badrequests():
-        return (
-        render_template(
-            "/main_pages/error.html", e="The browser (or proxy) sent a request that this server could not understand."
-        ),
-        400,
-    )

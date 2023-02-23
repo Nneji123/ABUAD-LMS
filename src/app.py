@@ -3,14 +3,14 @@ import os
 import sqlalchemy
 from dotenv import load_dotenv
 from flask import Flask, render_template, abort
+from flask_admin import Admin
 from flask_login import LoginManager
 
-from admin import admin
-from index import index
+from index import index, CustomIndexView
 from lecturer import lecturer
 from login import login
 from logout import logout
-from models import Admins, Lecturers, Students, db
+from models import Admins, Lecturers, Students, db, StudentsView, LecturersView, AdminsView
 from student import student
 
 load_dotenv()
@@ -41,10 +41,13 @@ app.app_context().push()
 app.register_blueprint(index)
 app.register_blueprint(login)
 app.register_blueprint(logout)
-# app.register_blueprint(register)
 app.register_blueprint(lecturer)
 app.register_blueprint(student)
-app.register_blueprint(admin)
+
+admin = Admin(app, name='ABUAD', template_mode='bootstrap3', index_view=CustomIndexView())
+admin.add_view(StudentsView(Students, db.session))
+admin.add_view(LecturersView(Lecturers, db.session))
+admin.add_view(AdminsView(Admins, db.session))
 
 
 @login_manager.user_loader
@@ -80,6 +83,8 @@ def bad_requests(e):
 @app.errorhandler(500)
 def internal_error(error):
     return render_template("/main_pages/error.html", e="There has been an internal server error!"), 500
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000, debug=True, threaded=True)
