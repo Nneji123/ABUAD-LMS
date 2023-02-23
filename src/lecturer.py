@@ -1,44 +1,35 @@
-from datetime import datetime
 import os
+from datetime import datetime
 
 import cv2
-from flask import (
-    Blueprint,
-    Response,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
-from flask_login import LoginManager, login_required, current_user
-from PIL import Image
 import pandas as pd
+from flask import (Blueprint, Response, flash, redirect, render_template,
+                   request, url_for)
+from flask_login import LoginManager, current_user, login_required
+from PIL import Image
+from werkzeug.utils import secure_filename
 
 from constants import *
 from utils import gen, gen_frames, get_total_attendance
-from werkzeug.utils import secure_filename
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(lecturer)
 
 
-
-
-
 @lecturer.route("/lecturer", methods=["GET"])
-# @login_required
+@login_required
 def show():
     return render_template("/main_pages/lecturer.html")
 
 
 @lecturer.route("/upload/<course_code>", methods=["POST"])
+@login_required
 def upload_file(course_code):
     file = request.files["file"]
     if file.filename == "":
         return "No file selected!"
-        
+
     file_name = secure_filename(file.filename)
     file_extension = os.path.splitext(file_name)[-1].lower()
     file_names, file_extensions = os.path.splitext(file_name)
@@ -50,7 +41,7 @@ def upload_file(course_code):
 
     if not any(course_code in valid_code for valid_code in VALID_COURSE_CODES):
         return "Error: Invalid course code"
-        
+
     if "assignment" in file_name.lower() and file_extension in ASSIGNMENT_EXTENSIONS:
         file_type = "assignment"
     elif file_extension in DOC_EXTENSIONS:
@@ -68,13 +59,13 @@ def upload_file(course_code):
 
 
 @lecturer.route("/take_attendance/<course_code>")
-# @login_required
+@login_required
 def take_attendance(course_code):
     return render_template(f"/attendance_pages/takeattendance_{course_code}.html")
 
 
 @lecturer.route("/detect_face_feed/<course_code>")
-# @login_required
+@login_required
 def detect_face_feed(course_code):
     return Response(
         gen(file_path=f"./frontend/static/courses/{course_code}/attendance"),
@@ -84,7 +75,7 @@ def detect_face_feed(course_code):
 
 #### Registering Students
 @lecturer.route("/register_students")
-# @login_required
+@login_required
 def index():
     return render_template("/main_pages/face_register_attendance.html")
 
@@ -96,7 +87,7 @@ def video_feed():
 
 
 @lecturer.route("/register_student", methods=["POST", "GET"])
-# @login_required
+@login_required
 def tasks():
     global switch, camera
     if request.method == "POST":
@@ -121,7 +112,7 @@ def tasks():
 
 # View Attendance Records
 @lecturer.route("/view_attendance/<course_code>")
-# @login_required
+@login_required
 def attendance(course_code):
     text = f"Attendance Report for COE {course_code}"
     df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
@@ -129,11 +120,13 @@ def attendance(course_code):
         html_table = df.to_html(index=False)
     else:
         html_table = "No attendance data available."
-    return render_template("/attendance_pages/attendance.html", html_table=html_table, text=text)
+    return render_template(
+        "/attendance_pages/attendance.html", html_table=html_table, text=text
+    )
 
 
 @lecturer.route("/view_attendance/<course_code>/date", methods=["POST", "GET"])
-# @login_required
+@login_required
 def attendance_date(course_code):
     if request.method == "POST":
         year = request.form.get("year")
@@ -151,11 +144,14 @@ def attendance_date(course_code):
             else:
                 html_table = "No attendance data available."
             return render_template(
-                "/attendance_pages/attendance_date.html", html_table=html_table, text=text
+                "/attendance_pages/attendance_date.html",
+                html_table=html_table,
+                text=text,
             )
         else:
-            return render_template("/attendance_pages/attendance_date.html", text="No attendance data available for this date")
+            return render_template(
+                "/attendance_pages/attendance_date.html",
+                text="No attendance data available for this date",
+            )
     else:
         return render_template("/attendance_pages/attendance_date.html")
-    
-    

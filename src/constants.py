@@ -9,6 +9,11 @@ rec = 0
 
 # constants for lecturer.py
 VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
+
+# create a function to make new directories from a list of strings
+TYPES = ["video", "assignment", "documents", "attendance"]
+
+
 VIDEO_EXTENSIONS = [
     ".mp4",
     ".mkv",

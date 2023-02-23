@@ -1,83 +1,41 @@
 import os
-import sqlalchemy
+from typing import Union
 
+import sqlalchemy
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
 from app import db
-from models import Students, Lecturers, Admins
-
-# create a function to make new directories from a list of strings
-TYPES = ["video", "assignment", "documents" , "attendance"]
-VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
+from constants import *
+from models import Admins, Lecturers, Students
 
 
-def create_new_user(
-    type_of_user: str = "",
-    username: str = "",
-    email: str = "",
-    password: str = "",
-    matric_number: str = "",
-    role: str = "",
-    is_admin: bool = False,
-):
-    hashed_password = generate_password_hash(password, method="sha256")
-    if type_of_user == "student":
-        try:
-            new_user = Students(
-                username=username,
-                email=email,
-                password=hashed_password,
-                matric_number=matric_number,
-                role=role,
-            )
-            print("Added new Student to the Database!")
-            db.session.add(new_user)
-            db.session.commit()
-        except sqlalchemy.exc.IntegrityError:
-            db.session.rollback()
-            print("User Already Exists")
+def create_new_user(type_of_user: str, **kwargs: Union[str, bool]) -> None:
+    """Create a new user of the given type with the given attributes."""
+    if type_of_user not in {"student", "lecturer", "admin"}:
+        raise ValueError(f"Invalid user type: {type_of_user}")
 
-        finally:
-            db.session.close()
-            print("Reverted Database")
-    elif type_of_user == "lecturer":
-        try:
-            new_user = Lecturers(
-                username=username,
-                email=email,
-                password=hashed_password,
-                role=role,
-            )
-            print("Added new Lecturer to the Database!")
-            db.session.add(new_user)
-            db.session.commit()
-        except sqlalchemy.exc.IntegrityError:
-            db.session.rollback()
-            print("User Already Exists")
+    hashed_password = generate_password_hash(kwargs.pop("password"), method="sha256")
 
-        finally:
-            db.session.close()
-            print("Reverted Database")
-    elif type_of_user == "admin":
-        try:
-            new_user = Admins(
-                username=username,
-                password=hashed_password,
-                role=role,
-                is_admin=is_admin,
-            )
-            print("Added new Admin to the Database!")
-            db.session.add(new_user)
-            db.session.commit()
-        except sqlalchemy.exc.IntegrityError:
-            db.session.rollback()
-            print("User Already Exists")
+    try:
+        if type_of_user == "student":
+            user = Students(password=hashed_password, **kwargs)
+            print("Added new student to the database!")
+        elif type_of_user == "lecturer":
+            user = Lecturers(password=hashed_password, **kwargs)
+            print("Added new lecturer to the database!")
+        else:
+            user = Admins(password=hashed_password, **kwargs)
+            print("Added new admin to the database!")
 
-        finally:
-            db.session.close()
-            print("Reverted Database")
-    else:
-        print("Please input the type of user!\n1.Student\n2.Lecturer\n3.Admin ")
+        db.session.add(user)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        print("User already exists.")
+    finally:
+        db.session.close()
+        print("Database session closed.")
 
 
 def make_dirs():
@@ -86,7 +44,6 @@ def make_dirs():
         for dir in TYPES:
             # create a new directory for each string
             os.makedirs(f"./frontend/static/courses/{courses}/{dir}", exist_ok=True)
-
     print("Done")
 
 
@@ -110,7 +67,11 @@ def main():
         role="student",
     )
     create_new_user(
-        type_of_user="admin", username="admin", password="admin", role="admin", is_admin=True
+        type_of_user="admin",
+        username="admin",
+        password="admin",
+        role="admin",
+        is_admin=True,
     )
 
 

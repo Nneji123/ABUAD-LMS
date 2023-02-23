@@ -10,7 +10,7 @@ from index import index
 from lecturer import lecturer
 from login import login
 from logout import logout
-from models import Students, Lecturers, Admins, db
+from models import Admins, Lecturers, Students, db
 # from register import register
 from student import student
 
@@ -35,6 +35,7 @@ else:
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+app.config["LOGIN_DISABLED"] = True
 db.init_app(app)
 app.app_context().push()
 
@@ -63,10 +64,16 @@ def load_user(user_id):
             return None
     except (sqlalchemy.exc.OperationalError) as e:
         return render_template("error.html", e="Database not found")
-    
+
+
 @app.errorhandler(404)
 def not_found(e):
-    return render_template("/main_pages/error.html", e="The page you are looking for does not exist!"), 404
+    return (
+        render_template(
+            "/main_pages/error.html", e="The page you are looking for does not exist!"
+        ),
+        404,
+    )
 
 
 if __name__ == "__main__":

@@ -3,16 +3,14 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, current_user, login_required
 from werkzeug.security import generate_password_hash
 
-from models import Admins, Students, Lecturers, db
+from models import Admins, Lecturers, Students, db
 
 admin = Blueprint("admin", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(admin)
 
 
-
-
-# @login_required
+@login_required
 @admin.route("/admin/adduser", methods=["POST"])
 def add_user():
     if request.method == "POST":
@@ -59,7 +57,7 @@ def show_users():
         return redirect(url_for("login.show"))
 
 
-# @login_required
+@login_required
 @admin.route("/admin/deleteuser/<user_id>")
 def delete_user(user_id):
     if current_user.is_authenticated and current_user.is_admin:
@@ -79,7 +77,7 @@ def delete_user(user_id):
         return redirect(url_for("login.show"))
 
 
-# @login_required
+@login_required
 @admin.route("/admin/edituser/", methods=["POST"])
 def edit_user():
     if current_user.is_authenticated and current_user.is_admin:
@@ -113,7 +111,7 @@ def edit_user():
     return redirect(url_for("login.show"))
 
 
-# @login_required
+@login_required
 @admin.route("/admin/search", methods=["POST", "GET"])
 def search_show():
     if current_user.is_authenticated and current_user.is_admin:
@@ -123,7 +121,7 @@ def search_show():
         return redirect(url_for("login.show"))
 
 
-# @login_required
+@login_required
 @admin.route("/admin/searched", methods=["POST", "GET"])
 def search_users():
     if current_user.is_authenticated and current_user.is_admin:

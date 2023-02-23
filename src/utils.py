@@ -124,7 +124,15 @@ def gen(file_path):
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
 
-                cv2.putText(img, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX,1,(255, 255, 255),2,)
+                cv2.putText(
+                    img,
+                    text,
+                    (text_x, text_y),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    1,
+                    (255, 255, 255),
+                    2,
+                )
 
         frame = cv2.imencode(".jpg", img)[1].tobytes()
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")

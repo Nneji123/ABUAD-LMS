@@ -1,8 +1,8 @@
-from flask import Blueprint, redirect, render_template, request, url_for, flash
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user
 from werkzeug.security import check_password_hash
 
-from models import Students, Lecturers, Admins, db
+from models import Admins, Lecturers, Students, db
 
 login = Blueprint(
     "login", __name__, template_folder="./frontend", static_folder="./frontend"
@@ -11,14 +11,15 @@ login = Blueprint(
 login_manager = LoginManager()
 login_manager.init_app(login)
 
+
 @login.route("/login", methods=["GET", "POST"])
 def show():
     if request.method == "POST":
-        
+
         username = request.form["username"]
         password = request.form["password"]
         role = request.form["role"]
-        
+
         user = None
         if role == "student":
             user = Students.query.filter_by(username=username).first()
