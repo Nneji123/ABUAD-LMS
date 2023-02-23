@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import os
 
 import cv2
@@ -17,14 +17,14 @@ import pandas as pd
 
 from constants import *
 from utils import gen, gen_frames, get_total_attendance
+from werkzeug.utils import secure_filename
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
 login_manager = LoginManager()
 login_manager.init_app(lecturer)
 
 
-now = datetime.datetime.now()
-now = now.strftime("%Y-%m-%d_%H-%M-%S")
+
 
 
 @lecturer.route("/lecturer", methods=["GET"])
@@ -33,54 +33,38 @@ def show():
     return render_template("/main_pages/lecturer.html")
 
 
-@lecturer.route("/upload", methods=["POST"])
-# @login_required
-def upload_video():
+@lecturer.route("/upload/<course_code>", methods=["POST"])
+def upload_file(course_code):
     file = request.files["file"]
-    if file.filename != "":
-        file_name = str(file.filename)
-        file_extension = file_name.split(".")[-1]
-        file_names, file_extensions = os.path.splitext(file.filename)
-        new_file_name = f"{file_names}-{now}{file_extensions}"
-        course_code = file_names
-        print(course_code)
-
-        if any(course_code in VALID_COURSE_CODES for course_code in VALID_COURSE_CODES):
-            for course_code in VALID_COURSE_CODES:
-                if course_code in file_name:
-                    if (
-                        "assignment" in file_name.lower()
-                        and file_extension in ASSIGNMENT_EXTENSIONS
-                    ):
-                        print("assignment")
-                        file_type = "assignment"
-                        file.save(
-                            f"./frontend/static/courses/{course_code}/assignment/{new_file_name}"
-                        )
-                        flash("File uploaded successfully!")
-                        return redirect(url_for("lecturer.show"))
-                    elif (
-                        "assignment" not in course_code
-                        and file_extension in DOC_EXTENSIONS
-                    ):
-                        file_type = "documents"
-                    elif (
-                        "assignment" not in course_code
-                        and file_extension in VIDEO_EXTENSIONS
-                    ):
-
-                        file_type = "video"
-
-                    # save the file to the desired location
-                    file.save(
-                        f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}"
-                    )
-                    flash("File uploaded successfully!")
-                    return redirect(url_for("lecturer.show"))
-        else:
-            return "Error: Invalid file type"
-    else:
+    if file.filename == "":
         return "No file selected!"
+        
+    file_name = secure_filename(file.filename)
+    file_extension = os.path.splitext(file_name)[-1].lower()
+    file_names, file_extensions = os.path.splitext(file_name)
+    new_file_name = f"{str(course_code)}-{file_names}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}{file_extensions}"
+    # course_code = file_names
+    print(new_file_name)
+    print(file_extension)
+    print(file_extensions)
+
+    if not any(course_code in valid_code for valid_code in VALID_COURSE_CODES):
+        return "Error: Invalid course code"
+        
+    if "assignment" in file_name.lower() and file_extension in ASSIGNMENT_EXTENSIONS:
+        file_type = "assignment"
+    elif file_extension in DOC_EXTENSIONS:
+        file_type = "document"
+    elif file_extension in VIDEO_EXTENSIONS:
+        file_type = "video"
+    else:
+        return "Error: Invalid file type"
+
+    # save the file to the desired location
+    os.makedirs(f"./frontend/static/courses/{course_code}/{file_type}", exist_ok=True)
+    file.save(f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}")
+    flash("File uploaded successfully!")
+    return redirect(url_for("lecturer.show"))
 
 
 @lecturer.route("/take_attendance/<course_code>")

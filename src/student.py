@@ -64,11 +64,6 @@ def show_attendance(course_code, student_name):
 
     # Use count_name_in_files to count the number of times the student's name appears in all CSV files in the directory
     count = count_name_in_files(dir_path, student_name)
-
-    # Calculate the percentage of classes the student attended
-    # num_classes = len(os.listdir(dir_path))
-    # percent_attendance = count / num_classes * 100 if num_classes > 0 else 0
-
     # Render the HTML template and pass the attendance data
     return render_template(
         f"/course_pages/{course_code}.html",
