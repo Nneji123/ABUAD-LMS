@@ -2,7 +2,7 @@ import os
 
 import sqlalchemy
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
 from flask_login import LoginManager
 
 from admin import admin
@@ -11,7 +11,6 @@ from lecturer import lecturer
 from login import login
 from logout import logout
 from models import Admins, Lecturers, Students, db
-# from register import register
 from student import student
 
 load_dotenv()
@@ -66,15 +65,21 @@ def load_user(user_id):
         return render_template("error.html", e="Database not found")
 
 
+@app.route('/500')
+def error500():
+    abort(500)
+
 @app.errorhandler(404)
 def not_found(e):
-    return (
-        render_template(
-            "/main_pages/error.html", e="The page you are looking for does not exist!"
-        ),
-        404,
-    )
+    return render_template("/main_pages/error.html", e="The page you are looking for does not exist!"),404
 
+@app.errorhandler(400)    
+def bad_requests(e):
+    return render_template("/main_pages/error.html", e="The browser (or proxy) sent a request that this server could not understand."), 400
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template("/main_pages/error.html", e="There has been an internal server error!"), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000, debug=True, threaded=True)

@@ -46,3 +46,12 @@ def show():
             return redirect(url_for("admin.show_users"))
 
     return render_template("/main_pages/login.html")
+
+@login.errorhandler(400)
+def badrequests():
+        return (
+        render_template(
+            "/main_pages/error.html", e="The browser (or proxy) sent a request that this server could not understand."
+        ),
+        400,
+    )

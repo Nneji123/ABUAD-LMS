@@ -17,6 +17,15 @@ net = cv2.dnn.readNetFromCaffe(
 
 
 def save_attendance(attendance_str: str, location: str):
+    """
+    The save_attendance function saves the attendance data to a CSV file.
+    It takes in an input string of the format: &quot;Name-Matric Number-Department&quot; and saves it to a CSV file with the current date as its name.
+    If there is already an existing attendance record for that student on that day, it will not save another one.
+    
+    :param attendance_str: str: Pass in the string that was captured from the camera
+    :param location: str: Specify the location of the attendance file
+    :return: False if the name and date are already in the file
+    """
     # Split the input string into parts
     parts = attendance_str.split("-")
     name = parts[0]
@@ -60,6 +69,13 @@ def save_attendance(attendance_str: str, location: str):
 
 
 def gen(file_path):
+    """
+    The gen function is used to generate the video feed. It takes in a file path as an argument, and uses that 
+    to save the attendance data. If no file path is given, it defaults to using 'attendance_data/attendance_data.csv'
+    
+    :param file_path: Save the attendance in a csv file
+    :return: The frame in bytes
+    """
     global capture, out, face
     IMAGE_FILES = []
     filename = []
@@ -141,9 +157,15 @@ def gen(file_path):
             break
 
 
-def gen_frames():  # generate frame by frame from camera
+def gen_frames():
+    """
+    The gen_frames function is a generator function that captures frames from the camera, encodes them into
+    a JPEG format, and returns the encoded frame. The function also yields each encoded frame as it is captured.
+    
+    :return: A generator object that yields the frame by frame data from a camera
+    """    
     global out, capture, rec_frame, frame
-    camera = cv2.VideoCapture(0)  # initialize camera outside of loop
+    camera = cv2.VideoCapture(0)
     while True:
         success, frame = camera.read()
         if success:
@@ -163,6 +185,14 @@ def gen_frames():  # generate frame by frame from camera
 
 
 def count_name_in_files(directory_path, name):
+    """
+    The count_name_in_files function counts the number of times a name appears in all csv files in a directory.
+    It returns the percentage of files that contain the name and whether or not they are eligible to write exams for this course.
+    
+    :param directory_path: Specify the path of the directory that contains all csv files
+    :param name: Pass the name of the student whose attendance is to be checked
+    :return: A string that tells you how many times the name appears in the files
+    """
     count = 0
     num_files = 0
 
@@ -187,6 +217,14 @@ def count_name_in_files(directory_path, name):
 
 
 def get_total_attendance(directory_path):
+    """
+    The get_total_attendance function calculates the total attendance of all students in a given directory.
+    It returns a pandas dataframe with the following columns: Name, Matric Number, Department and Attendance Percentage.
+    The function takes one argument - directory_path which is the path to the folder containing all csv files.
+    
+    :param directory_path: Specify the path to the directory containing all of the attendance csv files
+    :return: A dataframe with the attendance percentage of each student
+    """
     student_attendance = {}
 
     for filename in os.listdir(directory_path):
