@@ -2,10 +2,8 @@ import os
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, current_user, login_required
-from werkzeug.utils import secure_filename
 
 from constants import COURSES_INFO
-# from models import Users, db
 from utils import count_name_in_files
 
 student = Blueprint("student", __name__, template_folder="./frontend")
@@ -59,12 +57,8 @@ def get_page(course_code):
 @student.route("/attendance/<course_code>/<student_name>")
 def show_attendance(course_code, student_name):
     student_name = current_user.username
-    # Define the path to the directory containing the attendance CSV files for this course
     dir_path = f"./frontend/static/attendance/{course_code}"
-
-    # Use count_name_in_files to count the number of times the student's name appears in all CSV files in the directory
     count = count_name_in_files(dir_path, student_name)
-    # Render the HTML template and pass the attendance data
     return render_template(
         f"/course_pages/{course_code}.html",
         course=course_code,

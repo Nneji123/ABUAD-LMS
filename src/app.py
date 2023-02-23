@@ -63,6 +63,10 @@ def load_user(user_id):
             return None
     except (sqlalchemy.exc.OperationalError) as e:
         return render_template("error.html", e="Database not found")
+    
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("/main_pages/error.html", e="The page you are looking for does not exist!"), 404
 
 
 if __name__ == "__main__":

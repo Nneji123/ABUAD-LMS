@@ -124,26 +124,7 @@ def gen(file_path):
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
 
-                if save_attendance(name, file_path) != False:
-                    cv2.putText(
-                        img,
-                        text,
-                        (text_x, text_y),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        1,
-                        (255, 255, 255),
-                        2,
-                    )
-                else:
-                    cv2.putText(
-                        img,
-                        text,
-                        (text_x, text_y),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        1,
-                        (255, 255, 255),
-                        2,
-                    )
+                cv2.putText(img, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX,1,(255, 255, 255),2,)
 
         frame = cv2.imencode(".jpg", img)[1].tobytes()
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
@@ -191,11 +172,9 @@ def count_name_in_files(directory_path, name):
     if num_files == 0:
         return 0
 
-    message = (
-        f"{name}'s Attendance for this course is "
-        + f"{str(count / num_files * 100)}% \nYou are eligible to write your exam!"
-    )
-
+    percentage = count / num_files * 100
+    eligibility = "eligible" if percentage >= 70 else "not eligible"
+    message = f"{name}'s Attendance for this course is {percentage:.2f}% \nYou are {eligibility} to write exams for this course!"
     return message
 
 

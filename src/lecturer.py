@@ -83,8 +83,6 @@ def detect_face_feed(course_code):
 
 
 #### Registering Students
-
-
 @lecturer.route("/register_students")
 # @login_required
 def index():
@@ -116,21 +114,12 @@ def tasks():
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
             im_pil.save(f"./registered_faces/{filenamess}")
             print("done")
-        elif request.form.get("stop") == "Stop/Start":
-
-            if switch == 1:
-                switch = 0
-                camera.release()
-                cv2.destroyAllWindows()
-            else:
-                camera = cv2.VideoCapture(0)
-                switch = 1
-
     elif request.method == "GET":
         return render_template("/main_pages/face_register_attendance.html")
     return render_template("/main_pages/face_register_attendance.html")
 
 
+# View Attendance Records
 @lecturer.route("/view_attendance/<course_code>")
 # @login_required
 def attendance(course_code):
