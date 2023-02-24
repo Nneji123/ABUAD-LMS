@@ -1,129 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Register Student for Course</title>
+		<link rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	</head>
+	<body>
 
-<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-md navbar-light navbar-bg gradient-custom-2">
+			<a class="navbar-brand" href="#">
+				<style>
+			  .navbar-brand img {
+				  height: 50px;
+				  width: auto;
+			  }
+			  .gradient-custom-2 {
+              /* fallback for old browsers */
+              background: #fccb90;
 
-	<style>
-		body{
+              /* Chrome 10-25, Safari 5.1-6 */
+              background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
 
-			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-			font-weight: 200;
-			/* display: flex;
-			flex-direction: row;
-			justify-content: center; */
-		}
+              /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+              background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+              }
+		  </style>
+				<img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS
+					Logo">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/lecturer">Back Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
 
-		.input{
-				padding: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center; 
-        align-items: center;
-        background: linear-gradient(45deg, rgb(82, 95, 180), rgb(203, 77, 219));
-        border-radius: 10px;
-        max-width: max-content;
-		}
-
-		input[type="text"],input[type="submit"]{
-			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-			margin: 12px;
-			outline: none;
-			 border: none;
-			border-radius: 10px;
-			padding: 10px;
-			background-color: rgb(225, 225, 229);
-		}
-
-		.flex{
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;
-		}
-
-		.space{
-			padding-right: 35px;
-		}
-
-		img{
-			width: 440px;
-			height: 310px;
-			background-color: black;
-			margin-bottom: 20px;
-			margin-right: 30px;
-			border-radius: 10px;
-		}
-
-		h2{
-			text-align: center;
-		}
-
-		.back-home {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
-        margin: 12px;
-        outline: none;
-        border: none;
-        border-radius: 10px;
-        padding: 10px;
-        background-color: rgb(225, 225, 229);
-      }
-
-      .none {
-        text-decoration: none;
-        color: black;
-      }
-
-	</style>
-
-<div>
-
-
-	<h2>REGISTER FOR FACIAL ATTENDANCE</h2>
-    
-	<div class="flex">
-		<div class="img-show">
-			<img src="{{url_for('lecturer.video_feed')}}" 
-			>
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col-md-6">
+					<img src="{{url_for('lecturer.video_feed')}}" alt="Course Image"
+						class="img-fluid">
+				</div>
+				<div class="col-md-6">
+					<h2>Register Student for Course</h2>
+					<form method="post" action="{{ url_for('lecturer.tasks') }}">
+						<div class="form-group">
+							<label for="name">Name:</label>
+							<input type="text" class="form-control form-control-lg" id="name"
+								name="name" required="True">
+						</div>
+						<div class="form-group">
+							<label for="matric">Matric Number:</label>
+							<input type="text" class="form-control form-control-lg" id="matric"
+								name="matric" required="True">
+						</div>
+						<div class="form-group">
+							<label for="email">Department:</label>
+							<input type="text" class="form-control form-control-lg" id="email"
+								name="dept" required="True">
+						</div>
+						<input type="submit" value="Capture" name="click" class="btn btn-primary
+							btn-lg"/>
+					</form>
+				</div>
+				{% for message in get_flashed_messages() %}
+				<div class="alert alert-success">{{ message }}</div>
+				{% endfor %}
+				{% block content %}{% endblock %}
+			</div>
 		</div>
-	
-		<form method="post" action="{{ url_for('lecturer.tasks') }}">
-				<div class="input">
-	
-					<div>
-						<label for="name">Name:</label>
-						<span class="space"></span>
-						<input type="text" placeholder="Name" name="name" required="True"/>
-					</div>
-					
-	
-					<div>
-						<label for="matric">Matric:</label>
-						<span class="space"></span>
-						<input type="text" placeholder="Matric Number" name="matric" required="True"/>
-					</div>
-					
-	
-					<div>
-						<label for="name">Department:</label>
-					<input type="text" placeholder="Department" name="dept" required="True"/>
-					</div>
-					
-					<div>
-						<input type="submit" value="Capture" name="click"/>
-						<input type="submit" value="Stop/Start camera" name="stop" />
-						<button type="submit" class="back-home">
-							<a href="/lecturer" class="none">&#8592;Back Home</a>
-						</button>
-					</div>
-	</div>
-	
-				
 
-		</div>
-			
-		</form>
-          
-        
-
-</div>
-</body>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	</body>
+</html>

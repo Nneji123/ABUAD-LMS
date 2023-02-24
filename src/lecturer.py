@@ -104,6 +104,7 @@ def tasks():
             im_pil = Image.fromarray(img)
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
             im_pil.save(f"./registered_faces/{filenamess}")
+            flash("Registered Student Successfully!")
             print("done")
     elif request.method == "GET":
         return render_template("/main_pages/face_register_attendance.html")

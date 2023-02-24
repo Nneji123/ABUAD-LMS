@@ -75,9 +75,11 @@
   <div>
     <p><a href="/501/videos" id="vid1">Videos</a></p> 
     
-    {% for video in videos %}
-    <li><a href="#" data-video="{{ video }}">{{ video }}</a></li>
-  {% endfor %}
+    <ul>
+      {% for video in videos %}
+        <li><a href="#" data-video="{{ video }}">{{ video }}</a></li>
+      {% endfor %}
+    </ul>
 
   </div>
 
@@ -92,88 +94,68 @@
 </div>
 
 <div class="func2">
-
+  <video id="player" controls></video>
 </div>
 
 
 
 <script>
-const links = document.querySelectorAll('a[data-video]');
-const player = document.getElementById('player');
+  const links = document.querySelectorAll('a[data-video]');
+  const player = document.getElementById('player');
 
-links.forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const courseName = link.getAttribute('data-course-name');
-    const videoName = link.getAttribute('data-video');
-    player.setAttribute('src', `/static/courses/501/video/${videoName}`);
+  links.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const videoName = link.getAttribute('data-video');
+      player.setAttribute('src', `/static/courses/501/video/${videoName}`);
+    });
   });
-});
 
+  const toggleBox = () => {
+    const box = document.getElementById('box');
+    box.style.display === 'none' ? box.style.display = 'block' : box.style.display = 'none';
+  }
 
+  const doc1 = document.getElementById('doc1');
+  doc1.addEventListener('click', () => {
+    const box = document.getElementById('box');
+    const func2 = document.querySelector('.func2');
+    func2.innerHTML = '';
+    fetch('/501/documents')
+      .then(response => response.json())
+      .then(data => {
+        const ul = document.createElement('ul');
+        data.forEach(file => {
+          const li = document.createElement('li');
+          li.textContent = file;
+          ul.appendChild(li);
+        });
+        func2.appendChild(ul);
+      })
+      .then(() => {
+        toggleBox();
+      });
+  });
 
-
-// let func2 = document.querySelector('.func2')
-// let doc1 = document.getElementById('doc1')
-// let vid1 = document.getElementById('vid1')
-// let att1 = document.getElementById('att1')
-
-// doc1.addEventListener('click', ()=> {
-//   func2.innerHTML = `
-    
-//   <ul>
-//       {% for file in files %}
-//         <li>{{ file }}</li>
-//       {% endfor %}
-//     </ul>  
-
-//   `
-// })
-
-// vid1.addEventListener('click', ()=> {
-//   func2.innerHTML = `
-    
-//   <ul>
-//       {% for video in videos %}
-//         <li><a href="/neuralnetworks/videos" data-video="{{ video }}">{{ video }}</a></li>
-//       {% endfor %}
-//     </ul>
-
-//   `
-// })
-
-// att1.addEventListener('click', ()=> {
-//   func2.innerHTML = `
-    
-  
-
-//   `
-// })
+  const att1 = document.getElementById('att1');
+  att1.addEventListener('click', () => {
+    const box = document.getElementById('box');
+    const func2 = document.querySelector('.func2');
+    func2.innerHTML = '';
+    fetch('/attendance/501')
+      .then(response => response.json())
+      .then(data => {
+        const ul = document.createElement('ul');
+        data.forEach(record => {
+          const li = document.createElement('li');
+          li.textContent = record;
+          ul.appendChild(li);
+        });
+        func2.appendChild(ul);
+      })
+      .then(() => {
+        toggleBox();
+      });
+  });
 </script>
 
-
-
-  <!-- <script>
-    let doc= document.getElementById('doc')
-    let ass= document.getElementById('ass')
-    let att= document.getElementById('att')
-    let vid= document.getElementById('vid')
-    let box= document.getElementById('box')
-
-
-    doc.addEventListener('click', (e)=>{
-      box.style.display = 'block';
-    })
-    ass.addEventListener('click', ()=>{
-      box.style.display = 'block'
-    }) 
-    att.addEventListener('click', ()=>{
-      box.style.display = 'block'
-    })
-     vid.addEventListener('click', ()=>{
-      box.style.display = 'block'
-    })
-
-  </script> -->
-</body>
-</html>

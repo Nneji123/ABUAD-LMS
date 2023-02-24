@@ -28,7 +28,7 @@ def list_docs(course_code):
         for f in os.listdir(f"./frontend/static/courses/{doc_dir}")
         if f.endswith(doc_exts)
     ]
-    return render_template(f"/course_pages/{course_code}.html", files=files)
+    return render_template(f"/course_pages/{course_code}.html", course_code=course_code, files=files)
 
 
 @student.route("/<course_code>/videos", methods=["GET", "POST"])
@@ -45,7 +45,7 @@ def list_videos(course_code):
     if videos is None:
         return render_template(f"/course_pages/{course_code}.html")
     else:
-        return render_template(f"/course_pages/{course_code}.html", videos=videos)
+        return render_template(f"/course_pages/{course_code}.html", course_code=course_code, videos=videos)
 
 
 @student.route("/student/<course_code>", methods=["GET", "POST"])

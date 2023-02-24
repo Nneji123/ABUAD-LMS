@@ -6,119 +6,128 @@
     <link
       rel="icon"
       type="image/ico"
-      href="{{ url_for('static',filename='logo.png') }}"
+      href="{{ url_for('static',filename='img/logo.png') }}"
     />
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static',filename='style.css') }}"
-    />
     <script
       src="https://kit.fontawesome.com/5285e374b0.js"
       crossorigin="anonymous"
     ></script>
 
-    <style>
-      * {
-        font-weight: 200;
-      }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+<link rel='stylesheet' id='roboto-subset.css-css'  href='https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5' type='text/css' media='all' />
+<!-- <section class="background-radial-gradient overflow-hidden"> -->
+  <style>
+  .gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #fccb90;
 
-      body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
 
-      h2 {
-        text-align: center;
-      }
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+  }
 
-      .main-container {
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(45deg, rgb(82, 95, 180), rgb(203, 77, 219));
-        border-radius: 10px;
-        max-width: max-content;
-      }
+  @media (min-width: 768px) {
+  .gradient-form {
+  height: 100vh !important;
+  }
+  }
+  @media (min-width: 769px) {
+  .gradient-custom-2 {
+  border-top-right-radius: .3rem;
+  border-bottom-right-radius: .3rem;
+  }
+  }
+  </style>
 
-      .radio {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        padding: 5px;
-      }
+<section class="h-100 gradient-form" style="background-image: url('https://portal.abuad.edu.ng/admin/images/index.jpg');">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
 
-      input {
-        margin: 10px 0px;
-      }
+                <div class="text-center">
+                  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo"
+                    style="width: 70px;">
+                  <h4 class="mt-1 mb-5 pb-1">Welcome to ABUAD LMS</h4>
+                </div>
 
-      label {
-        padding: 5px;
-        font-weight: 200;
-      }
+                <form method="POST" action="/login">
+                  <p>Please login to your account</p>
 
-      input[type="text"],
-      input[type="password"] {
-        outline: none;
-        border: none;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: rgb(225, 225, 229);
-      }
+                  <div class="form-outline mb-4">
+                    <input type="username" id="form2Example11" class="form-control"
+                      placeholder="username" name="username"/>
+                    <label class="form-label" for="form2Example11">Username</label>
+                  </div>
 
-      input[type="submit"] {
-        border-radius: 8px;
-        outline: none;
-        border: none;
-        padding: 8px;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
-        font-size: medium;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Welcome to E-portal System</h2>
+                  <div class="form-outline mb-4">
+                    <input type="password" id="form2Example22" class="form-control" name="password" />
+                    <label class="form-label" for="form2Example22">Password</label>
+                  </div>
 
-    <form method="POST" action="/login">
-    <div class="main-container">
-        <span style="padding: 5px; font-size: 20px">Sign in</span>
-        
-        <input type="text" name="username" placeholder="Username" required/>
-        <input type="password" name="password" placeholder="Password"  required/>
+                  <div class="text-center">
+                    <!-- <label class="font-weight-bold">Roles</label><br> -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="role" value="admin" checked>
+                      <label class="form-check-label mr-4" for="role">Admin</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="role" value="lecturer">
+                      <label class="form-check-label mr-4" for="role">Lecturer</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="role" value="student">
+                      <label class="form-check-label mr-4" for="role">Student</label>
+                    </div>
+                  </div> 
 
-        <div class="radio">
-          <input type="radio" name="role" id="student" value="student" />
-          <label for="student">Student</label><br />
-          <input type="radio" name="role" id="lecturer" value="lecturer" />
-          <label for="lecturer">Lecturer</label>
-          <input type="radio" name="role" id="admin" value="admin" />
-          <label for="admin">Admin</label>
-        </div>
+                  {% for message in get_flashed_messages() %}
+                  <div class="alert alert-danger">{{ message }}</div>
+                  {% endfor %}
+                  {% block content %}{% endblock %}
 
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <input class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit"></input>
+                    <a class="text-muted" href="#!">Forgot password?</a>
+                  </div>
+  
+                  <!-- added bootstrap classes -->
+                  <!-- replaced bold tag with bootstrap class -->
+                  <!-- added form-check and form-check-inline classes for radio buttons -->
+              
 
+                </form>
 
-        <div>
-          <input type="submit" value="Sign in" />
-          <span><a href="#">Forgot Password</a> </span>
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+              <p>
+                  The ABUAD LMS provides a comprehensive learning management system for students, faculty and staff at Afe Babalola University, Ado-Ekiti (ABUAD). The system offers a range of features to support teaching, learning and administration at the university.
+              </p>
+              <p>
+                  Some of the key features of ABUAD LMS include:
+              </p>
+              <ul>
+                  <li>Facial recognition based attendance system, which helps track attendance in real-time and minimizes the possibility of errors.</li>
+                  <li>Video and document viewing and uploading, allowing instructors to share lecture recordings and learning materials with students.</li>
+                  <li>Course uploads and exam eligibility with attendance recording, which provides a centralized location for course materials, assignments, and exams.</li>
+              </ul>
+              <p>
+              </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {% for message in get_flashed_messages() %}
-        <div class="alert alert-danger">{{ message }}</div>
-      {% endfor %}
-      {% block content %}{% endblock %}
-
-    </form>
-
-    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="{{ url_for('static',filename='script.js') }}"></script>
-  </body>
-</html>
+    </div>
+  </div>
+</section>
+<!-- Section: Design Block -->

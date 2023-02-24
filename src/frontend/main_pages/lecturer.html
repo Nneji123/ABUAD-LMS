@@ -1,139 +1,259 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
-  <title>Document</title>
-</head>
-<body>
-  
-  <header>
-    LMS
-    <p>Learning Management System</p>
-  </header>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+      shrink-to-fit=no">
+    <title>Lecturer Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-md navbar-light navbar-bg
+      gradient-custom-2">
+      <div class="container">
+        <a class="navbar-brand" href="/lecturer">
+          <style>
+          .navbar-brand img {
+              height: 50px;
+              width: auto;
+          }
+          .gradient-custom-2 {
+              /* fallback for old browsers */
+              background: #fccb90;
 
-  <div class="intro">
-    
-    Hello {{current_user.username}}
+              /* Chrome 10-25, Safari 5.1-6 */
+              background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
 
-    <li> <a href="/register_students" class="hover2 selected selected-two">Register</a></li> 
-  </div>
+              /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+              background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+              }
+      </style>
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD
+            LMS Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarNav" aria-controls="navbarNav"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
+    <!-- Main Content -->
+    <div class="container my-5">
+      <h1 class="text-center mb-5">Welcome, {{current_user.username}}!</h1>
 
-<form action="/upload/501" method="POST" enctype="multipart/form-data">
+      <!-- Features Section -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Take Attendance</h5>
+              <p class="card-text">Easily take attendance for your courses using
+                our intuitive interface.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Course Upload</h5>
+              <p class="card-text">Quickly upload course materials for your
+                students to access at any time.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Register Student</h5>
+              <p class="card-text">Effortlessly register new students for your
+                courses and keep track of their progress.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">View Attendance</h5>
+              <p class="card-text">Easily view attendance records for your
+                courses and monitor student attendance patterns.</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div class="intro-input">
-        <label for="file-1">Choose File to upload for a course</label>
-        <input type="file" name="file" id="file-1" class="btn-upload"> 
-</div>
-
-
-  <table>
-    <th>S/N</th>
-    <th>Course Code</th>
-    <th>Course Name</th>
-    <th>Level</th>
-    <th>Action</th>
-    <th>Attendance</th>
-
-    <tr>
-      <td>1</td>
-      <td>COE 501</td>
-      <td>Neural Network and Fuzzy Logic Programming</td>
-      <td>500</td>
-        <td class="td-att">
-            <button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</button>
-        </td>
-
-          <td><a href="/take_attendance/501" class="att-link">/take Attendance</a> 
-            </td>
-    </tr>
-
-    <tr>
-      <td>2</td>
-      <td>COE 503</td>
-      <td>Modelling and Simulation</td>
-      <td>500</td>
-        <td><button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</td>
-          <td><a href="/take_attendance/503" class="att-link">/take Attendance</a> 
-          </td>
-    </tr>
-
-    <tr>
-      <td>3</td>
-      <td>COE 515</td>
-      <td>Natural Language and Speech Processing</td>
-      <td>500</td>
-        <td><button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</td>
-          <td><a href="/take_attendance/515" class="att-link">/take Attendance</a> 
-          </td>
-    </tr>
-
-    <tr>
-      <td>4</td>
-      <td>COE 507</td>
-      <td>Digital Signal Processing</td>
-      <td>500</td>
-        <td><button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</td>
-          <td><a href="/take_attendance/507" class="att-link">/take Attendance</a> 
-          </td>
-    </tr>
-
-    <tr>
-      <td>5</td>
-      <td>COE 505</td>
-      <td>Software Engineering</td>
-      <td>500</td>
-        <td><button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</td>
-          <td><a href="/take_attendance/505" class="att-link">/take Attendance</a> 
-          </td>
-    </tr>
-
-    <tr>
-      <td>6</td>
-      <td>COE 511</td>
-      <td>Computer Graphics and Animations</td>
-      <td>500</td>
-        <td><button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</td>
-          <td><a href="/take_attendance/511" class="att-link">/take Attendance</a> 
-          </td>
-    </tr>
-
-    <tr>
-      <td>7</td>
-      <td>COE 519</td>
-      <td>Robotics</td>
-      <td>500</td>
-        <td><button class="btn-upload" id="btn-upload" type="submit" value="Upload">Course Upload</td>
-          <td><a href="/take_attendance/519" class="att-link">/take Attendance</a> 
-          </td>
-    </tr>
-    
-
-  </table>
-  
-
-  <button class="logout lgt"><a href="/logout">Logout</a></button>
-
-
-
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class="flashes">
-      {% for message in messages %}
-        <li>{{ message }}</li>
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-success">{{ message }}</div>
       {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-  
-  
-<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="{{ url_for('static',filename='main.js') }}"></script>
+      {% block content %}{% endblock %}
 
-
-
-</body>
-</html>
+      <!-- Course Table -->
+      <h2 class="text-center my-5">Course List</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Level</th>
+            <th>Upload Course Files</th>
+            <th>Register Student</th>
+            <th>Take Attendance</th>
+            <th>View Attendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>COE 501</td>
+            <td>Neural Networks and Fuzzy Logic Programming</td>
+            <td>500</td>
+            <td>
+              <form action="/upload/501" method="post"
+                enctype="multipart/form-data">
+                <label for="file-upload-515" class="btn btn-primary btn-sm">Choose
+                  file</label>
+                <input id="file-upload-515" type="file" name="file"
+                  style="display:none;">
+                <button type="submit" class="btn btn-success ms-2 btn-sm">Upload</button>
+              </form>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/501">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+          <tr>
+            <td>COE 503</td>
+            <td>Modelling and Simulation</td>
+            <td>500</td>
+            <td>
+              <form action="/upload/503" method="post"
+                enctype="multipart/form-data">
+                <label for="file-upload-515" class="btn btn-primary btn-sm">Choose
+                  file</label>
+                <input id="file-upload-515" type="file" name="file"
+                  style="display:none;">
+                <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+              </form>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/503">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+          <tr>
+            <td>COE 505</td>
+            <td>Software Engineering</td>
+            <td>500</td>
+            <td>
+              <form action="/upload/505" method="post"
+                enctype="multipart/form-data">
+                <label for="file-upload-515" class="btn btn-primary btn-sm">Choose
+                  file</label>
+                <input id="file-upload-515" type="file" name="file"
+                  style="display:none;">
+                <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+              </form>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/505">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+          <tr>
+            <td>COE 507</td>
+            <td>Digital Signal Processing</td>
+            <td>500</td>
+            <td>
+              <form action="/upload/507" method="post"
+                enctype="multipart/form-data">
+                <label for="file-upload-515" class="btn btn-primary btn-sm">Choose file</label>
+                <input id="file-upload-515" type="file" name="file"
+                  style="display:none;">
+                <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+              </form>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/507">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+          <tr>
+            <td>COE 511</td>
+            <td>Computer Graphics</td>
+            <td>500</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <form action="/upload/511" method="post"
+                  enctype="multipart/form-data">
+                  <label for="file-upload-511" class="btn btn-primary btn-sm">Choose
+                    file</label>
+                  <input id="file-upload-511" type="file" name="file"
+                    style="display:none;">
+                  <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+                </form>
+              </div>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/511">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+          <tr>
+            <td>COE 515</td>
+            <td>Natural Language Processing</td>
+            <td>500</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <form action="/upload/515" method="post"
+                  enctype="multipart/form-data">
+                  <label for="file-upload-515" class="btn btn-primary btn-sm">Choose
+                    file</label>
+                  <input id="file-upload-515" type="file" name="file"
+                    style="display:none;">
+                  <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+                </form>
+              </div>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/515">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+          <tr>
+            <td>COE 519</td>
+            <td>Robotics</td>
+            <td>500</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <form action="/upload/519" method="post"
+                  enctype="multipart/form-data">
+                  <label for="file-upload-519" class="btn btn-primary btn-sm">Choose
+                    file</label>
+                  <input id="file-upload-519" type="file" name="file"
+                    style="display:none;">
+                  <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+                </form>
+              </div>
+            </td>
+            <td><a href="/register_student">Register</a></td>
+            <td><a href="/take_attendance/519">Take Attendance</a></td>
+            <td><a href="#">View Attendance</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- jQuery and Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+  </html>
