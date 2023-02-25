@@ -1,13 +1,14 @@
 import os
 from typing import Union
 
-import sqlalchemy
+from dotenv import load_dotenv
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
 from app import db
 from constants import *
 from models import Admins, Lecturers, Students
+load_dotenv()
 
 
 def create_new_user(type_of_user: str, **kwargs: Union[str, bool]) -> None:
@@ -66,12 +67,15 @@ def main():
         matric_number="19 ENG02 077",
         role="student",
     )
+    ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+    ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+    ADMIN_ROLE = os.getenv("ADMIN_ROLE")
+    IS_ADMIN = os.getenv("IS_ADMIN")
     create_new_user(
         type_of_user="admin",
-        username="admin",
-        password="admin",
-        role="admin",
-        is_admin=True,
+        username=ADMIN_USERNAME,
+        password=ADMIN_PASSWORD,
+        role=ADMIN_ROLE 
     )
 
 

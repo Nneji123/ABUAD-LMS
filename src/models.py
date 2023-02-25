@@ -19,9 +19,6 @@ class Students(UserMixin, db.Model):
     matric_number = db.Column(db.String(10), unique=True)
     role = db.Column(db.String(10))
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
@@ -33,10 +30,6 @@ class Lecturers(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String)
     role = db.Column(db.String(10))
-    
-    
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -49,14 +42,6 @@ class Admins(UserMixin, db.Model):
     role = db.Column(db.String(10))
     is_admin = db.Column(db.Boolean, default=True)
     
-    def __init__(self, username, password, role):
-        self.username = username
-        self.password = generate_password_hash(password)
-        self.role = role
-    
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
     def check_password(self, password):
         return check_password_hash(self.password, password)    
     
