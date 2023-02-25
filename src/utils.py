@@ -263,5 +263,5 @@ def get_total_attendance(directory_path):
         data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"]
     )
     # df.set_index("Name", inplace=True)
-    df.to_csv("total_attendance.csv")
+    # df.to_csv("total_attendance.csv")
     return df

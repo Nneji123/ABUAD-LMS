@@ -62,7 +62,8 @@ def upload_file(course_code):
 @lecturer.route("/lecturer/record_attendance/<course_code>")
 @login_required
 def record_attendance(course_code):
-    return render_template(f"/record_attendance_pages/record_attendance_{course_code}.html")
+    course = course_code
+    return render_template(f"/main_pages/record_attendance.html", course=course)
 
 
 @lecturer.route("/detect_face_feed/<course_code>")
@@ -108,8 +109,8 @@ def tasks():
             flash("Registered Student Successfully!")
             print("done")
     elif request.method == "GET":
-        return render_template("/main_pages/face_register_attendance.html")
-    return render_template("/main_pages/face_register_attendance.html")
+        return render_template("/main_pages/register.html")
+    return render_template("/main_pages/register.html")
 
 
 # View Attendance Records
