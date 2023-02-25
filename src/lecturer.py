@@ -113,23 +113,9 @@ def tasks():
 
 
 # View Attendance Records
-@lecturer.route("/view_attendance/<course_code>")
+@lecturer.route("/view_attendance/<course_code>", methods=["POST", "GET"])
 @login_required
 def attendance(course_code):
-    text = f"Attendance Report for COE {course_code}"
-    df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
-    if df is not None:
-        html_table = df.to_html(index=False)
-    else:
-        html_table = "No attendance data available."
-    return render_template(
-        "/attendance_pages/attendance.html", html_table=html_table, text=text
-    )
-
-
-@lecturer.route("/view_attendance/<course_code>/date", methods=["POST", "GET"])
-@login_required
-def attendance_date(course_code):
     if request.method == "POST":
         year = request.form.get("year")
         month = request.form.get("month")
@@ -146,14 +132,25 @@ def attendance_date(course_code):
             else:
                 html_table = "No attendance data available."
             return render_template(
-                "/attendance_pages/attendance_date.html",
+                "/attendance_pages/attendance.html",
                 html_table=html_table,
                 text=text,
             )
         else:
             return render_template(
-                "/attendance_pages/attendance_date.html",
+                "/attendance_pages/attendance.html",
                 text="No attendance data available for this date",
             )
     else:
-        return render_template("/attendance_pages/attendance_date.html")
+            # return render_template("/attendance_pages/attendance_date.html")
+        text = f"Attendance Report for COE {course_code}"
+        df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
+        if df is not None:
+            html_table = df.to_html(index=False)
+        else:
+            html_table = "No attendance data available."
+        return render_template(
+            "/attendance_pages/attendance.html", html_table=html_table, text=text
+        )
+
+
