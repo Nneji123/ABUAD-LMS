@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>CodePen - Bootstrap Sidebar</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+      integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+      crossorigin="anonymous">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+      integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+      crossorigin="anonymous"></script>
+    <script defer
+      src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+      integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+      crossorigin="anonymous"></script>
+
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+      integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+      crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+      integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+      crossorigin="anonymous"></script><link rel='stylesheet'
+      href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css'>
+      <link rel="stylesheet" type="text/css" href="{{
+        url_for('static',filename='style.css') }}">
+  </head>
+  <style>
+    .navbar-brand img {
+        height: 50px;
+        width: auto;
+    }
+    .gradient-custom-2 {
+        /* fallback for old browsers */
+        background: #fccb90;
+
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+        }
+</style>
+{% block content %}{% endblock %}
+
+{% block script %}
+<!-- partial -->
+    <script>
+    const links = document.querySelectorAll('a[data-video]');
+    const player = document.getElementById('player');
+  
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const videoName = link.getAttribute('data-video');
+        var contentsss = document.getElementById("contentsss")
+        var titlesss = document.getElementById("titlesss")
+        player.setAttribute('src', `/static/courses/503/video/${videoName}`);
+        player.setAttribute('width', '640');
+        player.setAttribute('height', '360');
+        document.querySelector('.func2').style.display = 'block';
+        contentsss.style.display = 'none';
+        titlesss.style.display = 'none';
+      });
+    });
+  
+    // const toggleBox = () => {
+    //   const box = document.getElementById('box');
+    //   box.style.display === 'none' ? box.style.display = 'block' : box.style.display = 'none';
+    // }
+  
+    // const doc1 = document.getElementById('doc1');
+    // doc1.addEventListener('click', () => {
+    //   const box = document.getElementById('box');
+    //   const func2 = document.querySelector('.func2');
+    //   func2.innerHTML = '';
+    //   fetch('/student/503/documents')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       const ul = document.createElement('ul');
+    //       data.forEach(file => {
+    //         const li = document.createElement('li');
+    //         li.textContent = file;
+    //         ul.appendChild(li);
+    //       });
+    //       func2.appendChild(ul);
+    //     })
+    //     .then(() => {
+    //       toggleBox();
+    //     });
+    // });
+  
+    // const att1 = document.getElementById('att1');
+    // att1.addEventListener('click', () => {
+    //   const box = document.getElementById('box');
+    //   const func2 = document.querySelector('.func2');
+    //   func2.innerHTML = '';
+    //   fetch('/attendance/503')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       const ul = document.createElement('ul');
+    //       data.forEach(record => {
+    //         const li = document.createElement('li');
+    //         li.textContent = record;
+    //         ul.appendChild(li);
+    //       });
+    //       func2.appendChild(ul);
+    //     })
+    //     .then(() => {
+    //       toggleBox();
+    //     });
+    // });
+    </script>
+{% endblock %}

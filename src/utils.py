@@ -212,7 +212,7 @@ def count_name_in_files(directory_path, name):
 
     percentage = count / num_files * 100
     eligibility = "eligible" if percentage >= 70 else "not eligible"
-    message = f"{name}'s Attendance for this course is {percentage:.2f}% \nYou are {eligibility} to write exams for this course!"
+    message = f"{name}'s Attendance for this course is {percentage:.2f}%"# \nYou are {eligibility} to write exams for this course!"
     return message
 
 

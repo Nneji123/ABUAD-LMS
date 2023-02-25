@@ -28,7 +28,7 @@ def show():
 def upload_file(course_code):
     file = request.files["file"]
     if file.filename == "":
-        return "No file selected!"
+        flash("Error! No file selected")
 
     file_name = secure_filename(file.filename)
     file_extension = os.path.splitext(file_name)[-1].lower()
@@ -42,6 +42,7 @@ def upload_file(course_code):
     if not any(course_code in valid_code for valid_code in VALID_COURSE_CODES):
         return "Error: Invalid course code"
 
+    file_type = ""
     if "assignment" in file_name.lower() and file_extension in ASSIGNMENT_EXTENSIONS:
         file_type = "assignment"
     elif file_extension in DOC_EXTENSIONS:
@@ -49,7 +50,7 @@ def upload_file(course_code):
     elif file_extension in VIDEO_EXTENSIONS:
         file_type = "video"
     else:
-        return "Error: Invalid file type"
+        flash("Error! Invalid filetype")
 
     # save the file to the desired location
     os.makedirs(f"./frontend/static/courses/{course_code}/{file_type}", exist_ok=True)

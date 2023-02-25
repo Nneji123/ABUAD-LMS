@@ -1,14 +1,14 @@
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>neural network</title>
-  
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>neural network</title>
 
-  <style>
+  </head>
+  <body>
+
+    <style>
 
     *{
       padding: 5px 0px 0px 5px;
@@ -55,51 +55,48 @@
       height: 100vh;
     }
   </style>
+    <div class="func1">
 
-  
+      <div>
+        <p><a href="/501/documents" id="doc1">Documents</a></p>
 
+        <ul>
+          {% for file in files %}
+          <li>{{ file }}</li>
+          {% endfor %}
+        </ul>
 
-<div class="func1">
+      </div>
 
-  <div>
-    <p><a href="/501/documents" id="doc1">Documents</a></p> 
-   
-    <ul>
-      {% for file in files %}
-        <li>{{ file }}</li>
-      {% endfor %}
-    </ul>
-     
-  </div>
+      <div>
+        <p><a href="/501/videos" id="vid1">Videos</a></p>
 
-  <div>
-    <p><a href="/501/videos" id="vid1">Videos</a></p> 
-    
-    <ul>
-      {% for video in videos %}
-        <li><a href="#" data-video="{{ video }}">{{ video }}</a></li>
-      {% endfor %}
-    </ul>
+        <ul>
+          {% for video in videos %}
+          <li><a href="#" data-video="{{ video }}">{{ video }}</a></li>
+          {% endfor %}
+        </ul>
 
-  </div>
+      </div>
 
-  <div>
-    <p><a href="/attendance/501/{{current_user.username}}" id="att1">Attendance Record</a></p>
-    <title>Attendance for {{ student }} in {{ course }}</title>
-    <h1>Attendance for {{ student }} in {{ course }}</h1>
-    <p>{{ attendance }}</p>
+      <div>
+        <p><a href="/attendance/501/{{current_user.username}}" id="att1">Attendance
+            Record</a></p>
+        <title>Attendance for {{ student }} in {{ course }}</title>
+        <h1>Attendance for {{ student }} in {{ course }}</h1>
+        <p>{{ attendance }}</p>
 
-  </div>
+      </div>
 
-</div>
+    </div>
 
-<div class="func2">
-  <video id="player" controls></video>
-</div>
+    <div class="func2">
+      <video id="player" controls></video>
+    </div>
 
 
 
-<script>
+    <script>
   const links = document.querySelectorAll('a[data-video]');
   const player = document.getElementById('player');
 
@@ -158,4 +155,3 @@
       });
   });
 </script>
-
