@@ -70,7 +70,6 @@ def main():
     ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
     ADMIN_ROLE = os.getenv("ADMIN_ROLE")
-    IS_ADMIN = os.getenv("IS_ADMIN")
     create_new_user(
         type_of_user="admin",
         username=ADMIN_USERNAME,
