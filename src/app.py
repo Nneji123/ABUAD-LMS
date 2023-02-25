@@ -34,7 +34,7 @@ else:
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-app.config["LOGIN_DISABLED"] = True
+app.config["LOGIN_DISABLED"] = os.getenv("LOGIN_DISABLED")
 db.init_app(app)
 app.app_context().push()
 

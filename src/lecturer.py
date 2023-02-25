@@ -59,10 +59,10 @@ def upload_file(course_code):
     return redirect(url_for("lecturer.show"))
 
 
-@lecturer.route("/take_attendance/<course_code>")
+@lecturer.route("/lecturer/record_attendance/<course_code>")
 @login_required
-def take_attendance(course_code):
-    return render_template(f"/attendance_pages/takeattendance_{course_code}.html")
+def record_attendance(course_code):
+    return render_template(f"/record_attendance_pages/record_attendance_{course_code}.html")
 
 
 @lecturer.route("/detect_face_feed/<course_code>")
@@ -78,7 +78,7 @@ def detect_face_feed(course_code):
 @lecturer.route("/register_students")
 @login_required
 def index():
-    return render_template("/main_pages/face_register_attendance.html")
+    return render_template("/main_pages/register.html")
 
 
 @lecturer.route("/video_feed")
@@ -113,9 +113,10 @@ def tasks():
 
 
 # View Attendance Records
-@lecturer.route("/view_attendance/<course_code>", methods=["POST", "GET"])
+@lecturer.route("/lecturer/view_attendance/<course_code>", methods=["POST", "GET"])
 @login_required
 def attendance(course_code):
+    course = course_code
     if request.method == "POST":
         year = request.form.get("year")
         month = request.form.get("month")
@@ -124,25 +125,28 @@ def attendance(course_code):
         # search for the attendance file for that date
         filename = f"{date}-attendance.csv"
         file_path = f"./frontend/static/courses/{course_code}/attendance/{filename}"
+        
         if os.path.exists(file_path):
-            text = f"Attendance Report for COE {course_code} on {date}"
+            text = f"Attendance Report for COE {course_code}"
             df = pd.read_csv(file_path)
             if df is not None:
                 html_table = df.to_html(index=False)
             else:
                 html_table = "No attendance data available."
             return render_template(
-                "/attendance_pages/attendance.html",
+                "/main_pages/attendance.html",
                 html_table=html_table,
                 text=text,
+                course=course
             )
         else:
             return render_template(
-                "/attendance_pages/attendance.html",
+                "/main_pages/attendance.html",
                 text="No attendance data available for this date",
+                course = course
             )
     else:
-            # return render_template("/attendance_pages/attendance_date.html")
+            # return render_template("/main_pages/attendance_date.html")
         text = f"Attendance Report for COE {course_code}"
         df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
         if df is not None:
@@ -150,7 +154,7 @@ def attendance(course_code):
         else:
             html_table = "No attendance data available."
         return render_template(
-            "/attendance_pages/attendance.html", html_table=html_table, text=text
+            "/main_pages/attendance.html", html_table=html_table, text=text, course=course
         )
 
 

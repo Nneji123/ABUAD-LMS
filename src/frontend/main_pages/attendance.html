@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{text}}</title>
+        <link rel='stylesheet'
+            href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css'>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-light navbar-bg
+        gradient-custom-2">
+            <div class="container">
+                <a class="navbar-brand" href="/lecturer">
+                    <style>
+                    .navbar-brand img {
+                        height: 50px;
+                        width: auto;
+                    }
+                    .gradient-custom-2 {
+                        /* fallback for old browsers */
+                        background: #fccb90;
+          
+                        /* Chrome 10-25, Safari 5.1-6 */
+                        background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+          
+                        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                        background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+                        }
+                </style>
+                    <img src="{{ url_for('static', filename='img/logo.png') }}"
+                        alt="ABUAD
+                        LMS Logo">
+                </a>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lecturer">Back Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>{{text}}</h2>
+                    <p>This page displays the total attendance for a particular
+                        course. You can search for attendance records by date
+                        using the Search By Date Button.</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="button" class="btn btn-outline-primary mr-2"
+                        onclick="location.reload();">
+                        Refresh
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                        id="searchByDateBtn" data-toggle="modal"
+                        data-target="#searchByDateModal">
+                        Search by Date
+                    </button>
+                </div>
+            </div>
+            <!-- </div> -->
+            <div id="myTableDiv">
+            </div>
+        </div>
+        <!-- Modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="searchByDateModal" tabindex="-1"
+            role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="searchModalLabel">Search by
+                            Date</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"
+                            onclick="closeSearchByDateModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="searchByDateForm" method="POST"
+                            action="/lecturer/view_attendance/{{course}}" class="form-inline"
+                            onsubmit="closeSearchByDateModal()">
+                            <div class="form-group mb-2">
+                                <label for="year" class="mr-2">Year:</label>
+                                <input type="text" id="year" name="year"
+                                    class="form-control mr-2" required="true"/>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="month" class="mr-2">Month:</label>
+                                <input type="text" id="month" name="month"
+                                    class="form-control mr-2" />
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="day" class="mr-2">Day:</label>
+                                <input type="text" id="day" name="day"
+                                    class="form-control mr-2" />
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2"
+                                id="searchByDateSubmit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+    function openSearchByDateModal() {
+    const modal = document.getElementById('searchByDateModal');
+    modal.classList.add('show');
+    modal.style.display = 'block';
+    const modalBackdrop = document.createElement('div');
+    modalBackdrop.classList.add('modal-backdrop', 'fade', 'show');
+    document.body.appendChild(modalBackdrop);
+    };
+
+    function closeSearchByDateModal() {
+  var modal = document.getElementById('searchByDateModal');
+  modal.style.display = 'none';
+  var backdrop = document.getElementsByClassName('modal-backdrop');
+  document.body.removeChild(backdrop[0]);
+};
+
+    $(document).ready(function() {
+        // Add event listener to the search by date button to open the modal
+        $('#searchByDateBtn').click(function() {
+            openSearchByDateModal();
+        });
+
+    // Add event listener to the search by date form to send a POST request
+    // and update the attendance table
+    $('#searchByDateModal form').submit(function(event) {
+        event.preventDefault();
+
+        // Send the POST request
+        $.ajax({
+            url: "/lecturer/view_attendance/{{course}}",
+            type: "POST",
+            data: $('#searchByDateModal form').serialize(),
+            success: function(response) {
+                // Replace the old attendance table with the new one
+                $('#myTableDiv').html(response);
+
+                // Convert the Pandas HTML table to a DataTable
+                $('#myTableDiv table').DataTable();
+
+                // Hide the search by date modal
+                $('#searchByDateModal').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                // Handle errors here
+            }
+        });
+    });
+
+    // Get the Pandas HTML table content
+    var htmlTable = `{{ html_table | safe }}`;
+
+    // Append the Pandas HTML table content to the container element
+    $('#myTableDiv').html(htmlTable);
+
+    // Convert the Pandas HTML table to a DataTable
+    $('#myTableDiv table').DataTable();
+});
+</script>
+    </body>
+</html>

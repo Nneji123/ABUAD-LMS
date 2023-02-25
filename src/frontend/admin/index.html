@@ -1,6 +1,7 @@
 {% extends 'admin/master.html' %}
 {% block body %}
 {{ super() }}
+
 <div class="row">
     <h1>ABUAD LMS Admin Page</h1>
     <p class="lead">
@@ -20,21 +21,32 @@
     <p>
         The ABUAD LMS is designed to be user-friendly and intuitive, with easy navigation and clear instructions for both instructors and students. It also provides a range of tools and resources to help instructors create engaging and interactive learning experiences for their students.
     </p>
-    <!-- <a class="btn btn-primary" href="/"><i class="glyphicon glyphicon-chevron-left"></i> Back</a> -->
 </div>
 {% endblock body %}
 
 {% block head %}
     {{ super() }}
+    
     <style>
         .navbar-brand img {
             height: 30px;
             width: auto;
         }
+        .gradient-custom-2 {
+            /* fallback for old browsers */
+            background: #fccb90;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+            }
     </style>
 {% endblock %}
 
 {% block brand %}
+
     <a class="navbar-brand" href="/admin">
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo">
     </a>
