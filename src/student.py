@@ -35,7 +35,7 @@ def get_page(course_code):
         for f in os.listdir(f"./frontend/static/courses/{video_dir}")
         if f.endswith(video_ext)
     ]
-    files = [
+    docs = [
         f
         for f in os.listdir(f"./frontend/static/courses/{doc_dir}")
         if f.endswith(doc_exts)
@@ -44,7 +44,7 @@ def get_page(course_code):
     return render_template(
         f"/course_pages/{course_code}.html",
         videos=videos,
-        files=files,
+        docs=docs,
         course=course_code,
         student=student_name,
         attendance=attendance_record,

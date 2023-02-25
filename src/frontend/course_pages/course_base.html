@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>CodePen - Bootstrap Sidebar</title>
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-      integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-      crossorigin="anonymous">
+    <head>
+        <meta charset="UTF-8">
+        <title>COE {{course}} Homepage</title>
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+            integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+            crossorigin="anonymous">
 
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
-      integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-      crossorigin="anonymous"></script>
-    <script defer
-      src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
-      integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-      crossorigin="anonymous"></script>
+        <!-- Font Awesome JS -->
+        <script defer
+            src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+            integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+            crossorigin="anonymous"></script>
+        <script defer
+            src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+            integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+            crossorigin="anonymous"></script>
 
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-      integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-      crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-      integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-      crossorigin="anonymous"></script><link rel='stylesheet'
-      href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css'>
-      <link rel="stylesheet" type="text/css" href="{{
-        url_for('static',filename='style.css') }}">
-  </head>
-  <style>
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+            crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+            integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+            crossorigin="anonymous"></script><link rel='stylesheet'
+            href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css'>
+        <link rel="stylesheet" type="text/css" href="{{
+            url_for('static',filename='style.css') }}">
+        <link
+            rel="icon"
+            type="image/ico"
+            href="{{ url_for('static',filename='img/logo.png') }}"
+            />
+    </head>
+    <style>
     .navbar-brand img {
         height: 50px;
         width: auto;
@@ -53,74 +59,172 @@
         background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
         }
 </style>
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
-{% block script %}
-<!-- partial -->
+    {% block script %}
+    <!-- partial -->
     <script>
-    const links = document.querySelectorAll('a[data-video]');
-    const player = document.getElementById('player');
-  
-    links.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const videoName = link.getAttribute('data-video');
-        var contentsss = document.getElementById("contentsss")
-        var titlesss = document.getElementById("titlesss")
-        player.setAttribute('src', `/static/courses/503/video/${videoName}`);
-        player.setAttribute('width', '640');
-        player.setAttribute('height', '360');
-        document.querySelector('.func2').style.display = 'block';
-        contentsss.style.display = 'none';
-        titlesss.style.display = 'none';
-      });
+    // var contents = document.getElementById("contentsss");
+    // var titles = document.getElementById("titlesss")
+    var attendances = document.getElementById("attendances");
+    var count = "{{ attendance }}";
+    attendances.onclick = function() {
+        // Replace the initial text with new content
+        document.querySelector('.func2').style.display = 'none';
+        document.getElementById('doc-list').style.display = 'none';
+        document.getElementById('video-list').style.display = 'none';
+        document.getElementById('titlesss').style.display = 'block';
+        document.getElementById('contentsss').style.display = 'block';
+        document.getElementById('contentsss').innerHTML = count;
+        document.getElementById('titlesss').innerHTML = "Attendance for {{ student }} in {{ course }}";
+      }
+
+    // Get the "Documents" button element
+    const docBtn = document.getElementById("documents-btn");
+
+    // Get the document list table element
+    const docList = document.getElementById("doc-list");
+
+    // Add an event listener to the button
+    docBtn.addEventListener("click", () => {
+      // Toggle the display property of the document list table
+      if (docList.style.display === "none") {
+        docList.style.display = "block";
+        document.getElementById('titlesss').style.display = 'none';
+        document.getElementById('contentsss').style.display = 'none';
+        document.getElementById('video-list').style.display = 'none';
+      } else {
+        docList.style.display = "none";
+      }
     });
-  
-    // const toggleBox = () => {
-    //   const box = document.getElementById('box');
-    //   box.style.display === 'none' ? box.style.display = 'block' : box.style.display = 'none';
-    // }
-  
-    // const doc1 = document.getElementById('doc1');
-    // doc1.addEventListener('click', () => {
-    //   const box = document.getElementById('box');
-    //   const func2 = document.querySelector('.func2');
-    //   func2.innerHTML = '';
-    //   fetch('/student/503/documents')
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       const ul = document.createElement('ul');
-    //       data.forEach(file => {
-    //         const li = document.createElement('li');
-    //         li.textContent = file;
-    //         ul.appendChild(li);
-    //       });
-    //       func2.appendChild(ul);
-    //     })
-    //     .then(() => {
-    //       toggleBox();
-    //     });
-    // });
-  
-    // const att1 = document.getElementById('att1');
-    // att1.addEventListener('click', () => {
-    //   const box = document.getElementById('box');
-    //   const func2 = document.querySelector('.func2');
-    //   func2.innerHTML = '';
-    //   fetch('/attendance/503')
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       const ul = document.createElement('ul');
-    //       data.forEach(record => {
-    //         const li = document.createElement('li');
-    //         li.textContent = record;
-    //         ul.appendChild(li);
-    //       });
-    //       func2.appendChild(ul);
-    //     })
-    //     .then(() => {
-    //       toggleBox();
-    //     });
-    // });
+
+    // Populate the document list table with data
+    const docTableBody = document.getElementById("document-table-body");
+    const mydocs = JSON.parse('{{docs|tojson|safe}}');
+    // Loop through the list of documents and create table rows for each document
+    mydocs.forEach((doc) => {
+      // Create a new row element
+      const row = document.createElement("tr");
+
+      // Create a cell element for the document name
+      const nameCell = document.createElement("td");
+      nameCell.textContent = doc;
+
+      // Create a cell element for the "View" button
+      const viewCell = document.createElement("td");
+      const viewLink = document.createElement("a");
+      
+      viewLink.textContent = "View";
+      viewLink.setAttribute("href", `/static/courses/{{course}}/documents/${doc}`);
+      viewLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        const navbar = document.getElementById("navbarSupportedContent");
+        navbar.classList.add("hidden");
+        const pdfUrl = event.target.getAttribute("href");
+        const pdfIframe = document.getElementById("pdf-iframe");
+        pdfIframe.setAttribute("src", pdfUrl);
+        viewLink.setAttribute("target", "_blank");
+        $('#pdfModal').modal('show');
+
+        const pdfModal = document.getElementById("pdfModal");
+        pdfModal.addEventListener("hidden.bs.modal", function () {
+        navbar.classList.remove("hidden");
+      });
+      });
+      viewCell.appendChild(viewLink);
+
+      // Create a cell element for the "Download" button
+      const downloadCell = document.createElement("td");
+      const downloadBtn = document.createElement("button");
+      downloadBtn.textContent = "Download";
+      downloadBtn.addEventListener("click", () => {
+        // Download the PDF file
+        window.location.href = `/static/courses/{{course}}/documents/${doc}`;
+      });
+      downloadCell.appendChild(downloadBtn);
+
+      // Append the cells to the row
+      row.appendChild(nameCell);
+      row.appendChild(viewCell);
+      row.appendChild(downloadCell);
+
+      // Append the row to the document list table
+      docTableBody.appendChild(row);
+    });
     </script>
+    <script>
+// Get the "Videos" button element
+const videoBtn = document.getElementById("videos-btn");
+
+// Get the video list table element
+const videoList = document.getElementById("video-list");
+
+// Add an event listener to the button
+videoBtn.addEventListener("click", () => {
+  // Toggle the display property of the video list table
+  if (videoList.style.display === "none") {
+    videoList.style.display = "block";
+    document.getElementById('titlesss').style.display = 'none';
+    document.getElementById('contentsss').style.display = 'none';
+    document.getElementById('doc-list').style.display = 'none';
+  } else {
+    videoList.style.display = "none";
+    document.getElementById('titlesss').style.display = 'block';
+    document.getElementById('contentsss').style.display = 'block';
+  }
+});
+
+// Populate the video list table with data
+const videoTableBody = document.getElementById("video-table-body");
+const myvideos = JSON.parse('{{videos|tojson|safe}}');
+// Loop through the list of videos and create table rows for each video
+myvideos.forEach((video) => {
+  // Create a new row element
+  const row = document.createElement("tr");
+
+  // Create a cell element for the video name
+  const nameCell = document.createElement("td");
+  nameCell.textContent = video;
+
+  // Create a cell element for the "View" button
+  const viewCell = document.createElement("td");
+  const viewLink = document.createElement("a");
+  const downloadCell = document.createElement("td");
+  const downloadBtn = document.createElement("button");
+  downloadBtn.textContent = "Download";
+  downloadBtn.addEventListener("click", () => {
+        // Download the PDF file
+        window.location.href = `/static/courses/{{course}}/video/${video}`;
+      });
+  downloadCell.appendChild(downloadBtn);
+  
+  viewLink.textContent = "View";
+  viewLink.setAttribute("href", `/static/courses/{{course}}/video/${video}`);
+  viewLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    const navbar = document.getElementById("navbarSupportedContent");
+    navbar.classList.add("hidden");
+    const videoUrl = event.target.getAttribute("href");
+    const videoIframe = document.getElementById("video-iframe");
+    videoIframe.setAttribute("src", videoUrl);
+    $('#videoModal').modal('show');
+
+    const videoModal = document.getElementById("videoModal");
+    videoModal.addEventListener("hidden.bs.modal", function () {
+      navbar.classList.remove("hidden");
+    });
+  });
+  viewCell.appendChild(viewLink);
+
+  // Append the cells to the row
+  row.appendChild(nameCell);
+  row.appendChild(viewCell);
+  row.appendChild(downloadCell)
+
+  // Append the row to the video list table
+  videoTableBody.appendChild(row);
+});
+
+
+</script>
 {% endblock %}

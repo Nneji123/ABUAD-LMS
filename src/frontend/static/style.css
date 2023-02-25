@@ -35,10 +35,10 @@ a:focus {
     justify-content: center;
     align-items: center; */
     /* position: fixed; */
-    top: 0;
+    /* top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 9999; */
     
 }
 
@@ -187,4 +187,12 @@ a.article:hover {
   /* display: flex;
   justify-content: center;
   align-items: center; */
+}
+
+#doc-list {
+  display: none;
+}
+
+.navbarSupportedContent.hidden {
+  display: none;
 }
