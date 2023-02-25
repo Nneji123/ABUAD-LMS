@@ -86,17 +86,12 @@
     const docList = document.getElementById("doc-list");
 
     // Add an event listener to the button
-    docBtn.addEventListener("click", () => {
-      // Toggle the display property of the document list table
-      if (docList.style.display === "none") {
+    docBtn.onclick = function() {
         docList.style.display = "block";
         document.getElementById('titlesss').style.display = 'none';
         document.getElementById('contentsss').style.display = 'none';
         document.getElementById('video-list').style.display = 'none';
-      } else {
-        docList.style.display = "none";
-      }
-    });
+      } 
 
     // Populate the document list table with data
     const docTableBody = document.getElementById("document-table-body");
@@ -160,19 +155,12 @@ const videoBtn = document.getElementById("videos-btn");
 const videoList = document.getElementById("video-list");
 
 // Add an event listener to the button
-videoBtn.addEventListener("click", () => {
-  // Toggle the display property of the video list table
-  if (videoList.style.display === "none") {
+    videoBtn.onclick = function(){
     videoList.style.display = "block";
     document.getElementById('titlesss').style.display = 'none';
     document.getElementById('contentsss').style.display = 'none';
     document.getElementById('doc-list').style.display = 'none';
-  } else {
-    videoList.style.display = "none";
-    document.getElementById('titlesss').style.display = 'block';
-    document.getElementById('contentsss').style.display = 'block';
   }
-});
 
 // Populate the video list table with data
 const videoTableBody = document.getElementById("video-table-body");
