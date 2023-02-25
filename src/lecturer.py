@@ -26,11 +26,12 @@ def show():
 @lecturer.route("/upload/<course_code>", methods=["POST"])
 @login_required
 def upload_file(course_code):
-    file = request.files["file"]
+    file = request.files[f"file_{course_code}"]
     if file.filename == "":
         flash("Error! No file selected")
 
     file_name = secure_filename(file.filename)
+    print(file_name)
     file_extension = os.path.splitext(file_name)[-1].lower()
     file_names, file_extensions = os.path.splitext(file_name)
     new_file_name = f"{str(course_code)}-{file_names}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}{file_extensions}"
@@ -46,7 +47,7 @@ def upload_file(course_code):
     if "assignment" in file_name.lower() and file_extension in ASSIGNMENT_EXTENSIONS:
         file_type = "assignment"
     elif file_extension in DOC_EXTENSIONS:
-        file_type = "document"
+        file_type = "documents"
     elif file_extension in VIDEO_EXTENSIONS:
         file_type = "video"
     else:
