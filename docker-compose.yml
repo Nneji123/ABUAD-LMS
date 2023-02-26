@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: abuad-lms
+    command: python app.py
+    ports:
+      - 8080:3000
+    volumes:
+      - .:/app

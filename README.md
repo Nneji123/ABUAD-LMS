@@ -1,6 +1,8 @@
 # To run application:
-1. `cd src`
-2. `pip install -r requirements.txt`
-3. `python init.py`
-4. `python app.py`
-5. Check `http://localhost:3000/`
+1. `python -m venv env`
+2. `source env/Scripts/activate`
+3. `pip install -r requirements.txt`
+4. `cd src`
+5. `python init.py`
+6. `python app.py`
+7. Check `http://localhost:3000/`
