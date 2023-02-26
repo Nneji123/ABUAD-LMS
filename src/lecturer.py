@@ -31,7 +31,6 @@ def upload_file(course_code):
         flash("Error! No file selected")
 
     file_name = secure_filename(file.filename)
-    print(file_name)
     file_extension = os.path.splitext(file_name)[-1].lower()
     file_names, file_extensions = os.path.splitext(file_name)
     new_file_name = f"{str(course_code)}-{file_names}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}{file_extensions.lower()}"

@@ -40,7 +40,6 @@ def get_page(course_code):
         for f in os.listdir(f"./frontend/static/courses/{doc_dir}")
         if f.endswith(doc_exts)
     ]
-    print(docs)
     
     return render_template(
         f"/course_pages/{course_code}.html",
