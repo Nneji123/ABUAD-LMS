@@ -8,3 +8,5 @@ Camera_Flask_App/
 flask_session/
 # *.csv
 test.py
+*.vscode
+details.txt

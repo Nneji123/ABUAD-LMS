@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Reset Password</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+
+
+        <link rel="stylesheet"
+            href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+
+
+        <link rel='stylesheet' id='roboto-subset.css-css'
+            href='https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5'
+            type='text/css' media='all' />
+    </head>
+
+    <body>
+        <style>
+            /*
+    DEMO STYLE
+    */
+
+            @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: #fafafa;
+            }
+
+            p {
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.1em;
+                font-weight: 300;
+                line-height: 1.7em;
+                color: #999;
+            }
+
+            a {
+                font-family: 'Poppins', sans-serif;
+                color: #999;
+            }
+
+            .card {
+                margin: 0 auto;
+                margin-top: 100px;
+            }
+
+            .card-header {
+                font-family: 'Poppins', sans-serif;
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 1.2;
+                color: #fff;
+                background-color: #e91e63;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .bg-pink {
+                /* fallback for old browsers */
+                background: #fccb90;
+
+                /* Chrome 10-25, Safari 5.1-6 */
+                background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+                /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+                color: white;
+            }
+
+            .bg-pink:hover {
+                background-color: black;
+            }
+
+            .btn-primary {
+                background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+
+            }
+
+            .register-link {
+                color: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+            }
+
+
+
+
+            .btn-primary:hover {
+                /* background-color:linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593); */
+                color: black;
+            }
+
+            .form-outline {
+                position: relative;
+                margin-bottom: 1.5rem;
+            }
+        </style>
+        <div class="container mt-4">
+            <div class="card text-center" style="width: 300px;">
+                <div class="card-header h5 text-white bg-pink"><i class="fa fa-envelope"></i><span>Reset Password for
+                        ABUAD
+                        LMS</span></div>
+                <div class="card-body px-5">
+                    <p class="card-text py-2">
+                        Hello {{username.title()}}, We've received a request to reset your password. If you want to
+                        reset your
+                        password,
+                        click the link
+                        below.</p>
+                    <a href="{{link}}" class="btn text-white bg-pink w-100"
+                        style="font-family: 'Poppins', sans-serif;">Reset password</a>
+                    <div class="d-flex justify-content-between mt-4">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+    </body>

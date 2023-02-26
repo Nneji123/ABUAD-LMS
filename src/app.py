@@ -1,6 +1,5 @@
 import os
-import random
-import string
+
 
 import sqlalchemy
 from dotenv import load_dotenv
@@ -17,47 +16,58 @@ from logout import logout
 from models import (Admins, AdminsView, Lecturers, LecturersView, Students,
                     StudentsView, db)
 from student import student
+import css_inline
+from itsdangerous import URLSafeTimedSerializer
+from itsdangerous.exc import BadTimeSignature
+from werkzeug.security import generate_password_hash
 
 load_dotenv()
 
 
 app = Flask(__name__, static_folder="./frontend/static")
+serializer = URLSafeTimedSerializer(os.getenv("SERIAL"))
 
 
 POSTGRES = os.getenv("POSTGRES")
 SQLITE = os.getenv("SQLITE")
-DATABASE_MODE = os.getenv("DATABASE_MODE")
-
-
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-
-if DATABASE_MODE == "postgres":
+SERVER_MODE = os.getenv("SERVER_MODE")
+if SERVER_MODE == "PROD":
     app.config["SQLALCHEMY_DATABASE_URI"] = POSTGRES
-else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = SQLITE
+    app.config["LOGIN_DISABLED"] = False
+    app.config["DEBUG"] = False
+    app.config["MAIL_SERVER"] = os.getenv("PROD_MAIL_SERVER")
+    app.config["MAIL_PORT"] = os.getenv("PROD_MAIL_PORT")
+    app.config["MAIL_USERNAME"] = os.getenv("PROD_MAIL_USERNAME")
+    app.config["MAIL_PASSWORD"] = os.getenv("PROD_MAIL_PASSWORD")
+    app.config["MAIL_USE_TLS"] = True
+    app.config["MAIL_USE_SSL"] = False
+    app.config["SECRET_KEY"] = os.getenv("PROD_SECRET_KEY")
 
+elif SERVER_MODE == "DEV":
+    app.config["SQLALCHEMY_DATABASE_URI"] = SQLITE
+    app.config["LOGIN_DISABLED"] = True
+    app.config["DEBUG"] = True
+    app.config["MAIL_SERVER"] = os.getenv("DEV_MAIL_SERVER")
+    app.config["MAIL_PORT"] = int(os.getenv("DEV_MAIL_PORT"))
+    app.config["MAIL_USERNAME"] = os.getenv("DEV_MAIL_USERNAME")
+    app.config["MAIL_PASSWORD"] = os.getenv("DEV_MAIL_PASSWORD")
+    app.config["MAIL_USE_TLS"] = True
+    app.config["MAIL_USE_SSL"] = False
+    app.config["SECRET_KEY"] = os.getenv("DEV_SECRET_KEY")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-app.config["LOGIN_DISABLED"] = os.getenv("LOGIN_DISABLED")
-
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USERNAME"] = "beratbozkurt1999@gmail.com"
-app.config["MAIL_PASSWORD"] = "[password]"
-app.config["MAIL_USE_TLS"] = False
-app.config["MAIL_USE_SSL"] = True
-posta = Mail(app)
 
 db.init_app(app)
 app.app_context().push()
+
+email = Mail(app)
 
 app.register_blueprint(index)
 app.register_blueprint(login)
 app.register_blueprint(logout)
 app.register_blueprint(lecturer)
 app.register_blueprint(student)
-# app.register_blueprint(password_reset)
 
 
 admin = Admin(
@@ -122,93 +132,101 @@ def internal_error(error):
     )
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80))
-    mail = db.Column(db.String(120))
-    password = db.Column(db.String(80))
-    hashCode = db.Column(db.String(120))
+def send_mail(to, template, subject, link, username, **kwargs):
+    """
+    The send_mail_flask function is used to send an email from the Flask app.
+    It takes in a recipient, template, subject and link as its parameters. It also takes in optional arguments that can be passed into the function.
+
+    :param to: Specify the recipient of the email
+    :param template: Specify the html template that will be used to send the email
+    :param subject: Set the subject of the email
+    :param link: Create a unique link for each user
+    :param username: Populate the username field in the email template
+    :param **kwargs: Pass in any additional variables that are needed to be rendered in the email template
+    :return: The html of the email that is being sent
+    """
+    if os.getenv("SERVER_MODE") == "DEV":
+        sender = os.getenv("DEV_SENDER_EMAIL")
+    elif os.getenv("SERVER_MODE") == "PROD":
+        sender = os.getenv("PROD_SENDER_EMAIL")
+    msg = Message(subject=subject,
+                  sender=sender, recipients=[to])
+    html = render_template(template, username=username, link=link, **kwargs)
+    inlined = css_inline.inline(html)
+    msg.html = inlined
+    email.send(msg)
 
 
-@app.route("/forgot_password", methods=["POST", "GET"])
-def index():
+@app.route('/reset_password', methods=["POST", "GET"])
+def reset_password():
     if request.method == "POST":
-        mail = request.form["mail"]
-        check = User.query.filter_by(mail=mail).first()
+        mail = request.form['mail']
 
-        if check:
-            hashCode = "".join(
-                random.choices(string.ascii_letters + string.digits, k=24)
-            )
-            check.hashCode = hashCode
-            db.session.commit()
-            msg = Message(
-                "Confirm Password Change", sender="berat@github.com", recipients=[mail]
-            )
-            msg.body = (
-                "Hello,\nWe've received a request to reset your password. If you want to reset your password, click the link below and enter your new password\n http://localhost:5000/"
-                + check.hashCode
-            )
-            posta.send(msg)
-            return """
-                <form action="/forgot_password" method="post">
-                    <small>enter the email address of the account you forgot your password</small> <br>
-                    <input type="email" name="mail" id="mail" placeholder="mail@mail.com"> <br>
-                    <input type="submit" value="Submit">
-                </form>
-            """
-    else:
-        return """
-            <form action="/forgot_password" method="post">
-                <small>enter the email address of the account you forgot your password</small> <br>
-                <input type="email" name="mail" id="mail" placeholder="mail@mail.com"> <br>
-                <input type="submit" value="Submit">
-            </form>
-        """
-
-
-@app.route("/forgot_password/<string:hashCode>", methods=["GET", "POST"])
-def hashcode(hashCode):
-    check = User.query.filter_by(hashCode=hashCode).first()
-    if check:
-        if request.method == "POST":
-            passw = request.form["passw"]
-            cpassw = request.form["cpassw"]
-            if passw == cpassw:
-                check.password = passw
-                check.hashCode = None
-                db.session.commit()
-                return redirect(url_for("index"))
-            else:
-                flash("yanlış girdin")
-                return """
-                    <form method="post">
-                        <small>enter your new password</small> <br>
-                        <input type="password" name="passw" id="passw" placeholder="password"> <br>
-                        <input type="password" name="cpassw" id="cpassw" placeholder="confirm password"> <br>
-                        <input type="submit" value="Submit">
-                    </form>
-                """
+        # check if user exists in students table
+        student = Students.query.filter_by(email=mail).first()
+        if student:
+            username = student.username
         else:
-            return """
-                <form method="post">
-                    <small>enter your new password</small> <br>
-                    <input type="password" name="passw" id="passw" placeholder="password"> <br>
-                    <input type="password" name="cpassw" id="cpassw" placeholder="confirm password"> <br>
-                    <input type="submit" value="Submit">
-                </form>
-            """
+            # check if user exists in lecturers table
+            lecturer = Lecturers.query.filter_by(email=mail).first()
+            if lecturer:
+                username = lecturer.username
+            else:
+                flash("User does not exist!")
+                return render_template('/reset_password/index.html')
+
+        hashCode = serializer.dumps(mail, salt='reset-password')
+        if student:
+            student.hashCode = hashCode
+        else:
+            lecturer.hashCode = hashCode
+        server = os.getenv("SERVER_NAME")
+        link = f"{server}/{hashCode}"
+        db.session.commit()
+        send_mail(to=mail, template="/reset_password/email.html", subject="Reset Password",
+                  username=username, link=link)
+
+        flash("A password reset link has been sent to your email! Please Check")
+        return render_template('/reset_password/index.html')
     else:
-        return render_template("/")
+        return render_template('/reset_password/index.html')
 
 
-@app.route("/createUser")
-def createUser():
-    newUser = User(username="", mail="beratbozkurt1999@gmail.com", password="123456")
-    db.session.add(newUser)
-    db.session.commit()
-    db.create_all()
-    return "Created user"
+@app.route("/<string:hashCode>", methods=["GET", "POST"])
+def hashcode(hashCode):
+    try:
+        mail = serializer.loads(hashCode, salt='reset-password', max_age=600)
+    except BadTimeSignature:
+        flash("The password reset link has expired. Please request a new one.")
+        return redirect(url_for('index'))
+
+    # check if user exists in students table
+    student = Students.query.filter_by(email=mail).first()
+    if student:
+        check = student
+    else:
+        # check if user exists in lecturers table
+        lecturer = Lecturers.query.filter_by(email=mail).first()
+        if lecturer:
+            check = lecturer
+        else:
+            flash("User does not exist!")
+            return render_template('/reset_password/base.html')
+
+    if request.method == 'POST':
+        passw = request.form['passw']
+        cpassw = request.form['cpassw']
+        if passw == cpassw:
+            check.password = generate_password_hash(passw, method="sha256")
+            check.hashCode = None
+            db.session.commit()
+            flash("Your Password has been reset successfully!")
+            return redirect(url_for('index.show'))
+        else:
+            flash('Password fields do not match.')
+            return render_template('/reset_password/reset.html', hashCode=hashCode)
+    else:
+        return render_template('/reset_password/reset.html', hashCode=hashCode)
 
 
 if __name__ == "__main__":

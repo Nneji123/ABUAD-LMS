@@ -1,0 +1,30 @@
+{% extends 'reset_password/base.html' %}
+
+{% block title %}Password Reset{% endblock %}
+
+{% block content %}
+<div class="card text-center" style="width: 400px;">
+    <div class="card-header h5 text-white bg-pink">Reset Password</div>
+    <div class="card-body px-5">
+        <p class="card-text py-2">
+            Enter your new password and confirm it below.
+        </p>
+        <form method="post">
+            <div class="form-outline mb-3">
+                <input type="password" id="newPassword" name="passw" class="form-control" required />
+                <label class="form-label" for="newPassword">New Password</label>
+            </div>
+            <div class="form-outline mb-3">
+                <input type="password" id="confirmPassword" name="cpassw" class="form-control" required />
+                <label class="form-label" for="confirmPassword">Confirm Password</label>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Reset Password</button>
+            </div>
+        </form>
+        <div class="d-flex justify-content-between mt-4">
+            <!-- <a class="" href="/login">Go Back</a> -->
+        </div>
+    </div>
+</div>
+{% endblock %}

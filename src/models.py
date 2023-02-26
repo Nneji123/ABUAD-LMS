@@ -16,6 +16,7 @@ class Students(UserMixin, db.Model):
     password = db.Column(db.String)
     matric_number = db.Column(db.String(120), unique=True)
     role = db.Column(db.String(10))
+    hashCode = db.Column(db.String(120))
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -27,6 +28,7 @@ class Lecturers(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String)
     role = db.Column(db.String(10))
+    hashCode = db.Column(db.String(120))
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -46,22 +48,24 @@ class Admins(UserMixin, db.Model):
 class StudentsView(ModelView):
     column_searchable_list = ["username", "email", "matric_number"]
     column_filters = ["username", "email", "matric_number"]
-    column_exclude_list = ["password"]
+    column_exclude_list = ["password", "hashCode"]
 
     def on_model_change(self, form, model, is_created):
         if is_created:
-            model.password = generate_password_hash(model.password, method="sha256")
+            model.password = generate_password_hash(
+                model.password, method="sha256")
         return super(StudentsView, self).on_model_change(form, model, is_created)
 
 
 class LecturersView(ModelView):
     column_searchable_list = ["username", "email"]
     column_filters = ["username", "email"]
-    column_exclude_list = ["password"]
+    column_exclude_list = ["password", "hashCode"]
 
     def on_model_change(self, form, model, is_created):
         if is_created:
-            model.password = generate_password_hash(model.password, method="sha256")
+            model.password = generate_password_hash(
+                model.password, method="sha256")
         return super(StudentsView, self).on_model_change(form, model, is_created)
 
 
@@ -73,7 +77,8 @@ class AdminsView(ModelView):
 
     def on_model_change(self, form, model, is_created):
         if is_created:
-            model.password = generate_password_hash(model.password, method="sha256")
+            model.password = generate_password_hash(
+                model.password, method="sha256")
         return super(AdminsView, self).on_model_change(form, model, is_created)
 
 
