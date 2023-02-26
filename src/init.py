@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash
 from app import db
 from constants import *
 from models import Admins, Lecturers, Students
+
 load_dotenv()
 
 
@@ -74,7 +75,7 @@ def main():
         type_of_user="admin",
         username=ADMIN_USERNAME,
         password=ADMIN_PASSWORD,
-        role=ADMIN_ROLE 
+        role=ADMIN_ROLE,
     )
 
 

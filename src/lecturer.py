@@ -122,7 +122,7 @@ def attendance(course_code):
         # search for the attendance file for that date
         filename = f"{date}-attendance.csv"
         file_path = f"./frontend/static/courses/{course_code}/attendance/{filename}"
-        
+
         if os.path.exists(file_path):
             text = f"Attendance Report for COE {course_code}"
             df = pd.read_csv(file_path)
@@ -134,17 +134,17 @@ def attendance(course_code):
                 "/main_pages/attendance.html",
                 html_table=html_table,
                 text=text,
-                course=course
+                course=course,
             )
         else:
             return render_template(
                 "/main_pages/attendance.html",
                 text="No attendance data available for this date",
-                html_table = "No attendance data available.",
-                course = course
+                html_table="No attendance data available.",
+                course=course,
             )
     else:
-            # return render_template("/main_pages/attendance_date.html")
+        # return render_template("/main_pages/attendance_date.html")
         text = f"Attendance Report for COE {course_code}"
         df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
         if df is not None:
@@ -152,7 +152,8 @@ def attendance(course_code):
         else:
             html_table = "No attendance data available."
         return render_template(
-            "/main_pages/attendance.html", html_table=html_table, text=text, course=course
+            "/main_pages/attendance.html",
+            html_table=html_table,
+            text=text,
+            course=course,
         )
-
-

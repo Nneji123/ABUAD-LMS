@@ -17,7 +17,6 @@ def show():
     return render_template("/main_pages/student.html")
 
 
-
 @student.route("/student/<course_code>")
 @login_required
 def get_page(course_code):
@@ -40,7 +39,7 @@ def get_page(course_code):
         for f in os.listdir(f"./frontend/static/courses/{doc_dir}")
         if f.endswith(doc_exts)
     ]
-    
+
     return render_template(
         f"/course_pages/{course_code}.html",
         videos=videos,
