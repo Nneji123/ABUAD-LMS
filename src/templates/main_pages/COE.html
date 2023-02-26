@@ -1,5 +1,6 @@
-{% extends 'course_pages/course_base.html' %}
+{% extends 'main_pages/course_base.html' %}
 {% block content %}
+
 <body>
   <div class="wrapper">
     <!-- Sidebar  -->
@@ -52,10 +53,8 @@
           <!-- <i class="fas fa-align-left"></i> -->
           <span>Hello {{current_user.username}}!</span>
           <!-- </button> -->
-          <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
-            type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false"
+          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
             <i class="fas fa-align-justify"></i>
           </button>
@@ -73,21 +72,9 @@
         </div>
       </nav>
 
-      <h3 id="titlesss">Digital Signal Processing</h3>
+      <h3 id="titlesss">{{course_name}}</h3>
       <p id="contentsss">
-
-        Digital Signal Processing (DSP) is a technique for processing signals
-        that have been converted from analog to digital form. It involves the
-        manipulation of signals using mathematical algorithms and digital
-        computation techniques to extract useful information, remove unwanted
-        noise, enhance signal quality, or compress and transmit signals
-        efficiently. DSP is widely used in many applications such as audio and
-        image processing, speech recognition, radar, sonar, and biomedical
-        signal processing. The basic steps in DSP include sampling and
-        quantization of the signal, filtering, transform analysis, and signal
-        synthesis. DSP techniques are implemented using specialized software or
-        hardware devices called Digital Signal Processors (DSPs), which are
-        optimized for high-speed, low-power signal processing tasks.
+        {{info}}
       </p>
 
       <div class="document-list" id="doc-list">
@@ -124,42 +111,36 @@
       </div>
 
 
-      <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog"
-        aria-labelledby="pdfModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg"
-          role="document">
+      <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="pdfModalLabel">Document Viewer</h5>
-              <button type="button" class="close" data-dismiss="modal"
-                aria-label="Close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <iframe id="pdf-iframe" src="" width="100%" height="600px"
-                style="border: none;"></iframe>
+              <iframe id="pdf-iframe" src="" width="100%" height="600px" style="border: none;"></iframe>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Modal for video player -->
-      <div class="modal fade" id="videoModal" tabindex="-1" role="dialog"
-        aria-labelledby="videoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered"
-          role="document">
+      <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="videoModalLabel">Video Player</h5>
-              <button type="button" class="close" data-dismiss="modal"
-                aria-label="Close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <iframe id="video-iframe" width="1280" height="720" src=""
-                frameborder="0" allowfullscreen></iframe>
+              <iframe id="video-iframe" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
             </div>
           </div>
         </div>
@@ -168,5 +149,6 @@
 
     </div>
     {% endblock %}
-  </body>
+</body>
+
 </html>

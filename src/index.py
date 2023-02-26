@@ -4,7 +4,7 @@ from flask_login import logout_user
 
 from models import MyAdminIndexView
 
-index = Blueprint("index", __name__, template_folder="./frontend")
+index = Blueprint("index", __name__, template_folder="./templates")
 
 
 @index.route("/", methods=["GET"])

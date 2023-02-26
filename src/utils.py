@@ -217,7 +217,7 @@ def count_name_in_files(directory_path, name):
                 num_files += 1
 
     if num_files == 0:
-        return 0
+        return "No attendance data available for this course!"
 
     percentage = count / num_files * 100
     eligibility = "eligible" if percentage >= 70 else "not eligible"

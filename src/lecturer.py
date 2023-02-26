@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 from constants import *
 from utils import gen, gen_frames, get_total_attendance
 
-lecturer = Blueprint("lecturer", __name__, template_folder="./frontend")
+lecturer = Blueprint("lecturer", __name__, template_folder="./templates")
 login_manager = LoginManager()
 login_manager.init_app(lecturer)
 
@@ -49,8 +49,8 @@ def upload_file(course_code):
         flash("Error! Invalid filetype")
 
     # save the file to the desired location
-    os.makedirs(f"./frontend/static/courses/{course_code}/{file_type}", exist_ok=True)
-    file.save(f"./frontend/static/courses/{course_code}/{file_type}/{new_file_name}")
+    os.makedirs(f"./templates/static/courses/{course_code}/{file_type}", exist_ok=True)
+    file.save(f"./templates/static/courses/{course_code}/{file_type}/{new_file_name}")
     flash("File uploaded successfully!")
     return redirect(url_for("lecturer.show"))
 
@@ -66,7 +66,7 @@ def record_attendance(course_code):
 @login_required
 def detect_face_feed(course_code):
     return Response(
-        gen(file_path=f"./frontend/static/courses/{course_code}/attendance"),
+        gen(file_path=f"./templates/static/courses/{course_code}/attendance"),
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
 
@@ -121,7 +121,7 @@ def attendance(course_code):
         date = f"{year}-{month}-{day}"
         # search for the attendance file for that date
         filename = f"{date}-attendance.csv"
-        file_path = f"./frontend/static/courses/{course_code}/attendance/{filename}"
+        file_path = f"./templates/static/courses/{course_code}/attendance/{filename}"
 
         if os.path.exists(file_path):
             text = f"Attendance Report for COE {course_code}"
@@ -146,7 +146,7 @@ def attendance(course_code):
     else:
         # return render_template("/main_pages/attendance_date.html")
         text = f"Attendance Report for COE {course_code}"
-        df = get_total_attendance(f"./frontend/static/courses/{course_code}/attendance")
+        df = get_total_attendance(f"./templates/static/courses/{course_code}/attendance")
         if df is not None:
             html_table = df.to_html(index=False)
         else:

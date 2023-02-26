@@ -24,7 +24,7 @@ from werkzeug.security import generate_password_hash
 load_dotenv()
 
 
-app = Flask(__name__, static_folder="./frontend/static")
+app = Flask(__name__, static_folder="./templates/static")
 serializer = URLSafeTimedSerializer(os.getenv("SERIAL"))
 
 

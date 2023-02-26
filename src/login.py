@@ -5,7 +5,7 @@ from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from models import Admins, Lecturers, Students, db
 
 login = Blueprint(
-    "login", __name__, template_folder="./frontend", static_folder="./frontend"
+    "login", __name__, template_folder="./templates", static_folder="./templates"
 )
 
 login_manager = LoginManager()
@@ -72,7 +72,8 @@ def reset_password_request():
         else:
             flash("Email not found")
             return redirect(url_for("login"))
-        token = serializer.dumps({"id": id, "model": model}, salt="reset_password")
+        token = serializer.dumps(
+            {"id": id, "model": model}, salt="reset_password")
         if model == "student":
             student.reset_token = token
         elif model == "admin":
