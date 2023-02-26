@@ -1,5 +1,6 @@
-To run application:
-1. `pip install -r requirements.txt`
-2. `python init.py`
-3. `python app.py`
-4. Check `http://localhost:3000/`
+# To run application:
+1. `cd src`
+2. `pip install -r requirements.txt`
+3. `python init.py`
+4. `python app.py`
+5. Check `http://localhost:3000/`
