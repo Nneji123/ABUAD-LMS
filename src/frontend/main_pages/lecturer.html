@@ -6,6 +6,11 @@
       shrink-to-fit=no">
     <title>Lecturer Home</title>
     <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+      href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+      src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
     <link rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
       <link rel="stylesheet" type="text/css" href="{{
@@ -103,6 +108,7 @@
       {% endfor %}
       {% block content %}{% endblock %}
 
+    <div class="document-list" id="course-table">
       <!-- Course Table -->
       <h2 class="text-center my-5">Course List</h2>
       <table class="table">
@@ -251,6 +257,13 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <script>
+    $('#course-table table').DataTable();
+    </script>
+
+
+
       <!-- jQuery and Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
       <script
