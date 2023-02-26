@@ -34,11 +34,7 @@ def upload_file(course_code):
     print(file_name)
     file_extension = os.path.splitext(file_name)[-1].lower()
     file_names, file_extensions = os.path.splitext(file_name)
-    new_file_name = f"{str(course_code)}-{file_names}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}{file_extensions}"
-    # course_code = file_names
-    print(new_file_name)
-    print(file_extension)
-    print(file_extensions)
+    new_file_name = f"{str(course_code)}-{file_names}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}{file_extensions.lower()}"
 
     if not any(course_code in valid_code for valid_code in VALID_COURSE_CODES):
         return "Error: Invalid course code"
@@ -145,6 +141,7 @@ def attendance(course_code):
             return render_template(
                 "/main_pages/attendance.html",
                 text="No attendance data available for this date",
+                html_table = "No attendance data available.",
                 course = course
             )
     else:

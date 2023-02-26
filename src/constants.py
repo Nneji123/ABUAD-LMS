@@ -103,8 +103,32 @@ COURSES_INFO = {
     },
     "507": {
         "doc_dir": "507/documents",
-        "doc_exts": (".doc",),
+        "doc_exts": (".doc",".pdf",".docx"),
         "video_dir": "507/video",
+        "video_ext": ".mp4",
+    },
+    "511": {
+        "doc_dir": "511/documents",
+        "doc_exts": (".doc",".pdf",".docx"),
+        "video_dir": "511/video",
+        "video_ext": ".mp4",
+    },
+    "505": {
+        "doc_dir": "505/documents",
+        "doc_exts": (".doc",".pdf",".docx"),
+        "video_dir": "505/video",
+        "video_ext": ".mp4",
+    },
+    "515": {
+        "doc_dir": "515/documents",
+        "doc_exts": (".doc",".pdf",".docx"),
+        "video_dir": "515/video",
+        "video_ext": ".mp4",
+    },
+    "519": {
+        "doc_dir": "519/documents",
+        "doc_exts": (".doc",".pdf",".docx"),
+        "video_dir": "519/video",
         "video_ext": ".mp4",
     },
 }

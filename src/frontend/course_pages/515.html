@@ -1,0 +1,171 @@
+{% extends 'course_pages/course_base.html' %}
+{% block content %}
+<body>
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>COE {{course}} Homepage</h3>
+      </div>
+
+      <!-- <ul class="list-unstyled components">
+            <p>COE {{ course }}</p> -->
+      <ul class="list-unstyled components">
+        <!-- <p>Dummy Heading</p> -->
+        <li>
+          <a href="#" id="documents-btn">Documents</a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <!-- {% for doc in docs %}
+            <li>
+              {{ doc }}
+            </li>
+            {% endfor %} -->
+          </ul>
+        </li>
+        <li>
+          <a href="#pageSubmenu" id="videos-btn">Videos</a>
+          <ul class="collapse list-unstyled" id="pageSubmenu">
+          </ul>
+        </li>
+        <!-- <li>
+          <a href="#">Assignments</a>
+        </li> -->
+        <!-- <div id="attendance-record"></div> -->
+        <li>
+          <a href="#" id="attendances">Attendance Record</a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="func2" style="display:none;">
+      <video id="player" controls></video>
+    </div>
+
+    <!-- Page Content  -->
+    <div id="content">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <!-- <button type="button" id="sidebarCollapse" class="btn btn-info"> -->
+          <!-- <i class="fas fa-align-left"></i> -->
+          <span>Hello {{current_user.username}}!</span>
+          <!-- </button> -->
+          <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
+            type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/student">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <h3 id="titlesss">Digital Signal Processing</h3>
+      <p id="contentsss">
+
+        Digital Signal Processing (DSP) is a technique for processing signals
+        that have been converted from analog to digital form. It involves the
+        manipulation of signals using mathematical algorithms and digital
+        computation techniques to extract useful information, remove unwanted
+        noise, enhance signal quality, or compress and transmit signals
+        efficiently. DSP is widely used in many applications such as audio and
+        image processing, speech recognition, radar, sonar, and biomedical
+        signal processing. The basic steps in DSP include sampling and
+        quantization of the signal, filtering, transform analysis, and signal
+        synthesis. DSP techniques are implemented using specialized software or
+        hardware devices called Digital Signal Processors (DSPs), which are
+        optimized for high-speed, low-power signal processing tasks.
+      </p>
+
+      <div class="document-list" id="doc-list">
+        <h4>Document List</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Document Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="document-table-body">
+            <!-- Document list will be populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="document-list" id="video-list" style="display:none;">
+        <h4>Video List</h4>
+        <!-- Video List Table -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>View</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody id="video-table-body">
+            <!-- Video list will be populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog"
+        aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg"
+          role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="pdfModalLabel">PDF Viewer</h5>
+              <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <iframe id="pdf-iframe" src="" width="100%" height="600px"
+                style="border: none;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for video player -->
+      <div class="modal fade" id="videoModal" tabindex="-1" role="dialog"
+        aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered"
+          role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="videoModalLabel">Video Player</h5>
+              <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <iframe id="video-iframe" width="1280" height="720" src=""
+                frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    {% endblock %}
+  </body>
+</html>
