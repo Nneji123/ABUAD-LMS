@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,
@@ -7,20 +8,15 @@
     <title>Lecturer Home</title>
     <!-- Bootstrap CSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-      href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
-      <link
-      rel="templates"
-      type="image/ico"
-      href="{{ url_for('static',filename='img/logo.png') }}"
-      />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+    <link rel="templates" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
     <script type="text/javascript" charset="utf8"
       src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
-    <link rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-      <link rel="stylesheet" type="text/css" href="{{
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{
         url_for('static',filename='main.css') }}">
   </head>
+
   <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-md navbar-light navbar-bg
@@ -28,11 +24,12 @@
       <div class="container">
         <a class="navbar-brand" href="/lecturer">
           <style>
-          .navbar-brand img {
+            .navbar-brand img {
               height: 50px;
               width: auto;
-          }
-          .gradient-custom-2 {
+            }
+
+            .gradient-custom-2 {
               /* fallback for old browsers */
               background: #fccb90;
 
@@ -42,14 +39,13 @@
               /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
               background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
 
-              }
-      </style>
+            }
+          </style>
           <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD
             LMS Logo">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse"
-          data-target="#navbarNav" aria-controls="navbarNav"
-          aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -109,179 +105,164 @@
         </div>
       </div>
 
+
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <div class="alert alert-{{category}}" role="alert">
+        {{ message }}
       </div>
       {% endfor %}
       {% endif %}
       {% endwith %}
       {% block content %}{% endblock %}
 
-    <div class="document-list" id="course-table">
-      <!-- Course Table -->
-      <h2 class="text-center my-5">Course List</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Course Code</th>
-            <th>Course Name</th>
-            <th>Level</th>
-            <th>Upload Course Files</th>
-            <th>Register Student</th>
-            <th>Record Attendance</th>
-            <th>View Attendance</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>COE 501</td>
-            <td>Neural Networks and Fuzzy Logic Programming</td>
-            <td>500</td>
-            <td>
-              <form action="/upload/501" method="post"
-                enctype="multipart/form-data">
-                <label for="file-upload-501" class="btn btn-primary btn-sm">Choose
-                  file</label>
-                <input id="file-upload-501" type="file" name="file_501"
-                  style="display:none;">
-                <button type="submit" class="btn btn-success ms-2 btn-sm">Upload</button>
-              </form>
-            </td>
-            <td><a href="/register_student/501">Register</a></td>
-            <td><a href="/lecturer/record_attendance/501">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/501">View Attendance</a></td>
-          </tr>
-          <tr>
-            <td>COE 503</td>
-            <td>Modelling and Simulation</td>
-            <td>500</td>
-            <td>
-              <form action="/upload/503" method="post"
-                enctype="multipart/form-data">
-                <label for="file-upload-503" class="btn btn-primary btn-sm">Choose
-                  file</label>
-                <input id="file-upload-503" type="file" name="file_503"
-                  style="display:none;">
-                <button type="submit" class="btn btn-success ms-2 btn-sm">Upload</button>
-              </form>
-            </td>
-            <td><a href="/register_student/503">Register</a></td>
-            <td><a href="/lecturer/record_attendance/503">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/503">View Attendance</a></td>
-          </tr>
-          <tr>
-            <td>COE 505</td>
-            <td>Software Engineering</td>
-            <td>500</td>
-            <td>
-              <form action="/upload/505" method="post"
-                enctype="multipart/form-data">
-                <label for="file-upload-505" class="btn btn-primary btn-sm">Choose
-                  file</label>
-                <input id="file-upload-505" type="file" name="file_505"
-                  style="display:none;">
-                <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
-              </form>
-            </td>
-            <td><a href="/register_student/505">Register</a></td>
-            <td><a href="/lecturer/record_attendance/505">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/505">View Attendance</a></td>
-          </tr>
-          <tr>
-            <td>COE 507</td>
-            <td>Digital Signal Processing</td>
-            <td>500</td>
-            <td>
-              <form action="/upload/507" method="post"
-                enctype="multipart/form-data">
-                <label for="file-upload-507" class="btn btn-primary btn-sm">Choose file</label>
-                <input id="file-upload-507" type="file" name="file_507"
-                  style="display:none;">
-                <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
-              </form>
-            </td>
-            <td><a href="/register_student/507">Register</a></td>
-            <td><a href="/lecturer/record_attendance/507">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/507">View Attendance</a></td>
-          </tr>
-          <tr>
-            <td>COE 511</td>
-            <td>Computer Graphics</td>
-            <td>500</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <form action="/upload/511" method="post"
-                  enctype="multipart/form-data">
-                  <label for="file-upload-511" class="btn btn-primary btn-sm">Choose
+      <div class="document-list" id="course-table">
+        <!-- Course Table -->
+        <h2 class="text-center my-5">Course List</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Course Code</th>
+              <th>Course Name</th>
+              <th>Level</th>
+              <th>Upload Course Files</th>
+              <th>Register Student</th>
+              <th>Record Attendance</th>
+              <th>View Attendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>COE 501</td>
+              <td>Neural Networks and Fuzzy Logic Programming</td>
+              <td>500</td>
+              <td>
+                <form action="/upload/501" method="post" enctype="multipart/form-data">
+                  <label for="file-upload-501" class="btn btn-primary btn-sm">Choose
                     file</label>
-                  <input id="file-upload-511" type="file" name="file_511"
-                    style="display:none;">
+                  <input id="file-upload-501" type="file" name="file_501" style="display:none;">
+                  <button type="submit" class="btn btn-success ms-2 btn-sm">Upload</button>
+                </form>
+              </td>
+              <td><a href="/register_student/501">Register</a></td>
+              <td><a href="/lecturer/record_attendance/501">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/501">View Attendance</a></td>
+            </tr>
+            <tr>
+              <td>COE 503</td>
+              <td>Modelling and Simulation</td>
+              <td>500</td>
+              <td>
+                <form action="/upload/503" method="post" enctype="multipart/form-data">
+                  <label for="file-upload-503" class="btn btn-primary btn-sm">Choose
+                    file</label>
+                  <input id="file-upload-503" type="file" name="file_503" style="display:none;">
+                  <button type="submit" class="btn btn-success ms-2 btn-sm">Upload</button>
+                </form>
+              </td>
+              <td><a href="/register_student/503">Register</a></td>
+              <td><a href="/lecturer/record_attendance/503">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/503">View Attendance</a></td>
+            </tr>
+            <tr>
+              <td>COE 505</td>
+              <td>Software Engineering</td>
+              <td>500</td>
+              <td>
+                <form action="/upload/505" method="post" enctype="multipart/form-data">
+                  <label for="file-upload-505" class="btn btn-primary btn-sm">Choose
+                    file</label>
+                  <input id="file-upload-505" type="file" name="file_505" style="display:none;">
                   <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
                 </form>
-              </div>
-            </td>
-            <td><a href="/register_student/511">Register</a></td>
-            <td><a href="/lecturer/record_attendance/511">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/511">View Attendance</a></td>
-          </tr>
-          <tr>
-            <td>COE 515</td>
-            <td>Natural Language Processing</td>
-            <td>500</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <form action="/upload/515" method="post"
-                  enctype="multipart/form-data">
-                  <label for="file-upload-515" class="btn btn-primary btn-sm">Choose
-                    file</label>
-                  <input id="file-upload-515" type="file" name="file_515"
-                    style="display:none;">
+              </td>
+              <td><a href="/register_student/505">Register</a></td>
+              <td><a href="/lecturer/record_attendance/505">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/505">View Attendance</a></td>
+            </tr>
+            <tr>
+              <td>COE 507</td>
+              <td>Digital Signal Processing</td>
+              <td>500</td>
+              <td>
+                <form action="/upload/507" method="post" enctype="multipart/form-data">
+                  <label for="file-upload-507" class="btn btn-primary btn-sm">Choose file</label>
+                  <input id="file-upload-507" type="file" name="file_507" style="display:none;">
                   <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
                 </form>
-              </div>
-            </td>
-            <td><a href="/register_student/515">Register</a></td>
-            <td><a href="/lecturer/record_attendance/515">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/515">View Attendance</a></td>
-          </tr>
-          <tr>
-            <td>COE 519</td>
-            <td>Robotics</td>
-            <td>500</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <form action="/upload/519" method="post"
-                  enctype="multipart/form-data">
-                  <label for="file-upload-519" class="btn btn-primary btn-sm">Choose
-                    file</label>
-                  <input id="file-upload-519" type="file" name="file_519"
-                    style="display:none;">
-                  <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
-                </form>
-              </div>
-            </td>
-            <td><a href="/register_student/519">Register</a></td>
-            <td><a href="/lecturer/record_attendance/519">Record Attendance</a></td>
-            <td><a href="/lecturer/view_attendance/519">View Attendance</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <script>
-    $('#course-table table').DataTable();
-    </script>
+              </td>
+              <td><a href="/register_student/507">Register</a></td>
+              <td><a href="/lecturer/record_attendance/507">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/507">View Attendance</a></td>
+            </tr>
+            <tr>
+              <td>COE 511</td>
+              <td>Computer Graphics</td>
+              <td>500</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <form action="/upload/511" method="post" enctype="multipart/form-data">
+                    <label for="file-upload-511" class="btn btn-primary btn-sm">Choose
+                      file</label>
+                    <input id="file-upload-511" type="file" name="file_511" style="display:none;">
+                    <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+                  </form>
+                </div>
+              </td>
+              <td><a href="/register_student/511">Register</a></td>
+              <td><a href="/lecturer/record_attendance/511">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/511">View Attendance</a></td>
+            </tr>
+            <tr>
+              <td>COE 515</td>
+              <td>Natural Language Processing</td>
+              <td>500</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <form action="/upload/515" method="post" enctype="multipart/form-data">
+                    <label for="file-upload-515" class="btn btn-primary btn-sm">Choose
+                      file</label>
+                    <input id="file-upload-515" type="file" name="file_515" style="display:none;">
+                    <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+                  </form>
+                </div>
+              </td>
+              <td><a href="/register_student/515">Register</a></td>
+              <td><a href="/lecturer/record_attendance/515">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/515">View Attendance</a></td>
+            </tr>
+            <tr>
+              <td>COE 519</td>
+              <td>Robotics</td>
+              <td>500</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <form action="/upload/519" method="post" enctype="multipart/form-data">
+                    <label for="file-upload-519" class="btn btn-primary btn-sm">Choose
+                      file</label>
+                    <input id="file-upload-519" type="file" name="file_519" style="display:none;">
+                    <button type="submit" class="btn btn-success ms-3 btn-sm">Upload</button>
+                  </form>
+                </div>
+              </td>
+              <td><a href="/register_student/519">Register</a></td>
+              <td><a href="/lecturer/record_attendance/519">Record Attendance</a></td>
+              <td><a href="/lecturer/view_attendance/519">View Attendance</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <script>
+        $('#course-table table').DataTable();
+      </script>
 
 
 
       <!-- jQuery and Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-      <script
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-      <script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    </body>
-  </html>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+
+</html>

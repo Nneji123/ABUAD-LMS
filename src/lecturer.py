@@ -66,14 +66,22 @@ def upload_file(course_code):
         return "Error: Invalid course code"
 
     file_type = ""
+    expected_extensions = []
     if "assignment" in file_name.lower() and file_extension in ASSIGNMENT_EXTENSIONS:
         file_type = "assignment"
+        expected_extensions = ASSIGNMENT_EXTENSIONS
     elif file_extension in DOC_EXTENSIONS:
         file_type = "documents"
+        expected_extensions = DOC_EXTENSIONS
     elif file_extension in VIDEO_EXTENSIONS:
         file_type = "video"
+        expected_extensions = VIDEO_EXTENSIONS
     else:
         flash("Error! Invalid filetype", "danger")
+
+    if file_extension not in expected_extensions:
+        # flash(f"Error! Invalid file extension for {file_type}", "danger")
+        return redirect(url_for("lecturer.show"))
 
     # save the file to the desired location
     os.makedirs(
