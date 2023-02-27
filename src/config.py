@@ -1,8 +1,11 @@
 """
 This script contains configurations for running the application in different modes, development (DEV) and production (PROD).
+
 It loads the necessary environment variables from a .env file using the python-dotenv library and defines two dictionaries,
 one for each mode, that store the specific configuration values such as the database URI, login disabled, port, debug, mail server,
-mail port, mail username, mail password, mail use TLS, mail use SSL, and secret key. These dictionaries can be used to set up the Flask
+mail port, mail username, mail password, mail use TLS, mail use SSL, and secret key. 
+
+These dictionaries can be used to set up the Flask
 application by accessing the required configuration values from the respective mode's dictionary.
 """
 
