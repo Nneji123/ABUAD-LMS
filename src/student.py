@@ -61,7 +61,7 @@ def get_page(course_code):
     ]
 
     return render_template(
-        "/pages/COE.html",
+        "/pages/coe.html",
         info=info,
         course_name=course_name,
         videos=videos,

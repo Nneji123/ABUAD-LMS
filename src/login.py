@@ -38,11 +38,11 @@ def show():
             user = Admins.query.filter_by(username=username).first()
 
         if not user:
-            flash("This user is not authorized to view this page!")
+            flash("This user is not authorized to view this page!", "error")
             return render_template("/pages/login.html")
 
         if not user.check_password(password):
-            flash("Incorrect password!")
+            flash("Incorrect password!", "error")
             return render_template("/pages/login.html")
 
         login_user(user)

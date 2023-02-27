@@ -55,7 +55,7 @@ def show():
 def upload_file(course_code):
     file = request.files[f"file_{course_code}"]
     if file.filename == "":
-        flash("Error! No file selected")
+        flash("Error! No file selected", "error")
 
     file_name = secure_filename(file.filename)
     file_extension = os.path.splitext(file_name)[-1].lower()
@@ -73,14 +73,14 @@ def upload_file(course_code):
     elif file_extension in VIDEO_EXTENSIONS:
         file_type = "video"
     else:
-        flash("Error! Invalid filetype")
+        flash("Error! Invalid filetype", "error")
 
     # save the file to the desired location
     os.makedirs(
         f"./templates/static/courses/{course_code}/{file_type}", exist_ok=True)
     file.save(
         f"./templates/static/courses/{course_code}/{file_type}/{new_file_name}")
-    flash("File uploaded successfully!")
+    flash("File uploaded successfully!", "success")
     return redirect(url_for("lecturer.show"))
 
 
@@ -135,12 +135,12 @@ def tasks(course_code):
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
             if os.path.exists(f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
                               ):
-                flash("This student is already registered!")
+                flash("This student is already registered!", "error")
             else:
                 im_pil.save(
                     f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
                 )
-                flash("Registered Student Successfully!")
+                flash("Registered Student Successfully!", "success")
                 print("done")
     elif request.method == "GET":
         return render_template("/pages/register.html", course_code=course_code)

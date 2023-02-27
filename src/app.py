@@ -175,7 +175,7 @@ def reset_password():
             if lecturer:
                 username = lecturer.username
             else:
-                flash("User does not exist!")
+                flash("User does not exist!", "error")
                 return render_template("/reset_password/index.html")
 
         hashCode = serializer.dumps(mail, salt="reset-password")
@@ -194,7 +194,7 @@ def reset_password():
             link=link,
         )
 
-        flash("A password reset link has been sent to your email! Please Check")
+        flash("A password reset link has been sent to your email!", "success")
         return render_template("/reset_password/index.html")
     else:
         return render_template("/reset_password/index.html")
@@ -205,7 +205,7 @@ def hashcode(hashCode):
     try:
         mail = serializer.loads(hashCode, salt="reset-password", max_age=600)
     except BadTimeSignature:
-        flash("The password reset link has expired. Please request a new one.")
+        flash("The password reset link has expired. Please request a new one.", "error")
         return redirect(url_for("index.show"))
 
     # check if user exists in students table
@@ -218,7 +218,7 @@ def hashcode(hashCode):
         if lecturer:
             check = lecturer
         else:
-            flash("User does not exist!")
+            flash("User does not exist!","error")
             return render_template("/reset_password/base.html")
 
     if request.method == "POST":
@@ -228,10 +228,10 @@ def hashcode(hashCode):
             check.password = generate_password_hash(passw, method="sha256")
             check.hashCode = None
             db.session.commit()
-            flash("Your Password has been reset successfully!")
+            flash("Your Password has been reset successfully!", "success")
             return redirect(url_for("index.show"))
         else:
-            flash("Password fields do not match.")
+            flash("Password fields do not match.", "error")
             return render_template("/reset_password/reset.html", hashCode=hashCode)
     else:
         return render_template("/reset_password/reset.html", hashCode=hashCode)
