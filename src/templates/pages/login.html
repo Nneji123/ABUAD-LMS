@@ -106,16 +106,9 @@
                         </div>
                       </div>
 
-
-                      {% with messages = get_flashed_messages(with_categories=true) %}
-                      {% if messages %}
-                      {% for category, message in messages %}
-                      <div class="alert alert-{{category}}" role="alert">
-                        {{ message }}
-                      </div>
+                      {% for message in get_flashed_messages() %}
+                      <div class="alert alert-danger">{{ message }}</div>
                       {% endfor %}
-                      {% endif %}
-                      {% endwith %}
                       {% block content %}{% endblock %}
 
                       <div class="text-center pt-1 mb-5 pb-1">
