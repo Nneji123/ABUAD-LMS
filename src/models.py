@@ -1,3 +1,12 @@
+"""
+This module defines the database models and views for the Flask web application. 
+It uses SQLAlchemy to interact with the database, which stores information about students, lecturers, and admins. 
+The models define the schema for each table, and the views define how the data should be displayed and edited in the Flask-Admin dashboard. 
+The views also handle password hashing and authentication. 
+The MyAdminIndexView class restricts access to the dashboard to authenticated admins only.
+"""
+
+
 import uuid
 
 from flask_admin import AdminIndexView
@@ -51,9 +60,7 @@ class StudentsView(ModelView):
     column_exclude_list = ["password", "hashCode"]
 
     def on_model_change(self, form, model, is_created):
-        if is_created:
-            model.password = generate_password_hash(
-                model.password, method="sha256")
+        model.password = generate_password_hash(model.password, method="sha256")
         return super(StudentsView, self).on_model_change(form, model, is_created)
 
 
@@ -63,10 +70,8 @@ class LecturersView(ModelView):
     column_exclude_list = ["password", "hashCode"]
 
     def on_model_change(self, form, model, is_created):
-        if is_created:
-            model.password = generate_password_hash(
-                model.password, method="sha256")
-        return super(StudentsView, self).on_model_change(form, model, is_created)
+        model.password = generate_password_hash(model.password, method="sha256")
+        return super(LecturersView, self).on_model_change(form, model, is_created)
 
 
 class AdminsView(ModelView):
@@ -76,9 +81,7 @@ class AdminsView(ModelView):
     form_excluded_columns = ["id"]
 
     def on_model_change(self, form, model, is_created):
-        if is_created:
-            model.password = generate_password_hash(
-                model.password, method="sha256")
+        model.password = generate_password_hash(model.password, method="sha256")
         return super(AdminsView, self).on_model_change(form, model, is_created)
 
 

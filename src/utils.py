@@ -1,3 +1,33 @@
+"""
+The code is a facial recognition attendance system that uses OpenCV, face_recognition and other libraries to recognize faces in real-time, match them to pre-registered faces, and save attendance records to a CSV file.
+
+The script contains two functions:
+
+    `save_attendance` - This function saves the attendance data to a CSV file. It takes in an input string of the format: "Name-Matric Number-Department" and saves it to a CSV file with the current date as its name. If there is already an existing attendance record for that student on that day, it will not save another one.
+
+    `gen` - This function generates the video feed. It takes in a file path as an argument and uses that to save the attendance data. If no file path is given, it defaults to using 'attendance_data/attendance_data.csv'.
+
+Parameters:
+
+    attendance_str (str): Pass in the string that was captured from the camera.
+    location (str): Specify the location of the attendance file.
+    file_path (str): Save the attendance in a csv file.
+    course (str): The name of the course to get registered faces.
+
+Returns:
+
+    False if the name and date are already in the file.
+
+Note:
+
+    Before running the script, make sure to create the attendance_data directory in the same location as the script, and a subdirectory called registered_faces within the courses directory.
+
+
+
+
+"""
+
+
 import csv
 import os
 from datetime import datetime
@@ -6,10 +36,6 @@ import cv2
 import face_recognition
 import numpy as np
 import pandas as pd
-
-from flask_mail import Message
-from flask import render_template
-
 
 from constants import *
 
@@ -72,7 +98,7 @@ def save_attendance(attendance_str: str, location: str):
         )
 
 
-def gen(file_path):
+def gen(file_path, course):
     """
     The gen function is used to generate the video feed. It takes in a file path as an argument, and uses that
     to save the attendance data. If no file path is given, it defaults to using 'attendance_data/attendance_data.csv'
@@ -83,7 +109,7 @@ def gen(file_path):
     global capture, out, face
     IMAGE_FILES = []
     filename = []
-    dir_path = "./registered_faces"
+    dir_path = f"./templates/static/courses/{course}/registered_faces"
 
     cap = cv2.VideoCapture(0)
 
@@ -116,19 +142,17 @@ def gen(file_path):
         imgc = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         fasescurrent = face_recognition.face_locations(imgc)
-        encode_fasescurrent = face_recognition.face_encodings(
-            imgc, fasescurrent)
+        encode_fasescurrent = face_recognition.face_encodings(imgc, fasescurrent)
 
         # faceloc- one by one it grab one face location from fasescurrent
         # than encodeFace grab encoding from encode_fasescurrent
         # we want them all in same loop so we are using zip
         for encodeFace, faceloc in zip(encode_fasescurrent, fasescurrent):
-            matches_face = face_recognition.compare_faces(
-                encodeListknown, encodeFace)
-            face_distence = face_recognition.face_distance(
-                encodeListknown, encodeFace)
+            matches_face = face_recognition.compare_faces(encodeListknown, encodeFace)
+            face_distence = face_recognition.face_distance(encodeListknown, encodeFace)
             # print(face_distence)
             # finding minimum distence index that will return best match
+
             matchindex = np.argmin(face_distence)
 
             if matches_face[matchindex]:
@@ -140,14 +164,12 @@ def gen(file_path):
                     if save_attendance(name, file_path) != False
                     else "Attendance already recorded"
                 )
-                text_size = cv2.getTextSize(
-                    text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
+                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
                 text_x = int((img.shape[1] - text_size[0]) / 2)
                 text_y = int((img.shape[0] + text_size[1]) / 2)
                 y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-                cv2.rectangle(img, (x1, y2 - 35), (x2, y2),
-                              (255, 0, 0), 2, cv2.FILLED)
+                cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
 
                 cv2.putText(
                     img,
@@ -259,8 +281,7 @@ def get_total_attendance(directory_path):
     data = []
     for name, attendance_data in student_attendance.items():
         total_classes = len(os.listdir(directory_path))
-        attendance_percentage = attendance_data["Attendance"] / \
-            total_classes * 100
+        attendance_percentage = attendance_data["Attendance"] / total_classes * 100
         data.append(
             {
                 "Name": name,
@@ -271,8 +292,7 @@ def get_total_attendance(directory_path):
         )
 
     df = pd.DataFrame(
-        data, columns=["Name", "Matric Number",
-                       "Department", "Attendance Percentage"]
+        data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"]
     )
     # df.set_index("Name", inplace=True)
     # df.to_csv("total_attendance.csv")

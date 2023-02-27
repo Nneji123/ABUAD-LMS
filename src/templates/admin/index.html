@@ -2,64 +2,77 @@
 {% block body %}
 {{ super() }}
 
+
 <div class="row">
-    <h1>ABUAD LMS Admin Page</h1>
-    <p class="lead">
+    <!-- <h1>ABUAD LMS Admin Page</h1> -->
+    <!-- <p class="lead">
         Welcome to the admin page of the ABUAD LMS.
-    </p>
+    </p> -->
     <p>
-        The ABUAD LMS provides a comprehensive learning management system for students, faculty and staff at Afe Babalola University, Ado-Ekiti (ABUAD). The system offers a range of features to support teaching, learning and administration at the university.
+        The ABUAD LMS provides a comprehensive learning management system for students, faculty and staff at Afe
+        Babalola University, Ado-Ekiti (ABUAD). The system offers a range of features to support teaching, learning and
+        administration at the university.
     </p>
     <p>
         Some of the key features of ABUAD LMS include:
     </p>
     <ul>
-        <li>Facial recognition based attendance system, which helps track attendance in real-time and minimizes the possibility of errors.</li>
-        <li>Video and document viewing and uploading, allowing instructors to share lecture recordings and learning materials with students.</li>
-        <li>Course uploads and exam eligibility with attendance recording, which provides a centralized location for course materials, assignments, and exams.</li>
+        <li>Facial recognition based attendance system, which helps track attendance in real-time and minimizes the
+            possibility of errors.</li>
+        <li>Video and document viewing and uploading, allowing instructors to share lecture recordings and learning
+            materials with students.</li>
+        <li>Course uploads and exam eligibility with attendance recording, which provides a centralized location for
+            course materials, assignments, and exams.</li>
     </ul>
     <p>
-        The ABUAD LMS is designed to be user-friendly and intuitive, with easy navigation and clear instructions for both instructors and students. It also provides a range of tools and resources to help instructors create engaging and interactive learning experiences for their students.
+        The ABUAD LMS is designed to be user-friendly and intuitive, with easy navigation and clear instructions for
+        both instructors and students. It also provides a range of tools and resources to help instructors create
+        engaging and interactive learning experiences for their students.
     </p>
 </div>
 {% endblock body %}
-
+{% block extra_head %}
+{{ super()}}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+{% endblock %}
 {% block head %}
-    {{ super() }}
-    
-    <style>
-        .navbar-brand img {
-            height: 30px;
-            width: auto;
-        }
-        .gradient-custom-2 {
-            /* fallback for old browsers */
-            background: #fccb90;
+{{ super() }}
 
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+<style>
+    .navbar-brand img {
+        height: 30px;
+        width: auto;
+    }
 
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
-            }
-    </style>
+    .gradient-custom-2 {
+        /* fallback for old browsers */
+        background: #fccb90;
+
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+    }
+</style>
 {% endblock %}
 
 {% block brand %}
 
-    <a class="navbar-brand" href="/admin">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo">
-    </a>
+
+<a class="navbar-brand" href="/admin">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo">
+</a>
 {% endblock %}
 
 {% block access_control %}
-    {{ super() }}
+{{ super() }}
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('admin.logout') }}"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
-            {% endif %}
-        </li>
-    </ul>
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('admin.logout') }}"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
+        {% endif %}
+    </li>
+</ul>
 {% endblock %}

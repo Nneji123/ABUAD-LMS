@@ -1,3 +1,22 @@
+"""
+This module contains constants that are used in various parts of the project.
+
+Global variables such as capture, rec_frame, grey, switch, neg, face, and rec are initialized to zero and used in the face recognition system.
+
+The following constants are defined in this module:
+
+
+- VALID_COURSE_CODES: A list of valid course codes for the lecturer.py module.
+- TYPES: A list of strings representing the types of directories that can be created.
+- VIDEO_EXTENSIONS: A list of video file extensions.
+- DOC_EXTENSIONS: A list of document file extensions.
+- ASSIGNMENT_EXTENSIONS: A list of file extensions that are valid for assignment submissions.
+- ALLOWED_EXTENSIONS: A set of file extensions that are allowed for file uploads.
+- COURSES_INFO: A dictionary containing information about each course offered in the project.
+
+"""
+
+
 global capture, rec_frame, grey, switch, neg, face, rec, out
 capture = 0
 grey = 0
@@ -11,7 +30,7 @@ rec = 0
 VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
 
 # create a function to make new directories from a list of strings
-TYPES = ["video", "assignment", "documents", "attendance"]
+TYPES = ["video", "assignment", "documents", "attendance", "registered_faces"]
 
 
 VIDEO_EXTENSIONS = [
@@ -104,7 +123,10 @@ COURSES_INFO = {
         in situations with uncertain or imprecise data.""",
         "doc_dir": "501/documents",
         "doc_exts": (
-            ".doc", ".docx", ".pdf",),
+            ".doc",
+            ".docx",
+            ".pdf",
+        ),
         "video_dir": "501/video",
         "video_ext": ".mp4",
     },
@@ -141,7 +163,6 @@ COURSES_INFO = {
         hardware devices called Digital Signal Processors (DSPs), which are
         optimized for high-speed, low-power signal processing tasks.        
         """,
-
         "doc_dir": "507/documents",
         "doc_exts": (".doc", ".pdf", ".docx"),
         "video_dir": "507/video",

@@ -1,11 +1,38 @@
+"""
+This module contains the code for the lecturer's view of the web application. It includes functionalities such as uploading files, recording attendance, registering students, and viewing attendance records.
+
+The lecturer blueprint is registered with the login manager to ensure that the pages are only accessible by authenticated users.
+
+This module uses Flask for the web framework, OpenCV for video processing, and Pandas and PIL for data handling and image processing, respectively.
+
+It includes the following functions:
+
+    show: Renders the lecturer homepage.
+    upload_file: Uploads files to the application's file system.
+    record_attendance: Renders the page for recording attendance and provides a video feed for the facial recognition.
+    detect_face_feed: Generates a video feed for the facial recognition.
+    index: Renders the page for registering students.
+    video_feed: Provides a video feed for the webcam.
+    tasks: Saves the images of registered students in the application's file system.
+    attendance: Renders the page for viewing attendance records.
+"""
+
+
 import os
 from datetime import datetime
 
 import cv2
 import pandas as pd
-from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request, url_for)
-from flask_login import LoginManager, current_user, login_required
+from flask import (
+    Blueprint,
+    Response,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+from flask_login import LoginManager, login_required
 from PIL import Image
 from werkzeug.utils import secure_filename
 
@@ -20,7 +47,7 @@ login_manager.init_app(lecturer)
 @lecturer.route("/lecturer", methods=["GET"])
 @login_required
 def show():
-    return render_template("/main_pages/lecturer.html")
+    return render_template("/pages/lecturer.html")
 
 
 @lecturer.route("/upload/<course_code>", methods=["POST"])
@@ -59,23 +86,26 @@ def upload_file(course_code):
 @login_required
 def record_attendance(course_code):
     course = course_code
-    return render_template(f"/main_pages/record_attendance.html", course=course)
+    return render_template(f"/pages/record_attendance.html", course=course)
 
 
 @lecturer.route("/detect_face_feed/<course_code>")
 @login_required
 def detect_face_feed(course_code):
     return Response(
-        gen(file_path=f"./templates/static/courses/{course_code}/attendance"),
+        gen(
+            file_path=f"./templates/static/courses/{course_code}/attendance",
+            course=course_code,
+        ),
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
 
 
-#### Registering Students
-@lecturer.route("/register_students")
+# Registering Students
+@lecturer.route("/register_students/<course_code>")
 @login_required
 def index():
-    return render_template("/main_pages/register.html")
+    return render_template("/pages/register.html")
 
 
 @lecturer.route("/video_feed")
@@ -84,9 +114,9 @@ def video_feed():
     return Response(gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
-@lecturer.route("/register_student", methods=["POST", "GET"])
+@lecturer.route("/register_student/<course_code>", methods=["POST", "GET"])
 @login_required
-def tasks():
+def tasks(course_code):
     global switch, camera
     if request.method == "POST":
         names = request.form.get("name")
@@ -101,12 +131,14 @@ def tasks():
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             im_pil = Image.fromarray(img)
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-            im_pil.save(f"./registered_faces/{filenamess}")
+            im_pil.save(
+                f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
+            )
             flash("Registered Student Successfully!")
             print("done")
     elif request.method == "GET":
-        return render_template("/main_pages/register.html")
-    return render_template("/main_pages/register.html")
+        return render_template("/pages/register.html", course_code=course_code)
+    return render_template("/pages/register.html", course_code=course_code)
 
 
 # View Attendance Records
@@ -131,28 +163,30 @@ def attendance(course_code):
             else:
                 html_table = "No attendance data available."
             return render_template(
-                "/main_pages/attendance.html",
+                "/pages/attendance.html",
                 html_table=html_table,
                 text=text,
                 course=course,
             )
         else:
             return render_template(
-                "/main_pages/attendance.html",
+                "/pages/attendance.html",
                 text="No attendance data available for this date",
                 html_table="No attendance data available.",
                 course=course,
             )
     else:
-        # return render_template("/main_pages/attendance_date.html")
+        # return render_template("/pages/attendance_date.html")
         text = f"Attendance Report for COE {course_code}"
-        df = get_total_attendance(f"./templates/static/courses/{course_code}/attendance")
+        df = get_total_attendance(
+            f"./templates/static/courses/{course_code}/attendance"
+        )
         if df is not None:
             html_table = df.to_html(index=False)
         else:
             html_table = "No attendance data available."
         return render_template(
-            "/main_pages/attendance.html",
+            "/pages/attendance.html",
             html_table=html_table,
             text=text,
             course=course,

@@ -1,3 +1,14 @@
+"""
+This script contains functions to initialize and populate the database for the application.
+
+Functions:
+
+    create_new_user: create a new user of the given type with the given attributes
+    make_dirs: create directories for storing static files for each course
+    main: initialize the database and create some example users (admin, lecturer and student)
+"""
+
+
 import os
 from typing import Union
 
@@ -17,8 +28,7 @@ def create_new_user(type_of_user: str, **kwargs: Union[str, bool]) -> None:
     if type_of_user not in {"student", "lecturer", "admin"}:
         raise ValueError(f"Invalid user type: {type_of_user}")
 
-    hashed_password = generate_password_hash(
-        kwargs.pop("password"), method="sha256")
+    hashed_password = generate_password_hash(kwargs.pop("password"), method="sha256")
 
     try:
         if type_of_user == "student":
@@ -46,15 +56,13 @@ def make_dirs():
     for courses in VALID_COURSE_CODES:
         for dir in TYPES:
             # create a new directory for each string
-            os.makedirs(
-                f"./templates/static/courses/{courses}/{dir}", exist_ok=True)
+            os.makedirs(f"./templates/static/courses/{courses}/{dir}", exist_ok=True)
     print("Done")
 
 
 def main():
     make_dirs()
     db.create_all()
-    # create_new_user("test", "test@gmail.com", "password", "student", False)
     create_new_user(
         type_of_user="lecturer",
         username="OGUNLADE",

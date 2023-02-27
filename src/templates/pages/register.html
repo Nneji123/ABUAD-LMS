@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Register Student for Course</title>
+		<!-- Bootstrap CSS CDN -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+			integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+		<!-- Font Awesome JS -->
+		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+			integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+			crossorigin="anonymous"></script>
+		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+			integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+			crossorigin="anonymous"></script>
+		<link rel="templates" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
+
+		<!-- jQuery CDN - Slim version (=without AJAX) -->
+		<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script> -->
+		<!-- Popper.JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+			integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+			crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+		<script type="text/javascript" charset="utf8"
+			src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+			integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+			crossorigin="anonymous"></script>
+		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css'>
+		<link rel="stylesheet" type="text/css" href="{{
+			url_for('static',filename='main.css') }}">
+	</head>
+
+	<body>
+
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-md navbar-light navbar-bg gradient-custom-2">
+			<a class="navbar-brand" href="#">
+				<style>
+					.navbar-brand img {
+						height: 50px;
+						width: auto;
+					}
+
+					.gradient-custom-2 {
+						/* fallback for old browsers */
+						background: #fccb90;
+
+						/* Chrome 10-25, Safari 5.1-6 */
+						background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+						/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+						background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+					}
+				</style>
+				<img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS
+					Logo">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/lecturer">Back Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col-md-6">
+					<img src="{{url_for('lecturer.video_feed')}}" alt="Course Image" class="img-fluid">
+				</div>
+				<div class="col-md-6">
+					<h2>Register Student for COE {{course_code}}</h2>
+					<form method="post" action="/register_student/{{course_code}}">
+						<div class="form-group">
+							<label for="name">Name:</label>
+							<input type="text" class="form-control form-control-lg" id="name" name="name"
+								required="True">
+						</div>
+						<div class="form-group">
+							<label for="matric">Matric Number:</label>
+							<input type="text" class="form-control form-control-lg" id="matric" name="matric"
+								required="True">
+						</div>
+						<div class="form-group">
+							<label for="email">Department:</label>
+							<input type="text" class="form-control form-control-lg" id="email" name="dept"
+								required="True">
+						</div>
+						<input type="submit" value="Capture" name="click" class="btn btn-primary
+							btn-lg" style="background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);" />
+					</form>
+					{% for message in get_flashed_messages() %}
+					<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+						aria-labelledby="successModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="successModalLabel">Success!</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<p>{{ message }}</p>
+									<p>Do you want to register another student?</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+									<a href="/register_student/{{course_code}}" class="btn btn-primary">Yes</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					{% if get_flashed_messages() %}
+					<script>
+						$('#successModal').modal('show');
+					</script>
+					{% endif %}
+					{% block content %}{% endblock %}
+				</div>
+			</div>
+		</div>
+
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	</body>
+
+</html>
