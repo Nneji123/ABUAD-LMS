@@ -76,8 +76,10 @@ def upload_file(course_code):
         flash("Error! Invalid filetype")
 
     # save the file to the desired location
-    os.makedirs(f"./templates/static/courses/{course_code}/{file_type}", exist_ok=True)
-    file.save(f"./templates/static/courses/{course_code}/{file_type}/{new_file_name}")
+    os.makedirs(
+        f"./templates/static/courses/{course_code}/{file_type}", exist_ok=True)
+    file.save(
+        f"./templates/static/courses/{course_code}/{file_type}/{new_file_name}")
     flash("File uploaded successfully!")
     return redirect(url_for("lecturer.show"))
 
@@ -131,11 +133,15 @@ def tasks(course_code):
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             im_pil = Image.fromarray(img)
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-            im_pil.save(
-                f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
-            )
-            flash("Registered Student Successfully!")
-            print("done")
+            if os.path.exists(f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
+                              ):
+                flash("This student is already registered!")
+            else:
+                im_pil.save(
+                    f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
+                )
+                flash("Registered Student Successfully!")
+                print("done")
     elif request.method == "GET":
         return render_template("/pages/register.html", course_code=course_code)
     return render_template("/pages/register.html", course_code=course_code)
