@@ -175,7 +175,7 @@ def reset_password():
             if lecturer:
                 username = lecturer.username
             else:
-                flash("User does not exist!", "error")
+                flash("User does not exist!", "danger")
                 return render_template("/reset_password/index.html")
 
         hashCode = serializer.dumps(mail, salt="reset-password")
@@ -205,7 +205,7 @@ def hashcode(hashCode):
     try:
         mail = serializer.loads(hashCode, salt="reset-password", max_age=600)
     except BadTimeSignature:
-        flash("The password reset link has expired. Please request a new one.", "error")
+        flash("The password reset link has expired. Please request a new one.", "danger")
         return redirect(url_for("index.show"))
 
     # check if user exists in students table
@@ -218,7 +218,7 @@ def hashcode(hashCode):
         if lecturer:
             check = lecturer
         else:
-            flash("User does not exist!","error")
+            flash("User does not exist!", "danger")
             return render_template("/reset_password/base.html")
 
     if request.method == "POST":
@@ -231,7 +231,7 @@ def hashcode(hashCode):
             flash("Your Password has been reset successfully!", "success")
             return redirect(url_for("index.show"))
         else:
-            flash("Password fields do not match.", "error")
+            flash("Password fields do not match.", "danger")
             return render_template("/reset_password/reset.html", hashCode=hashCode)
     else:
         return render_template("/reset_password/reset.html", hashCode=hashCode)
@@ -239,5 +239,5 @@ def hashcode(hashCode):
 
 if __name__ == "__main__":
     app.run(
-        host="0.0.0.0", port=3000, debug=configs[SERVER_MODE]["DEBUG"], threaded=True
+        host="0.0.0.0", port=configs[SERVER_MODE]["PORT"], debug=configs[SERVER_MODE]["DEBUG"], threaded=True
     )

@@ -55,7 +55,7 @@ def show():
 def upload_file(course_code):
     file = request.files[f"file_{course_code}"]
     if file.filename == "":
-        flash("Error! No file selected", "error")
+        flash("Error! No file selected", "danger")
 
     file_name = secure_filename(file.filename)
     file_extension = os.path.splitext(file_name)[-1].lower()
@@ -73,7 +73,7 @@ def upload_file(course_code):
     elif file_extension in VIDEO_EXTENSIONS:
         file_type = "video"
     else:
-        flash("Error! Invalid filetype", "error")
+        flash("Error! Invalid filetype", "danger")
 
     # save the file to the desired location
     os.makedirs(
@@ -135,7 +135,7 @@ def tasks(course_code):
             filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
             if os.path.exists(f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
                               ):
-                flash("This student is already registered!", "error")
+                flash("This student is already registered!", "danger")
             else:
                 im_pil.save(
                     f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"

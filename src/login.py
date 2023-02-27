@@ -3,7 +3,7 @@ This module contains a Flask blueprint for handling user authentication and logi
 
 It provides a login page where users can enter their username, password, and role (student, lecturer, or admin). Upon successful login, the user is redirected to the appropriate page based on their role. 
 
-If the user is not authorized or enters incorrect login credentials, an error message is displayed.
+If the user is not authorized or enters incorrect login credentials, an danger message is displayed.
 
 """
 
@@ -38,11 +38,11 @@ def show():
             user = Admins.query.filter_by(username=username).first()
 
         if not user:
-            flash("This user is not authorized to view this page!", "error")
+            flash("This user is not authorized to view this page!", "danger")
             return render_template("/pages/login.html")
 
         if not user.check_password(password):
-            flash("Incorrect password!", "error")
+            flash("Incorrect password!", "danger")
             return render_template("/pages/login.html")
 
         login_user(user)
