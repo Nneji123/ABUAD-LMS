@@ -183,7 +183,7 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 
 
-                                                        |
+
 ## Student Page Screenshots
 
 | Screenshot                                                       | Description                                    |
@@ -213,14 +213,14 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 ## Password Reset Screenshots
 
-| Screenshot                                                                          | Description                                                                                           |
-| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| ![Password Reset Request](https://example.com/password-reset/request.png)           | This page allows users to request a password reset by entering their email address.                   |
-| ![Password Reset Email](https://example.com/password-reset/email.png)               | Users receive an email containing a unique link to reset their password.                              |
-| ![Password Reset Form](https://example.com/password-reset/form.png)                 | This page allows users to enter a new password after clicking the link in the password reset email.   |
-| ![Password Reset Confirmation](https://example.com/password-reset/confirmation.png) | After successfully resetting their password, users are redirected to a confirmation page.             |
-| ![Password Reset Error](https://example.com/password-reset/error.png)               | If the user enters an invalid email address or encounters another error, they will see an error page. |
-| ![Password Reset Success](https://example.com/password-reset/success.png)           | After successfully resetting their password, users will see a success page confirming the change.     |
+| Screenshot                                                                | Description                              |
+| ------------------------------------------------------------------------- | ---------------------------------------- |
+| ![Password Reset Request](./screens/password/Screenshot%20(387).png)      | Reset password page.                     |
+| ![Password Reset Email](./screens/password/Screenshot%20(388).png)        | Password reset email sent successfully.  |
+| ![Password Reset Form](./screens/password/Screenshot%20(389).png)         | Received email page.                     |
+| ![Password Reset Confirmation](./screens/password/Screenshot%20(390).png) | Reset password button.                   |
+| ![Password Reset Error](./screens/password/Screenshot%20(391).png)        | Change password page.                    |
+| ![Password Reset Success](./screens/password/Screenshot%20(392).png)      | Successful password change notification. |
 
 
 
