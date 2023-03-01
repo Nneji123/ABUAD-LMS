@@ -169,7 +169,9 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 </p>
 
 # :camera: Screenshots
-# Lecturer Page Screenshots
+<details>
+<summary> Lecturer Page Screenshots </summary>
+<br> 
 
 | Screenshot                                                      | Description                                      |
 | --------------------------------------------------------------- | ------------------------------------------------ |
@@ -180,11 +182,12 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 | ![View Assignments](./screens/lecturer/lecturer_screens4.png)   | Facial Recognition Attendance Page.              |
 | ![Discussion Forum](./screens/lecturer/lecturer_screens5.png)   | Attendance Report Page.                          |
 | ![Grades Management](./screens/lecturer/lecturer_screens6.png)  | Search for Attendance record by particular date. |
+</details>
 
 
-
-
-## Student Page Screenshots
+<details>
+<summary>Student Page Screenshots</summary>
+<br>
 
 | Screenshot                                                       | Description                                    |
 | ---------------------------------------------------------------- | ---------------------------------------------- |
@@ -196,10 +199,11 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 | ![Announcements](./screens/student/student_screens5.png)         | List of available videos for the course.       |
 | ![Course Schedule](./screens/student/student_screens6.png)       | Play videos with built in video player.        |
 | ![Account Settings](./screens/student/student_screens7.png)      | View attendance record for course.             |
+</details>
 
-
-
-## Admin Page Screenshots
+<details>
+<summary>Admin Page Screenshots</summary>
+<br>
 
 | Screenshot                                                     | Description                    |
 | -------------------------------------------------------------- | ------------------------------ |
@@ -209,9 +213,11 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 | ![Attendance Monitoring](./screens/admin/admin_screens3.png)   | View registered admins.        |
 | ![Announcement Management](./screens/admin/admin_screens4.png) | Create new students/lecturers. |
 | ![System Settings](./screens/admin/admin_screens5.png)         | Edit and update user details.  |
+</details>
 
-
-## Password Reset Screenshots
+<details>
+<summary>Password Reset Screenshots</>
+<br>
 
 | Screenshot                                                                | Description                              |
 | ------------------------------------------------------------------------- | ---------------------------------------- |
@@ -221,7 +227,7 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 | ![Password Reset Confirmation](./screens/password/Screenshot%20(390).png) | Reset password button.                   |
 | ![Password Reset Error](./screens/password/Screenshot%20(391).png)        | Change password page.                    |
 | ![Password Reset Success](./screens/password/Screenshot%20(392).png)      | Successful password change notification. |
-
+</details>
 
 
 # :movie_camera: Demo Videos
