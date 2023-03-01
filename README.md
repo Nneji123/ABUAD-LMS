@@ -169,14 +169,58 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 </p>
 
 # :camera: Screenshots
+# Lecturer Page Screenshots
 
-|                                                          |                                                          |                                                          |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| *Screenshot 1: Login page*                               | *Screenshot 2: Admin panel*                              | *Screenshot 3: View offenders page*                      |
-| ![Screenshot 1](./screens/abuad_hms0.png "Screenshot 1") | ![Screenshot 2](./screens/abuad_hms1.png "Screenshot 2") | ![Screenshot 3](./screens/abuad_hms2.png "Screenshot 3") |
-| *Screenshot 4: View database page*                       | *Screenshot 5: Monitoring page (Smoking)*                | *Screenshot 6: Monitoring page (Violence)*               |
-| ![Screenshot 4](./screens/abuad_hms3.png "Screenshot 4") | ![Screenshot 5](./screens/abuad_hms4.png "Screenshot 5") | ![Screenshot 6](./screens/abuad_hms5.png "Screenshot 6") |
+| Screenshot                                                      | Description                                      |
+| --------------------------------------------------------------- | ------------------------------------------------ |
+| ![Lecturer Dashboard](./screens/lecturer/lecturer_screens0.png) | The lecturer homepage and dashboard              |
+| ![Course Materials](./screens/lecturer/lecturer_screens1.png)   | Available list of courses.                       |
+| ![Attendance Records](./screens/lecturer/lecturer_screens2.png) | Successful File Upload Pop Up Message.           |
+| ![Upload Assignment](./screens/lecturer/lecturer_screens3.png)  | Register Student Page.                           |
+| ![View Assignments](./screens/lecturer/lecturer_screens4.png)   | Facial Recognition Attendance Page.              |
+| ![Discussion Forum](./screens/lecturer/lecturer_screens5.png)   | Attendance Report Page.                          |
+| ![Grades Management](./screens/lecturer/lecturer_screens6.png)  | Search for Attendance record by particular date. |
 
+
+
+                                                        |
+## Student Page Screenshots
+
+| Screenshot                                                                      | Description                                                                                       |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| ![Student Dashboard](https://example.com/student/dashboard.png)                 | The student dashboard provides an overview of the user's courses, assignments, and announcements. |
+| ![Course Materials](https://example.com/student/course-materials.png)           | Students can view course materials, including lecture slides and videos, from this page.          |
+| ![Assignment Submission](https://example.com/student/assignment-submission.png) | Students can submit assignments and view their submission status from this page.                  |
+| ![Grades](https://example.com/student/grades.png)                               | This page shows the student's grades for each course.                                             |
+| ![Attendance Record](https://example.com/student/attendance-record.png)         | Students can view their attendance record for each course from this page.                         |
+| ![Announcements](https://example.com/student/announcements.png)                 | This page displays announcements posted by the course lecturer or administrator.                  |
+| ![Course Schedule](https://example.com/student/course-schedule.png)             | Students can view the schedule for each course from this page.                                    |
+| ![Account Settings](https://example.com/student/account-settings.png)           | This page allows students to update their account information and settings.                       |
+
+
+
+## Admin Page Screenshots
+
+| Screenshot                                                                        | Description                                                                                                                         |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ![Admin Dashboard](https://example.com/admin/dashboard.png)                       | The admin dashboard provides an overview of the ABUAD LMS system and its users, as well as any important updates or notifications.  |
+| ![User Management](https://example.com/admin/user-management.png)                 | Administrators can view and manage all users within the ABUAD LMS, including lecturers and students.                                |
+| ![Course Management](https://example.com/admin/course-management.png)             | Administrators can manage courses and their corresponding materials, assignments, and attendance records.                           |
+| ![Attendance Monitoring](https://example.com/admin/attendance-monitoring.png)     | This page allows administrators to monitor attendance for each course, including viewing attendance records and generating reports. |
+| ![Announcement Management](https://example.com/admin/announcement-management.png) | Administrators can create, edit, and delete announcements posted within the ABUAD LMS.                                              |
+| ![System Settings](https://example.com/admin/system-settings.png)                 | This page allows administrators to configure system settings, such as email and authentication options.                             |
+
+
+## Password Reset Screenshots
+
+| Screenshot                                                                          | Description                                                                                           |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| ![Password Reset Request](https://example.com/password-reset/request.png)           | This page allows users to request a password reset by entering their email address.                   |
+| ![Password Reset Email](https://example.com/password-reset/email.png)               | Users receive an email containing a unique link to reset their password.                              |
+| ![Password Reset Form](https://example.com/password-reset/form.png)                 | This page allows users to enter a new password after clicking the link in the password reset email.   |
+| ![Password Reset Confirmation](https://example.com/password-reset/confirmation.png) | After successfully resetting their password, users are redirected to a confirmation page.             |
+| ![Password Reset Error](https://example.com/password-reset/error.png)               | If the user enters an invalid email address or encounters another error, they will see an error page. |
+| ![Password Reset Success](https://example.com/password-reset/success.png)           | After successfully resetting their password, users will see a success page confirming the change.     |
 
 
 
@@ -260,8 +304,8 @@ To run the application using Docker, follow these steps:
 3. Create a file called `.env` in the project root directory and add the required environment variables.
 4. Build the Docker image using the following command: 
    
-   `docker build -t aBUAD-LMS .`
-5. Run the Docker container using the following command: `docker run --env-file .env -p 3000:3000 aBUAD-LMS`
+   `docker build -t abuad-lms .`
+5. Run the Docker container using the following command: `docker run --env-file .env -p 3000:3000 abuad-lms`
 
 
 To run the application using Docker Compose, follow these steps:
@@ -269,7 +313,7 @@ To run the application using Docker Compose, follow these steps:
 1. Make sure Docker and Docker Compose are installed on your machine.
 2. Clone the project repository and navigate to the project directory.
 3. Create a file called .env in the project root directory and add the required environment variables.
-4. Build and start the Docker container using the following command: docker-compose up --build
+4. Build and start the Docker container using the following command: `docker-compose up --build`
 
 These steps will start the application in a Docker container, which can be accessed by visiting http://localhost:3000 in a web browser.
 
