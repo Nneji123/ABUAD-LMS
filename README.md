@@ -201,14 +201,14 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 ## Admin Page Screenshots
 
-| Screenshot                                                                        | Description                                                                                                                         |
-| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| ![Admin Dashboard](https://example.com/admin/dashboard.png)                       | The admin dashboard provides an overview of the ABUAD LMS system and its users, as well as any important updates or notifications.  |
-| ![User Management](https://example.com/admin/user-management.png)                 | Administrators can view and manage all users within the ABUAD LMS, including lecturers and students.                                |
-| ![Course Management](https://example.com/admin/course-management.png)             | Administrators can manage courses and their corresponding materials, assignments, and attendance records.                           |
-| ![Attendance Monitoring](https://example.com/admin/attendance-monitoring.png)     | This page allows administrators to monitor attendance for each course, including viewing attendance records and generating reports. |
-| ![Announcement Management](https://example.com/admin/announcement-management.png) | Administrators can create, edit, and delete announcements posted within the ABUAD LMS.                                              |
-| ![System Settings](https://example.com/admin/system-settings.png)                 | This page allows administrators to configure system settings, such as email and authentication options.                             |
+| Screenshot                                                     | Description                    |
+| -------------------------------------------------------------- | ------------------------------ |
+| ![Admin Dashboard](./screens/admin/admin_screens0.png)         | Admin dashboard.               |
+| ![User Management](./screens/admin/admin_screens1.png)         | View registered Students.      |
+| ![Course Management](./screens/admin/admin_screens2.png)       | View registered Lecturers.     |
+| ![Attendance Monitoring](./screens/admin/admin_screens3.png)   | View registered admins.        |
+| ![Announcement Management](./screens/admin/admin_screens4.png) | Create new students/lecturers. |
+| ![System Settings](./screens/admin/admin_screens5.png)         | Edit and update user details.  |
 
 
 ## Password Reset Screenshots
