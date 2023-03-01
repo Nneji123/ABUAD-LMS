@@ -186,16 +186,16 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
                                                         |
 ## Student Page Screenshots
 
-| Screenshot                                                                      | Description                                                                                       |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| ![Student Dashboard](https://example.com/student/dashboard.png)                 | The student dashboard provides an overview of the user's courses, assignments, and announcements. |
-| ![Course Materials](https://example.com/student/course-materials.png)           | Students can view course materials, including lecture slides and videos, from this page.          |
-| ![Assignment Submission](https://example.com/student/assignment-submission.png) | Students can submit assignments and view their submission status from this page.                  |
-| ![Grades](https://example.com/student/grades.png)                               | This page shows the student's grades for each course.                                             |
-| ![Attendance Record](https://example.com/student/attendance-record.png)         | Students can view their attendance record for each course from this page.                         |
-| ![Announcements](https://example.com/student/announcements.png)                 | This page displays announcements posted by the course lecturer or administrator.                  |
-| ![Course Schedule](https://example.com/student/course-schedule.png)             | Students can view the schedule for each course from this page.                                    |
-| ![Account Settings](https://example.com/student/account-settings.png)           | This page allows students to update their account information and settings.                       |
+| Screenshot                                                       | Description                                    |
+| ---------------------------------------------------------------- | ---------------------------------------------- |
+| ![Student Dashboard](./screens/student/student_screens0.png)     | Student Homepage                               |
+| ![Course Materials](./screens/student/student_screens1.png)      | List of courses available to students.         |
+| ![Assignment Submission](./screens/student/student_screens2.png) | Course Homepage                                |
+| ![Grades](./screens/student/student_screens3.png)                | List of course documents.                      |
+| ![Attendance Record](./screens/lecturer/lecturer_screens4.png)   | View Course Document with built in PDF Viewer. |
+| ![Announcements](./screens/student/student_screens5.png)         | List of available videos for the course.       |
+| ![Course Schedule](./screens/student/student_screens6.png)       | Play videos with built in video player.        |
+| ![Account Settings](./screens/student/student_screens7.png)      | View attendance record for course.             |
 
 
 
