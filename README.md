@@ -348,10 +348,14 @@ To deploy the application using the Railway or Render button, follow these steps
 # :book: References
 References:
 
-1. Ultralytics. (2021). YOLOv5. https://github.com/ultralytics/yolov5
-2. Jocher, G. (2021). YOLOv5. GitHub repository. https://github.com/ultralytics/yolov5
-3. Nariani, D. (2022). Violence&not_violence Dataset. Roboflow Universe. https://universe.roboflow.com/dinesh-nariani-rmnpr/violence-not_violence-ziv7b
-4. Yi. (2023). smoke Dataset. Roboflow Universe. https://universe.roboflow.com/yi-emjui/smoke-qkxhl
+1. Abuad LMS. (2023). Retrieved from https://github.com/abuad/lms
+2. Face Recognition Library. (2023). Retrieved from https://github.com/ageitgey/face_recognition
+3. Flask. (2023). Retrieved from https://flask.palletsprojects.com/en/2.1.x/
+4. Flask-Admin. (2023). Retrieved from https://flask-admin.readthedocs.io/en/latest/
+5. SQLAlchemy. (2023). Retrieved from https://www.sqlalchemy.org/
+6. Bootstrap. (2023). Retrieved from https://getbootstrap.com/
+7. OpenCV. (2023). Retrieved from https://opencv.org/
+8. Akinremi, F. (2020). Building a Simple Flask Web Application with Docker and Kubernetes. Medium. Retrieved from https://medium.com/analytics-vidhya/building-a-simple-flask-web-application-with-docker-and-kubernetes-58439b0c7d3a
 # :page_with_curl: License
 [MIT](./LICENSE.md)
 
