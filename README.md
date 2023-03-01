@@ -170,7 +170,7 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 # :camera: Screenshots
 <details>
-<summary> Lecturer Page Screenshots </summary>
+<summary><strong>Lecturer Page Screenshots</strong></summary>
 <br> 
 
 | Screenshot                                                      | Description                                      |
@@ -186,7 +186,7 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 
 <details>
-<summary>Student Page Screenshots</summary>
+<summary><strong>Student Page Screenshots</strong></summary>
 <br>
 
 | Screenshot                                                       | Description                                    |
@@ -202,8 +202,9 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 </details>
 
 <details>
-<summary>Admin Page Screenshots</summary>
+<summary><strong>Admin Page Screenshots</strong></summary>
 <br>
+
 
 | Screenshot                                                     | Description                    |
 | -------------------------------------------------------------- | ------------------------------ |
@@ -215,8 +216,9 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 | ![System Settings](./screens/admin/admin_screens5.png)         | Edit and update user details.  |
 </details>
 
+
 <details>
-<summary>Password Reset Screenshots</>
+<summary><strong>Password Reset Screenshots</strong></summary>
 <br>
 
 | Screenshot                                                                | Description                              |
