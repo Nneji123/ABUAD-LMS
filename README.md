@@ -32,7 +32,7 @@
 - [:chart\_with\_upwards\_trend: Flowchart](#chart_with_upwards_trend-flowchart)
 - [:bar\_chart: Use Case Diagram](#bar_chart-use-case-diagram)
 - [:camera: Screenshots](#camera-screenshots)
-- [:movie\_camera: Demo Videos](#movie_camera-demo-videos)
+- [:movie\_camera: Demo Video](#movie_camera-demo-video)
 - [:rocket: How to Run ABUAD LMS](#rocket-how-to-run-abuad-lms)
   - [:whale: How to run in Docker and Docker Compose](#whale-how-to-run-in-docker-and-docker-compose)
 - [:cloud: Deployment](#cloud-deployment)
@@ -229,7 +229,11 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 </details>
 
 
-# :movie_camera: Demo Videos
+# :movie_camera: Demo Video
+<p align="center">
+  <video src="./screens/demo.mp4" alt="ABUAD LMS Demo">
+</p>
+
 # :rocket: How to Run ABUAD LMS 
 
 To run the ABUAD LMS application using Python, follow these steps:

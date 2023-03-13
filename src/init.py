@@ -28,7 +28,8 @@ def create_new_user(type_of_user: str, **kwargs: Union[str, bool]) -> None:
     if type_of_user not in {"student", "lecturer", "admin"}:
         raise ValueError(f"Invalid user type: {type_of_user}")
 
-    hashed_password = generate_password_hash(kwargs.pop("password"), method="sha256")
+    hashed_password = generate_password_hash(
+        kwargs.pop("password"), method="sha256")
 
     try:
         if type_of_user == "student":
@@ -56,7 +57,8 @@ def make_dirs():
     for courses in VALID_COURSE_CODES:
         for dir in TYPES:
             # create a new directory for each string
-            os.makedirs(f"./templates/static/courses/{courses}/{dir}", exist_ok=True)
+            os.makedirs(
+                f"./templates/static/courses/{courses}/{dir}", exist_ok=True)
     print("Done")
 
 

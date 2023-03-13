@@ -39,12 +39,6 @@ import pandas as pd
 
 from constants import *
 
-# Load pretrained face detection model
-net = cv2.dnn.readNetFromCaffe(
-    "./saved_model/deploy.prototxt.txt",
-    "./saved_model/res10_300x300_ssd_iter_140000.caffemodel",
-)
-
 
 def save_attendance(attendance_str: str, location: str):
     """
@@ -142,14 +136,17 @@ def gen(file_path, course):
         imgc = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         fasescurrent = face_recognition.face_locations(imgc)
-        encode_fasescurrent = face_recognition.face_encodings(imgc, fasescurrent)
+        encode_fasescurrent = face_recognition.face_encodings(
+            imgc, fasescurrent)
 
         # faceloc- one by one it grab one face location from fasescurrent
         # than encodeFace grab encoding from encode_fasescurrent
         # we want them all in same loop so we are using zip
         for encodeFace, faceloc in zip(encode_fasescurrent, fasescurrent):
-            matches_face = face_recognition.compare_faces(encodeListknown, encodeFace)
-            face_distence = face_recognition.face_distance(encodeListknown, encodeFace)
+            matches_face = face_recognition.compare_faces(
+                encodeListknown, encodeFace)
+            face_distence = face_recognition.face_distance(
+                encodeListknown, encodeFace)
             # print(face_distence)
             # finding minimum distence index that will return best match
 
@@ -164,12 +161,14 @@ def gen(file_path, course):
                     if save_attendance(name, file_path) != False
                     else "Attendance already recorded"
                 )
-                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
+                text_size = cv2.getTextSize(
+                    text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
                 text_x = int((img.shape[1] - text_size[0]) / 2)
                 text_y = int((img.shape[0] + text_size[1]) / 2)
                 y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-                cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 0, 0), 2, cv2.FILLED)
+                cv2.rectangle(img, (x1, y2 - 35), (x2, y2),
+                              (255, 0, 0), 2, cv2.FILLED)
 
                 cv2.putText(
                     img,
@@ -244,7 +243,7 @@ def count_name_in_files(directory_path, name):
     percentage = count / num_files * 100
     eligibility = "eligible" if percentage >= 70 else "not eligible"
     # \nYou are {eligibility} to write exams for this course!"
-    message = f"{name}'s Attendance for this course is {percentage:.2f}%"
+    message = f"{name}'s Attendance for this course is {percentage}%"
     return message
 
 
@@ -281,7 +280,8 @@ def get_total_attendance(directory_path):
     data = []
     for name, attendance_data in student_attendance.items():
         total_classes = len(os.listdir(directory_path))
-        attendance_percentage = attendance_data["Attendance"] / total_classes * 100
+        attendance_percentage = attendance_data["Attendance"] / \
+            total_classes * 100
         data.append(
             {
                 "Name": name,
@@ -292,8 +292,7 @@ def get_total_attendance(directory_path):
         )
 
     df = pd.DataFrame(
-        data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"]
+        data, columns=["Name", "Matric Number",
+                       "Department", "Attendance Percentage"]
     )
-    # df.set_index("Name", inplace=True)
-    # df.to_csv("total_attendance.csv")
     return df

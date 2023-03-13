@@ -2,7 +2,6 @@
 database.db
 __pycache__/
 instance/
-*.mp4
 *.pdf
 Camera_Flask_App/
 flask_session/
