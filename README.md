@@ -230,6 +230,7 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 
 # :movie_camera: Demo Video
+
 <p align="center">
   <video src="./screens/demo.mp4" alt="ABUAD LMS Demo">
 </p>
