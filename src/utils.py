@@ -150,26 +150,49 @@ def gen(file_path, course):
             # print(face_distence)
             # finding minimum distence index that will return best match
 
-            matchindex = np.argmin(face_distence)
+            try:
+                matchindex = np.argmin(face_distence)
 
-            if matches_face[matchindex]:
-                name = filename[matchindex].upper()
-                y1, x2, y2, x1 = faceloc
-                # Multiply locations by 4 because we reduced the webcam input image by 0.25
-                text = (
-                    f"{name}"
-                    if save_attendance(name, file_path) != False
-                    else "Attendance already recorded"
-                )
+                if matches_face[matchindex]:
+                    name = filename[matchindex].upper()
+                    y1, x2, y2, x1 = faceloc
+                    # Multiply locations by 4 because we reduced the webcam input image by 0.25
+                    text = (
+                        f"{name}"
+                        if save_attendance(name, file_path) != False
+                        else "Attendance already recorded"
+                    )
+                    text_size = cv2.getTextSize(
+                        text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
+                    text_x = int((img.shape[1] - text_size[0]) / 2)
+                    text_y = int((img.shape[0] + text_size[1]) / 2)
+                    y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
+                    cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
+                    cv2.rectangle(img, (x1, y2 - 35), (x2, y2),
+                                  (255, 0, 0), 2, cv2.FILLED)
+
+                    cv2.putText(
+                        img,
+                        text,
+                        (text_x, text_y),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        1,
+                        (255, 255, 255),
+                        2,
+                    )
+
+                frame = cv2.imencode(".jpg", img)[1].tobytes()
+                yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+                key = cv2.waitKey(20)
+                if key == 27:
+                    break
+
+            except ValueError:
+                text = "This Student is not registered!"
                 text_size = cv2.getTextSize(
                     text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
                 text_x = int((img.shape[1] - text_size[0]) / 2)
                 text_y = int((img.shape[0] + text_size[1]) / 2)
-                y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
-                cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-                cv2.rectangle(img, (x1, y2 - 35), (x2, y2),
-                              (255, 0, 0), 2, cv2.FILLED)
-
                 cv2.putText(
                     img,
                     text,
@@ -179,12 +202,11 @@ def gen(file_path, course):
                     (255, 255, 255),
                     2,
                 )
-
-        frame = cv2.imencode(".jpg", img)[1].tobytes()
-        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
-        key = cv2.waitKey(20)
-        if key == 27:
-            break
+                frame = cv2.imencode(".jpg", img)[1].tobytes()
+                yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+                key = cv2.waitKey(20)
+                if key == 27:
+                    break
 
 
 def gen_frames():
