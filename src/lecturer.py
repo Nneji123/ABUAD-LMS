@@ -27,6 +27,7 @@ from flask import (
     Blueprint,
     Response,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -132,7 +133,11 @@ def tasks(course_code):
         names = request.form.get("name")
         matric = request.form.get("matric")
         dept = request.form.get("dept")
-        print(names, matric, dept)
+
+        names = names.upper()
+        matric = matric.upper()
+        dept = dept.title()
+
         if request.form.get("click") == "Capture":
             global capture
             capture = 1
@@ -205,3 +210,115 @@ def attendance(course_code):
             text=text,
             course=course,
         )
+
+
+@lecturer.route('/lecturer/view_registered_students/<course>', methods=["POST", "GET"])
+@login_required
+def get_images(course):
+    # specify the directory path where the images are stored
+    path = f'./templates/static/courses/{course}/registered_faces'
+
+    # initialize an empty list to store the image details
+    image_list = []
+
+    # loop through each file in the directory
+    for filename in os.listdir(path):
+        if filename.endswith('.jpg'):
+            # split the filename by space
+            components = filename.split('-')
+            name = components[0].strip()
+            matricnumber = components[1].strip()
+            department = components[-1].split('.')[0].strip()
+
+            # create a dictionary to store the image details
+            image_dict = {
+                'name': name,
+                'matricnumber': matricnumber.replace(" ", "/"),
+                'department': department,
+                'filename': url_for("static", filename=f"courses/{course}/registered_faces/{filename}")
+            }
+
+            # add the image dictionary to the image list
+            image_list.append(image_dict)
+    if image_list == []:
+        # return the image details as JSON
+        return "No students registered for this course!"
+    else:
+        return jsonify(images=image_list)
+
+
+@lecturer.route("/lecturer/view_students/<course>")
+@login_required
+def view_students(course):
+    return render_template(f"/pages/view_students.html", course=course)
+
+
+@lecturer.route('/lecturer/view_students/delete_student/<course>', methods=['POST'])
+@login_required
+def delete_image(course):
+    # get the filename from the request
+    name = request.form['name']
+    matricnumber = request.form['matricnumber']
+    department = request.form['department']
+
+    filename = f"{name}-{matricnumber}-{department}.jpg".replace("/", " ")
+
+    # get the path to the image file
+    path = os.path.join('./templates/static/courses',
+                        course, 'registered_faces', filename)
+    # delete the image file
+    os.remove(path)
+    flash("Deleted Successfully", "success")
+
+    return render_template(f"/pages/view_students.html", course=course)
+
+
+@lecturer.route('/lecturer/view_students/edit_filename/<course>', methods=['POST', 'GET'])
+@login_required
+def edit_filename(course):
+    # get the old filename and the new filename from the request
+    old_name = request.form['old_name']
+    old_matricnumber = request.form['old_matricnumber']
+    old_department = request.form['old_department']
+
+    old_filename = f"{old_name}-{old_matricnumber}-{old_department}.jpg".replace(
+        "/", " ")
+
+    new_name = request.form['name']
+    new_name = new_name.upper()
+    if new_name == "":
+        new_name = old_name
+
+    new_matricnumber = request.form['matricnumber']
+
+    if new_matricnumber == "":
+        new_matricnumber = old_matricnumber
+
+    new_matricnumber = new_matricnumber.replace("/", " ").upper()
+
+    new_department = request.form['department']
+    if new_department == "":
+        new_department = old_department
+
+    new_department = new_department.title()
+
+    new_filename = f"{new_name}-{new_matricnumber}-{new_department}.jpg".replace(
+        "/", " ")
+
+    if os.path.exists(new_filename):
+        pass
+        return render_template(f"/pages/view_students.html", course=course)
+    else:
+        # get the path to the old image file
+        old_path = os.path.join('./templates/static/courses',
+                                course, 'registered_faces', old_filename)
+
+        # get the path to the new image file
+        new_path = os.path.join('./templates/static/courses',
+                                course, 'registered_faces', new_filename)
+
+        # rename the old image file to the new image file
+        os.rename(old_path, new_path)
+        flash("Student details saved successfully!", "success")
+        # # return a success message
+        return render_template(f"/pages/view_students.html", course=course)

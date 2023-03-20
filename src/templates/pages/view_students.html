@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1,
+      shrink-to-fit=no">
+        <title>View Registered Students for COE {{course}}</title>
+        <!-- Bootstrap CSS -->
+        <link rel="icon" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{
+        url_for('static',filename='main.css') }}">
+    </head>
+    <style>
+        /* Add CSS styles to format the cards and buttons */
+        .card {
+            display: inline-block;
+            width: 20%;
+            margin: 1%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card img {
+            width: 70%;
+            height: 50%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .card button {
+            margin-top: 10px;
+            padding: 5px;
+            /* background-color: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593); */
+            color: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .card button:hover {
+            background-color: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+        }
+
+        p {
+            font-size: 13px;
+            color: black;
+            margin-bottom: 5px;
+
+        }
+    </style>
+
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-md navbar-light navbar-bg
+      gradient-custom-2">
+            <div class="container">
+                <a class="navbar-brand" href="/lecturer">
+                    <style>
+                        .navbar-brand img {
+                            height: 50px;
+                            width: auto;
+                        }
+
+                        .gradient-custom-2 {
+                            /* fallback for old browsers */
+                            background: #fccb90;
+
+                            /* Chrome 10-25, Safari 5.1-6 */
+                            background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+                            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                            background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+
+                        }
+                    </style>
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD
+            LMS Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lecturer">Back Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-link nav-link" data-toggle="modal"
+                                data-target="#myModal">Instructions</button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Instructions Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Instructions</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Here are some instructions on how to use ABUAD LMS</p>
+                        <ul>
+                            <li>Record Attendance: Click on the "Record Attendance" button for a course to record
+                                attendance using the
+                                facial recognition system</li>
+                            <li>Course Upload: Choose the file to upload. You can upload documents, assignments and
+                                videos. Note, only
+                                MP4, DOCX and PDF file formats are supported.</li>
+                            <li>Before you upload an assignment make sure the word 'assignment' is in the filename. Only
+                                PDFs and DOCX
+                                files are supported.</li>
+                            <li>Register Student: Click on the "Register Student" button to register new students for
+                                your courses.
+                            </li>
+                            <li>View Registered Students: Click on the "View Registered Students" button to view
+                                students who have
+                                registered for a course and also edit their details if there is a mistake.
+                            </li>
+                            <li>View Attendance: Click on the "View Attendance" view to view attendance records for your
+                                courses.</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary fa-lg
+              gradient-custom-2 mb-3" type="submit" value="LOGIN" style="font-family: 'Poppins', sans-serif;"
+                            data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Edit Student Details Modal -->
+        <!-- <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog"
+            aria-labelledby="editStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editStudentModalLabel">Edit Student Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="matricnumber">Matric Number</label>
+                                <input type="text" class="form-control" id="matricnumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <input type="text" class="form-control" id="department">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveChangesBtn">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <body>
+            <h1 style="font-size: 30px; margin-left: 10px; margin-top: 10px;">Registered Students for COE {{course}}
+            </h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+
+            <div id="card-container"></div>
+            <script>
+                // Add JavaScript to fetch data from the backend and create the cards
+                const cardContainer = document.getElementById('card-container');
+                fetch('/lecturer/view_registered_students/{{course}}')
+                    .then(response => response.json())
+                    .then(data => {
+                        data.images.forEach(image => {
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            const img = document.createElement('img');
+                            img.src = image.filename;
+                            const name = document.createElement('p');
+                            name.textContent = "Name: " + image.name;
+                            const matricnumber = document.createElement('p');
+                            matricnumber.textContent = "Matric Number: " + image.matricnumber;
+                            const department = document.createElement('p');
+                            department.textContent = "Department: " + image.department;
+                            const viewButton = document.createElement('button');
+                            viewButton.textContent = 'Edit Details';
+                            viewButton.onclick = () => {
+                                // Add code to handle view details button click
+                                const modal = document.createElement('div');
+                                modal.className = 'modal fade';
+                                modal.id = 'edit-modal';
+                                modal.setAttribute('tabindex', '-1');
+                                modal.setAttribute('role', 'dialog');
+                                modal.setAttribute('aria-labelledby', 'edit-modal-label');
+                                modal.setAttribute('aria-hidden', 'true');
+                                modal.innerHTML = `
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit-modal-label">Edit Student Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="/lecturer/view_students/edit_filename/{{course}}">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" id="name" name="old_name" value="${image.name}" readonly>
+              <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+              <label for="matricnumber">Matric Number:</label>
+              <input type="text" class="form-control" id="name" name="old_matricnumber" value="${image.matricnumber}" readonly>
+              <input type="text" class="form-control" id="matricnumber" name="matricnumber">
+            </div>
+            <div class="form-group">
+              <label for="department">Department:</label>
+              <input type="text" class="form-control" id="name" name="old_department" value="${image.department}" readonly>
+              <input type="text" class="form-control" id="department" name="department">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-button">Save changes</button>
+        </div>
+      </div>
+    </div>`;
+                                document.body.appendChild(modal);
+                                console.log('true');
+                                $('#edit-modal').modal('show');
+
+                                // Add event listener to the "save-button" button
+                                const saveButton = document.querySelector('#save-button');
+                                saveButton.addEventListener('click', () => {
+                                    const form = document.querySelector('form');
+                                    form.submit();
+                                    // window.location.reload();
+                                });
+
+                            };
+
+                            const deleteButton = document.createElement('button');
+                            deleteButton.textContent = 'Delete Student';
+                            deleteButton.onclick = () => {
+                                // Add code to handle delete student button click
+                                // Create delete modal
+                                const deleteModal = document.createElement('div');
+                                deleteModal.className = 'modal fade';
+                                deleteModal.id = 'delete-modal';
+                                deleteModal.setAttribute('tabindex', '-1');
+                                deleteModal.setAttribute('role', 'dialog');
+                                deleteModal.setAttribute('aria-labelledby', 'delete-modal-label');
+                                deleteModal.setAttribute('aria-hidden', 'true');
+                                deleteModal.innerHTML = `
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="edit-modal-label">Delete Student</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete this student?
+                                                            <form id="delete-form" method="POST" action="/lecturer/view_students/delete_student/{{course}}" style="display:none;">
+                                                                <input type="hidden" name="name" value="${image.name}" readonly>
+                                                                <input type="hidden" name="matricnumber" value="${image.matricnumber}" readonly>
+                                                                <input type="hidden" name="department" value="${image.department}" readonly>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-danger" id="delete-confirm-button">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+
+                                document.body.appendChild(deleteModal);
+                                console.log('true');
+                                $('#delete-modal').modal('show');
+
+                                const deleteStudentButton = document.querySelector('#delete-confirm-button');
+                                deleteStudentButton.addEventListener('click', () => {
+                                    const form = document.querySelector('form');
+                                    form.submit();
+                                    // window.location.reload();
+                                });
+                            };
+                            card.appendChild(img);
+                            card.appendChild(name);
+                            card.appendChild(matricnumber);
+                            card.appendChild(department);
+                            card.appendChild(viewButton);
+                            card.appendChild(deleteButton);
+                            cardContainer.appendChild(card);
+                        });
+                    });
+            </script>
+        </body>
+        <!-- jQuery and Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>
