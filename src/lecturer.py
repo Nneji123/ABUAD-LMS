@@ -242,7 +242,7 @@ def get_images(course):
             image_list.append(image_dict)
     if image_list == []:
         # return the image details as JSON
-        return "No students registered for this course!"
+        return jsonify("No students registered for this course!")
     else:
         return jsonify(images=image_list)
 
@@ -262,13 +262,37 @@ def delete_image(course):
     department = request.form['department']
 
     filename = f"{name}-{matricnumber}-{department}.jpg".replace("/", " ")
+    directory = os.path.join(
+        './templates/static/courses', course, 'attendance')
+
+    # loop through all CSV files in the directory and subdirectories
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            # check if the file is a CSV file
+            if file.endswith('.csv'):
+                # get the path to the CSV file
+                path = os.path.join(root, file)
+
+                # read the CSV file into a DataFrame
+                df = pd.read_csv(path)
+
+                # check if the student's name is in the DataFrame
+                if name in df['Name'].values:
+                    # delete the row containing the student's name
+                    df = df[df['Name'] != name]
+
+                    # write the updated DataFrame back to the CSV file
+                    df.to_csv(path, index=False)
 
     # get the path to the image file
-    path = os.path.join('./templates/static/courses',
-                        course, 'registered_faces', filename)
+    path = (f'./templates/static/courses/{course}/registered_faces/{filename}')
     # delete the image file
-    os.remove(path)
-    flash("Deleted Successfully", "success")
+    try:
+        os.remove(path)
+        flash("Deleted Successfully", "success")
+    except FileNotFoundError as e:
+        print(e)
+        flash("Error occured", "danger")
 
     return render_template(f"/pages/view_students.html", course=course)
 
@@ -276,49 +300,87 @@ def delete_image(course):
 @lecturer.route('/lecturer/view_students/edit_filename/<course>', methods=['POST', 'GET'])
 @login_required
 def edit_filename(course):
-    # get the old filename and the new filename from the request
+    # get the old name, matric number, and department from the request
     old_name = request.form['old_name']
     old_matricnumber = request.form['old_matricnumber']
     old_department = request.form['old_department']
 
-    old_filename = f"{old_name}-{old_matricnumber}-{old_department}.jpg".replace(
-        "/", " ")
+    # get the new name, matric number, and department from the request
+    new_name = request.form['name'].upper()
+    new_matricnumber = request.form['matricnumber'].replace("/", " ").upper()
+    new_department = request.form['department'].title()
 
-    new_name = request.form['name']
-    new_name = new_name.upper()
     if new_name == "":
         new_name = old_name
 
-    new_matricnumber = request.form['matricnumber']
+    if new_department == "":
+        new_department = old_department
 
     if new_matricnumber == "":
         new_matricnumber = old_matricnumber
 
-    new_matricnumber = new_matricnumber.replace("/", " ").upper()
+    # replace any forward slashes with spaces in the new name, matric number, and department
+    new_name = new_name.replace("/", " ")
+    new_department = new_department.replace("/", " ")
 
-    new_department = request.form['department']
-    if new_department == "":
-        new_department = old_department
-
-    new_department = new_department.title()
-
+    # set the new filename based on the new name, matric number, and department
     new_filename = f"{new_name}-{new_matricnumber}-{new_department}.jpg".replace(
         "/", " ")
 
-    if os.path.exists(new_filename):
-        pass
+    # check if the new filename already exists, and return an error message if it does
+    if os.path.exists(os.path.join('./templates/static/courses', course, 'registered_faces', new_filename)):
+        flash("A student with that name and matric number already exists!", "danger")
         return render_template(f"/pages/view_students.html", course=course)
-    else:
-        # get the path to the old image file
-        old_path = os.path.join('./templates/static/courses',
-                                course, 'registered_faces', old_filename)
 
-        # get the path to the new image file
-        new_path = os.path.join('./templates/static/courses',
-                                course, 'registered_faces', new_filename)
+    directory = os.path.join(
+        './templates/static/courses', course, 'attendance')
 
-        # rename the old image file to the new image file
-        os.rename(old_path, new_path)
-        flash("Student details saved successfully!", "success")
-        # # return a success message
-        return render_template(f"/pages/view_students.html", course=course)
+    # loop through all CSV files in the directory and subdirectories
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            # check if the file is a CSV file
+            if file.endswith('.csv'):
+                # get the path to the CSV file
+                path = os.path.join(root, file)
+
+                # read the CSV file into a DataFrame
+                df = pd.read_csv(path)
+
+                # check if the student's name is in the DataFrame
+                if old_name in df['Name'].values:
+                    print(True)
+                    # delete the row containing the student's name
+                    df.loc[df['Name'] == old_name, 'Name'] = new_name
+                    print("Done")
+                    print(df)
+
+                if old_matricnumber in df['Matric Number'].values:
+                    # delete the row containing the student's name
+                    df.loc[df['Matric Number'] == old_matricnumber,
+                           'Matric Number'] = new_matricnumber
+
+                if old_department in df['Department'].values:
+                    # delete the row containing the student's name
+                    df.loc[df['Department'] == old_department,
+                           'Department'] = new_department
+
+                    # write the updated DataFrame back to the CSV file
+                    df.to_csv(path, index=False)
+
+    # get the path to the old image file
+    old_filename = f"{old_name}-{old_matricnumber}-{old_department}.jpg".replace(
+        "/", " ")
+    old_path = os.path.join('./templates/static/courses',
+                            course, 'registered_faces', old_filename)
+
+    # get the path to the new image file
+    new_path = os.path.join('./templates/static/courses',
+                            course, 'registered_faces', new_filename)
+
+    # rename the old image file to the new image file
+    os.rename(old_path, new_path)
+
+    flash("Student details saved successfully!", "success")
+
+    # return the view_students page with the updated course data
+    return render_template(f"/pages/view_students.html", course=course)
