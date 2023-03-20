@@ -292,9 +292,9 @@ def delete_image(course):
         flash("Deleted Successfully", "success")
     except FileNotFoundError as e:
         print(e)
-        flash("Error occured", "danger")
+        flash("No files found!", "danger")
 
-    return render_template(f"/pages/view_students.html", course=course)
+    return redirect(url_for('lecturer.view_students', course=course))
 
 
 @lecturer.route('/lecturer/view_students/edit_filename/<course>', methods=['POST', 'GET'])
@@ -345,24 +345,15 @@ def edit_filename(course):
 
                 # read the CSV file into a DataFrame
                 df = pd.read_csv(path)
+                # check if the student's details are in the DataFrame
+                mask = (df['Name'] == old_name) & (df['Matric Number'] == old_matricnumber) & (
+                    df['Department'] == old_department)
 
-                # check if the student's name is in the DataFrame
-                if old_name in df['Name'].values:
-                    print(True)
-                    # delete the row containing the student's name
-                    df.loc[df['Name'] == old_name, 'Name'] = new_name
-                    print("Done")
-                    print(df)
-
-                if old_matricnumber in df['Matric Number'].values:
-                    # delete the row containing the student's name
-                    df.loc[df['Matric Number'] == old_matricnumber,
-                           'Matric Number'] = new_matricnumber
-
-                if old_department in df['Department'].values:
-                    # delete the row containing the student's name
-                    df.loc[df['Department'] == old_department,
-                           'Department'] = new_department
+                if mask.any():
+                    # update the student's details in the DataFrame
+                    df.loc[mask, 'Name'] = new_name
+                    df.loc[mask, 'Matric Number'] = new_matricnumber
+                    df.loc[mask, 'Department'] = new_department
 
                     # write the updated DataFrame back to the CSV file
                     df.to_csv(path, index=False)
@@ -383,4 +374,4 @@ def edit_filename(course):
     flash("Student details saved successfully!", "success")
 
     # return the view_students page with the updated course data
-    return render_template(f"/pages/view_students.html", course=course)
+    return redirect(url_for('lecturer.view_students', course=course))
