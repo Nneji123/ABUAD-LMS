@@ -191,17 +191,17 @@
           <form method="post" action="/lecturer/view_students/edit_filename/{{course}}">
             <div class="form-group">
               <label for="name">Name:</label>
-              <input type="text" class="form-control" id="name" name="old_name" value="${image.name}" readonly>
+              <input type="hidden" class="form-control" id="name" name="old_name" value="${image.name}" readonly>
               <input type="text" class="form-control" id="name" name="name">
             </div>
             <div class="form-group">
               <label for="matricnumber">Matric Number:</label>
-              <input type="text" class="form-control" id="name" name="old_matricnumber" value="${image.matricnumber}" readonly>
+              <input type="hidden" class="form-control" id="name" name="old_matricnumber" value="${image.matricnumber}" readonly>
               <input type="text" class="form-control" id="matricnumber" name="matricnumber">
             </div>
             <div class="form-group">
               <label for="department">Department:</label>
-              <input type="text" class="form-control" id="name" name="old_department" value="${image.department}" readonly>
+              <input type="hidden" class="form-control" id="name" name="old_department" value="${image.department}" readonly>
               <input type="text" class="form-control" id="department" name="department">
             </div>
           </form>
