@@ -97,9 +97,6 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
     |-- login.py
     |-- logout.py
     |-- models.py
-    |-- saved_model
-    |   |-- deploy.prototxt.txt
-    |   `-- res10_300x300_ssd_iter_140000.caffemodel
     |-- student.py
     |-- templates
     |   |-- admin

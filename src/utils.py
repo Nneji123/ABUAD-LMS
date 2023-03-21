@@ -92,6 +92,18 @@ def save_attendance(attendance_str: str, location: str):
         )
 
 
+def encoding_img(IMAGE_FILES):
+    encodeList = []
+    for img in IMAGE_FILES:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        try:
+            encode = face_recognition.face_encodings(img)[0]
+            encodeList.append(encode)
+        except Exception as e:
+            e = "error"
+    return encodeList
+
+
 def gen(file_path, course):
     """
     The gen function is used to generate the video feed. It takes in a file path as an argument, and uses that
@@ -115,23 +127,12 @@ def gen(file_path, course):
         IMAGE_FILES.append(img_path)
         filename.append(imagess.split(".", 1)[0])
 
-    def encoding_img(IMAGE_FILES):
-        encodeList = []
-        for img in IMAGE_FILES:
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            try:
-                encode = face_recognition.face_encodings(img)[0]
-                encodeList.append(encode)
-            except Exception as e:
-                e = "error"
-        return encodeList
-
     encodeListknown = encoding_img(IMAGE_FILES)
 
     while True:
         success, img = cap.read()
 
-        imgc = cv2.resize(img, (0, 0), None, 0.25, 0.25)
+        # imgc = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         # converting image to RGB from BGR
         imgc = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -181,12 +182,6 @@ def gen(file_path, course):
                         2,
                     )
 
-                frame = cv2.imencode(".jpg", img)[1].tobytes()
-                yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
-                key = cv2.waitKey(20)
-                if key == 27:
-                    break
-
             except ValueError:
                 text = "This Student is not registered!"
                 text_size = cv2.getTextSize(
@@ -202,11 +197,9 @@ def gen(file_path, course):
                     (255, 255, 255),
                     2,
                 )
-                frame = cv2.imencode(".jpg", img)[1].tobytes()
-                yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
-                key = cv2.waitKey(20)
-                if key == 27:
-                    break
+
+            frame = cv2.imencode(".jpg", img)[1].tobytes()
+            yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
 
 
 def gen_frames():
