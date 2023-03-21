@@ -38,7 +38,7 @@ from PIL import Image
 from werkzeug.utils import secure_filename
 
 from constants import *
-from utils import gen, gen_frames, get_total_attendance
+from utils import record_face_attendance, capture_face, get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./templates")
 login_manager = LoginManager()
@@ -104,7 +104,7 @@ def record_attendance(course_code):
 @login_required
 def detect_face_feed(course_code):
     return Response(
-        gen(
+        record_face_attendance(
             file_path=f"./templates/static/courses/{course_code}/attendance",
             course=course_code,
         ),
@@ -122,7 +122,7 @@ def index():
 @lecturer.route("/video_feed")
 # @login_required
 def video_feed():
-    return Response(gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(capture_face(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @lecturer.route("/register_student/<course_code>", methods=["POST", "GET"])

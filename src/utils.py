@@ -104,20 +104,17 @@ def encoding_img(IMAGE_FILES):
     return encodeList
 
 
-def gen(file_path, course):
+def record_face_attendance(file_path, course):
     """
-    The gen function is used to generate the video feed. It takes in a file path as an argument, and uses that
-    to save the attendance data. If no file path is given, it defaults to using 'attendance_data/attendance_data.csv'
+    The record_attendance function is a generator that yields the byte stream of images captured by the webcam.
 
     :param file_path: Save the attendance in a csv file
-    :return: The frame in bytes
+    :param course: Specify the course folder to save attendance in
+    :return: A generator object, which is iterable
     """
-    global capture, out, face
     IMAGE_FILES = []
     filename = []
     dir_path = f"./templates/static/courses/{course}/registered_faces"
-
-    cap = cv2.VideoCapture(0)
 
     for imagess in os.listdir(dir_path):
         img_path = os.path.join(dir_path, imagess)
@@ -129,82 +126,58 @@ def gen(file_path, course):
 
     encodeListknown = encoding_img(IMAGE_FILES)
 
+    # Get a reference to webcam #0 (the default one)
+    video_capture = cv2.VideoCapture(0)
+
     while True:
-        success, img = cap.read()
+        # Grab a single frame of video
 
-        # imgc = cv2.resize(img, (0, 0), None, 0.25, 0.25)
-        # converting image to RGB from BGR
-        imgc = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        ret, frame = video_capture.read()
 
-        fasescurrent = face_recognition.face_locations(imgc)
-        encode_fasescurrent = face_recognition.face_encodings(
-            imgc, fasescurrent)
+        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+        rgb_frame = frame[:, :, ::-1]
 
-        # faceloc- one by one it grab one face location from fasescurrent
-        # than encodeFace grab encoding from encode_fasescurrent
-        # we want them all in same loop so we are using zip
-        for encodeFace, faceloc in zip(encode_fasescurrent, fasescurrent):
-            matches_face = face_recognition.compare_faces(
-                encodeListknown, encodeFace)
-            face_distence = face_recognition.face_distance(
-                encodeListknown, encodeFace)
-            # print(face_distence)
-            # finding minimum distence index that will return best match
+        # Find all the faces and face encodings in the current frame of video
+        face_locations = face_recognition.face_locations(rgb_frame)
+        face_encodings = face_recognition.face_encodings(
+            rgb_frame, face_locations)
 
-            try:
-                matchindex = np.argmin(face_distence)
+        # Iterate through each face found in the current frame
+        for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+            # See if the face is a match for any of the known faces
+            matches = face_recognition.compare_faces(
+                encodeListknown, face_encoding)
+            name = "This Student is not registered"
 
-                if matches_face[matchindex]:
-                    name = filename[matchindex].upper()
-                    y1, x2, y2, x1 = faceloc
-                    # Multiply locations by 4 because we reduced the webcam input image by 0.25
-                    text = (
-                        f"{name}"
-                        if save_attendance(name, file_path) != False
-                        else "Attendance already recorded"
-                    )
-                    text_size = cv2.getTextSize(
-                        text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
-                    text_x = int((img.shape[1] - text_size[0]) / 2)
-                    text_y = int((img.shape[0] + text_size[1]) / 2)
-                    y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
-                    cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-                    cv2.rectangle(img, (x1, y2 - 35), (x2, y2),
-                                  (255, 0, 0), 2, cv2.FILLED)
-
-                    cv2.putText(
-                        img,
-                        text,
-                        (text_x, text_y),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        1,
-                        (255, 255, 255),
-                        2,
-                    )
-
-            except ValueError:
-                text = "This Student is not registered!"
-                text_size = cv2.getTextSize(
-                    text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
-                text_x = int((img.shape[1] - text_size[0]) / 2)
-                text_y = int((img.shape[0] + text_size[1]) / 2)
-                cv2.putText(
-                    img,
-                    text,
-                    (text_x, text_y),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    1,
-                    (255, 255, 255),
-                    2,
+            # If a match was found in known_face_encodings, use the name of the first one that matches
+            if True in matches:
+                first_match_index = matches.index(True)
+                name = filename[first_match_index]
+                name = (
+                    f"{name}"
+                    if save_attendance(name, file_path) != False
+                    else "Attendance already recorded"
                 )
 
-            frame = cv2.imencode(".jpg", img)[1].tobytes()
-            yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+            # Draw a box around the face
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+            # Draw a label with a name below the face
+            cv2.rectangle(frame, (left, bottom - 35),
+                          (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6),
+                        font, 1.0, (255, 255, 255), 1)
+
+        frame = cv2.imencode(".jpg", frame)[1].tobytes()
+        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+
+    video_capture.release()
 
 
-def gen_frames():
+def capture_face():
     """
-    The gen_frames function is a generator function that captures frames from the camera, encodes them into
+    The capture_face function is a generator function that captures frames from the camera, encodes them into
     a JPEG format, and returns the encoded frame. The function also yields each encoded frame as it is captured.
 
     :return: A generator object that yields the frame by frame data from a camera
@@ -214,8 +187,18 @@ def gen_frames():
     while True:
         success, frame = camera.read()
         if success:
-            if capture:
-                capture = 0
+            # detect faces
+            face_locations = face_recognition.face_locations(frame)
+            # draw bounding boxes around the faces
+            for (top, right, bottom, left) in face_locations:
+                cv2.rectangle(frame, (left, top),
+                              (right, bottom), (0, 0, 255), 2)
+                cv2.rectangle(frame, (left, bottom - 35),
+                              (right, bottom), (0, 0, 255), cv2.FILLED)
+                font = cv2.FONT_HERSHEY_DUPLEX
+                text = "Capture Face!"
+                cv2.putText(frame, text, (left + 6, bottom - 6),
+                            font, 1.0, (255, 255, 255), 1)
             try:
                 # Optimization: remove unnecessary flip function
                 ret, buffer = cv2.imencode(".jpg", frame)
@@ -227,6 +210,8 @@ def gen_frames():
                 pass
         else:
             pass
+
+    camera.release()
 
 
 def count_name_in_files(directory_path, name):
