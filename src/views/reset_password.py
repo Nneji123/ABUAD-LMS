@@ -1,11 +1,11 @@
 import os
+import sys
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from itsdangerous import URLSafeTimedSerializer
-from itsdangerous.exc import BadTimeSignature, BadSignature
+from itsdangerous.exc import BadSignature, BadTimeSignature
 from werkzeug.security import generate_password_hash
 
-import sys
 sys.path.append("..")
 from configurations.extensions import db
 from configurations.models import Lecturers, Students

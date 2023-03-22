@@ -8,16 +8,16 @@ If the user is not authorized or enters incorrect login credentials, an danger m
 """
 
 
+import sys
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user
 
-import sys
 sys.path.append("..")
 
 from configurations.models import Admins, Lecturers, Students
 
-login = Blueprint(
-    "login", __name__)
+login = Blueprint("login", __name__)
 
 login_manager = LoginManager()
 login_manager.init_app(login)

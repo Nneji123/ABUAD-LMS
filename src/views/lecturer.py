@@ -19,32 +19,21 @@ It includes the following functions:
 
 
 import os
+import sys
 from datetime import datetime
 
 import cv2
 import pandas as pd
-from flask import (
-    Blueprint,
-    Response,
-    flash,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
+from flask import (Blueprint, Response, flash, jsonify, redirect,
+                   render_template, request, url_for)
 from flask_login import LoginManager, login_required
 from PIL import Image
 from werkzeug.utils import secure_filename
 
-import sys
 sys.path.append("..")
 
 from constants import *
-from utils import (
-    get_total_attendance,
-    base64_to_image,
-)
+from utils import base64_to_image, get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__)
 login_manager = LoginManager()

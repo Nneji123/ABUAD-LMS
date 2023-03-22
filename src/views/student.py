@@ -17,11 +17,11 @@ This blueprint assumes that course information is stored in `COURSES_INFO` as a 
 
 
 import os
+import sys
 
 from flask import Blueprint, render_template
 from flask_login import LoginManager, current_user, login_required
 
-import sys
 sys.path.append("..")
 
 from constants import COURSES_INFO

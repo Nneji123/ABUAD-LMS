@@ -41,8 +41,8 @@ from flask import render_template
 from flask_mail import Message
 from flask_socketio import emit
 
-from constants import *
 from configurations.extensions import email, socketio
+from constants import *
 
 
 def send_mail(to, template, subject, link, username, **kwargs):

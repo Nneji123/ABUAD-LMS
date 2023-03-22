@@ -5,11 +5,12 @@ It also includes a custom CustomIndexView class that extends the Flask-Admin MyA
 """
 
 
+import sys
+
 from flask import Blueprint, redirect, url_for
 from flask_admin import expose
 from flask_login import logout_user
 
-import sys
 sys.path.append("..")
 
 from configurations.models import MyAdminIndexView
