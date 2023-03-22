@@ -146,12 +146,25 @@ def tasks(course_code):
             if data_uri is not None:
                 filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
                 img_pil = base64_to_image(data_uri)
-                cv2.imwrite(
-                    f"./templates/static/courses/{course_code}/registered_faces/{filenamess}",
-                    img_pil,
-                )
-                print("Done!")
-                flash("Image saved successfully!", "success")
+                mypath = f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
+                if os.path.exists(mypath):
+                    flash("This student is already registered!", "danger")
+                    print("True")
+                    return render_template(
+                        "/pages/register.html", course_code=course_code
+                    )
+
+                else:
+                    cv2.imwrite(
+                        mypath,
+                        img_pil,
+                    )
+                    print("Done!")
+                    flash("Student registered successfully!", "success")
+                    return render_template(
+                        "/pages/register.html", course_code=course_code
+                    )
+
             else:
                 return render_template("/pages/register.html", course_code=course_code)
         except TypeError as e:

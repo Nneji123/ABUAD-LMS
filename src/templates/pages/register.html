@@ -4,10 +4,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Register Student for COE {{course_code}}</title>
-		<!-- Bootstrap CSS CDN -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-			integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
 		<!-- Font Awesome JS -->
 		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
 			integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
@@ -33,6 +29,8 @@
 			integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
 			crossorigin="anonymous"></script>
 		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css'>
+		<link rel="stylesheet"
+			href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
 		<link rel="stylesheet" type="text/css" href="{{
 			url_for('static',filename='main.css') }}">
 	</head>
@@ -84,7 +82,11 @@
 				<canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
 				<!-- </div> -->
 				<div class="col-md-6">
-					<img id="photo" class="img-fluid" alt="Register Face">
+					<div class="card">
+						<div class="card-body">
+							<img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
+						</div>
+					</div>
 				</div>
 				<div class="col-md-6">
 					<h2>Register Student for COE {{course_code}}</h2>
@@ -131,84 +133,80 @@
 						</div>
 					</div>
 					{% endfor %}
-					{% if get_flashed_messages() %}
+
+
+
+					<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+					<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+					<script src="{{ url_for('static',filename='script.js') }}"></script>
 					<script>
-						$('#successModal').modal('show');
-					</script>
-					{% endif %}
-					{% block content %}{% endblock %}
-				</div>
-			</div>
-		</div>
-
-
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-		<script src="{{ url_for('static',filename='script.js') }}"></script>
-		<script>
-			Webcam.set({
-				width: 640,
-				height: 480,
-				dest_width: 640,
-				dest_height: 480,
-				image_format: 'jpeg',
-				jpeg_quality: 90,
-				force_flash: false,
-				flip_horiz: true,
-				fps: 45
-			});
-
-			Webcam.attach('#canvas');
-
-			var captureButton = document.getElementById('capture-button');
-			captureButton.addEventListener('click', function () {
-				Webcam.snap(function (data_uri) {
-					// display the captured image in the canvas element
-					var canvas = document.getElementById('canvas');
-					var context = canvas.getContext('2d');
-					var img = new Image();
-					img.onload = function () {
-						context.drawImage(img, 0, 0);
-					}
-					img.src = data_uri;
-
-					// save the captured image
-					var link = document.createElement('a');
-					var name = document.getElementsByName("name")[0].value.toUpperCase();
-					var matric = document.getElementsByName("matric")[0].value.replace('/', ' ');
-					var dept = document.getElementsByName("dept")[0].value.toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
-
-					// var imagename = name + "-" + matric + "-" + dept + ".jpg"
-					// console.log(imagename)
-					fetch('/register_student/{{course_code}}', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({
-							data_uri: data_uri,
-							name: name,
-							matric: matric,
-							dept: dept
-						})
-
-					})
-						.then(response => {
-							if (response.ok) {
-								console.log('Image saved successfully');
-							} else {
-								console.error('Error saving image:', response.statusText);
-							}
-						})
-						.catch(error => {
-							console.error('Error saving image:', error);
+						Webcam.set({
+							width: 640,
+							height: 480,
+							dest_width: 640,
+							dest_height: 480,
+							image_format: 'jpeg',
+							jpeg_quality: 90,
+							force_flash: false,
+							flip_horiz: true,
+							fps: 45
 						});
-				});
-			});
 
+						Webcam.attach('#canvas');
 
-		</script>
+						var captureButton = document.getElementById('capture-button');
+						captureButton.addEventListener('click', function (event) {
+							event.preventDefault();
+							Webcam.snap(function (data_uri) {
+								// display the captured image in the canvas element
+								var canvas = document.getElementById('canvas');
+								var context = canvas.getContext('2d');
+								var img = new Image();
+								img.onload = function () {
+									context.drawImage(img, 0, 0);
+								}
+								img.src = data_uri;
+
+								// save the captured image
+								var link = document.createElement('a');
+								var name = document.getElementsByName("name")[0].value.toUpperCase();
+								var matric = document.getElementsByName("matric")[0].value.replace('/', ' ');
+								var dept = document.getElementsByName("dept")[0].value.toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+
+								// var imagename = name + "-" + matric + "-" + dept + ".jpg"
+								// console.log(imagename)
+								fetch('/register_student/{{course_code}}', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({
+										data_uri: data_uri,
+										name: name,
+										matric: matric,
+										dept: dept
+									})
+
+								})
+									.then(response => {
+										if (response.ok) {
+											console.log('Image saved successfully');
+											$('#successModal').modal('show');	 // Show modal after successful submission
+											document.getElementsByName("name")[0].value = "";
+											document.getElementsByName("matric")[0].value = "";
+											document.getElementsByName("dept")[0].value = "";
+											console.log("Success")
+										} else {
+											console.error('Error saving image:', response.statusText);
+										}
+									})
+									.catch(error => {
+										console.error('Error saving image:', error);
+									});
+							});
+						});
+					</script>
 
 	</body>
 
