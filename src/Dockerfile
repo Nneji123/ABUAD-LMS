@@ -14,7 +14,7 @@ RUN pip install --upgrade setuptools
 
 ADD ./requirements.txt /app/requirements.txt
 
-RUN pip install dlib && pip install -r requirements.txt
+RUN pip install dlib --verbose && pip install -r requirements.txt
 
 ADD . /app 
 

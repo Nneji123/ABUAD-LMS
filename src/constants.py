@@ -17,15 +17,6 @@ The following constants are defined in this module:
 """
 
 
-global capture, rec_frame, grey, switch, neg, face, rec, out
-capture = 0
-grey = 0
-neg = 0
-face = 0
-switch = 1
-rec = 0
-
-
 # constants for lecturer.py
 VALID_COURSE_CODES = ["501", "503", "515", "507", "511", "505", "519"]
 
