@@ -37,7 +37,6 @@ import cv2
 import face_recognition
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 from flask import render_template
 from flask_mail import Message
 from flask_socketio import emit
@@ -68,142 +67,6 @@ def send_mail(to, template, subject, link, username, **kwargs):
     inlined = css_inline.inline(html)
     msg.html = inlined
     email.send(msg)
-
-
-def save_attendance(attendance_str: str, location: str):
-    """
-    The save_attendance function saves the attendance data to a CSV file.
-    It takes in an input string of the format: &quot;Name-Matric Number-Department&quot; and saves it to a CSV file with the current date as its name.
-    If there is already an existing attendance record for that student on that day, it will not save another one.
-
-    :param attendance_str: str: Pass in the string that was captured from the camera
-    :param location: str: Specify the location of the attendance file
-    :return: False if the name and date are already in the file
-    """
-    # Split the input string into parts
-    parts = attendance_str.split("-")
-    name = parts[0]
-    matric_number = parts[1]
-    department = parts[2]
-    # Get the current date and time
-    now = datetime.now()
-    current_date = now.strftime("%Y-%m-%d")
-    current_time = now.strftime("%H:%M:%S")
-    date_string = now.strftime("%Y-%m-%d")
-    filename = f"{date_string}-attendance.csv".capitalize()
-    # check if the file already exists
-    if os.path.exists(f"{location}/{filename}"):
-        # print("True")
-        with open(f"{location}/{filename}", "r") as attendance_file:
-            attendance_reader = csv.reader(attendance_file)
-            # Check if the name and date is already in the file
-            for row in attendance_reader:
-                if name == row[0] and current_date == row[3]:
-                    # print(f'Attendance for {name} on {current_date} already recorded')
-                    return False
-    else:
-        # print("False")
-        # Write the headers
-        with open(f"{location}/{filename}", "w", newline="") as attendance_file:
-            attendance_writer = csv.writer(
-                attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-            )
-            attendance_writer.writerow(
-                ["Name", "Matric Number", "Department", "Date", "Time"]
-            )
-    # Write the attendance data
-    with open(f"{location}/{filename}", "a", newline="") as attendance_file:
-        attendance_writer = csv.writer(
-            attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-        )
-        attendance_writer.writerow(
-            [name, matric_number, department, current_date, current_time]
-        )
-
-
-def encoding_img(IMAGE_FILES):
-    encodeList = []
-    for img in IMAGE_FILES:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        try:
-            encode = face_recognition.face_encodings(img)[0]
-            encodeList.append(encode)
-        except Exception as e:
-            e = "error"
-    return encodeList
-
-
-def record_face_attendance(file_path, course):
-    """
-    The record_attendance function is a generator that yields the byte stream of images captured by the webcam.
-
-    :param file_path: Save the attendance in a csv file
-    :param course: Specify the course folder to save attendance in
-    :return: A generator object, which is iterable
-    """
-    IMAGE_FILES = []
-    filename = []
-    dir_path = f"./templates/static/courses/{course}/registered_faces"
-
-    for imagess in os.listdir(dir_path):
-        img_path = os.path.join(dir_path, imagess)
-        img_path = face_recognition.load_image_file(
-            img_path
-        )  # reading image and append to list
-        IMAGE_FILES.append(img_path)
-        filename.append(imagess.split(".", 1)[0])
-
-    encodeListknown = encoding_img(IMAGE_FILES)
-
-    # Get a reference to webcam #0 (the default one)
-    video_capture = cv2.VideoCapture(0)
-
-    while True:
-        # Grab a single frame of video
-
-        ret, frame = video_capture.read()
-
-        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-        rgb_frame = frame[:, :, ::-1]
-
-        # Find all the faces and face encodings in the current frame of video
-        face_locations = face_recognition.face_locations(rgb_frame)
-        face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
-
-        # Iterate through each face found in the current frame
-        for (top, right, bottom, left), face_encoding in zip(
-            face_locations, face_encodings
-        ):
-            # See if the face is a match for any of the known faces
-            matches = face_recognition.compare_faces(encodeListknown, face_encoding)
-            name = "This Student is not registered"
-
-            # If a match was found in known_face_encodings, use the name of the first one that matches
-            if True in matches:
-                first_match_index = matches.index(True)
-                name = filename[first_match_index]
-                name = (
-                    f"{name}"
-                    if save_attendance(name, file_path) != False
-                    else "Attendance already recorded"
-                )
-
-            # Draw a box around the face
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-
-            # Draw a label with a name below the face
-            cv2.rectangle(
-                frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED
-            )
-            font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(
-                frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1
-            )
-
-        frame = cv2.imencode(".jpg", frame)[1].tobytes()
-        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
-
-    video_capture.release()
 
 
 def base64_to_image(base64_string):
@@ -271,8 +134,71 @@ def capture_face(image):
     emit("processed_image", processed_img_data)
 
 
-@socketio.on("images, course")
-def record_face(images, course, file_path):
+def save_attendance(attendance_str: str, location: str):
+    """
+    The save_attendance function saves the attendance data to a CSV file.
+    It takes in an input string of the format: &quot;Name-Matric Number-Department&quot; and saves it to a CSV file with the current date as its name.
+    If there is already an existing attendance record for that student on that day, it will not save another one.
+
+    :param attendance_str: str: Pass in the string that was captured from the camera
+    :param location: str: Specify the location of the attendance file
+    :return: False if the name and date are already in the file
+    """
+    # Split the input string into parts
+    parts = attendance_str.split("-")
+    name = parts[0]
+    matric_number = parts[1]
+    department = parts[2]
+    # Get the current date and time
+    now = datetime.now()
+    current_date = now.strftime("%Y-%m-%d")
+    current_time = now.strftime("%H:%M:%S")
+    date_string = now.strftime("%Y-%m-%d")
+    filename = f"{date_string}-attendance.csv".capitalize()
+    # check if the file already exists
+    if os.path.exists(f"{location}/{filename}"):
+        # print("True")
+        with open(f"{location}/{filename}", "r") as attendance_file:
+            attendance_reader = csv.reader(attendance_file)
+            # Check if the name and date is already in the file
+            for row in attendance_reader:
+                if name == row[0] and current_date == row[3]:
+                    # print(f'Attendance for {name} on {current_date} already recorded')
+                    return False
+    else:
+        # print("False")
+        # Write the headers
+        with open(f"{location}/{filename}", "w", newline="") as attendance_file:
+            attendance_writer = csv.writer(
+                attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+            )
+            attendance_writer.writerow(
+                ["Name", "Matric Number", "Department", "Date", "Time"]
+            )
+    # Write the attendance data
+    with open(f"{location}/{filename}", "a", newline="") as attendance_file:
+        attendance_writer = csv.writer(
+            attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+        )
+        attendance_writer.writerow(
+            [name, matric_number, department, current_date, current_time]
+        )
+
+
+def encoding_img(IMAGE_FILES):
+    encodeList = []
+    for img in IMAGE_FILES:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        try:
+            encode = face_recognition.face_encodings(img)[0]
+            encodeList.append(encode)
+        except Exception as e:
+            e = "error"
+    return encodeList
+
+
+@socketio.on("images")
+def record_face(images, course):
     """
     The receive_image function takes in an image from the webcam, converts it to grayscale, and then emits
     the processed image back to the client.
@@ -282,7 +208,7 @@ def record_face(images, course, file_path):
     file_path = f"./templates/static/courses/{course}/attendance"
     # Decode the base64-encoded image data
     image = base64_to_image(images)
-    print("These are the gotten information: ", image, course, file_path)
+    # print("These are the gotten information: ", image, course, file_path)
     frame = image
     # detect faces
     IMAGE_FILES = []
@@ -341,56 +267,6 @@ def record_face(images, course, file_path):
     b64_src = "data:image/jpg;base64,"
     processed_img_data = b64_src + processed_img_data
     emit("recorded_image", processed_img_data)
-
-
-# def capture_face():
-#     """
-#     The capture_face function is a generator function that captures frames from the camera, encodes them into
-#     a JPEG format, and returns the encoded frame. The function also yields each encoded frame as it is captured.
-
-#     :return: A generator object that yields the frame by frame data from a camera
-#     """
-#     global out, capture, rec_frame, frame
-#     camera = cv2.VideoCapture(0)
-#     while True:
-#         success, frame = camera.read()
-#         if success:
-#             # detect faces
-#             face_locations = face_recognition.face_locations(frame)
-#             if len(face_locations) > 0:
-#                 # draw bounding boxes around the faces
-#                 for top, right, bottom, left in face_locations:
-#                     cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-#                     cv2.rectangle(
-#                         frame,
-#                         (left, bottom - 35),
-#                         (right, bottom),
-#                         (0, 0, 255),
-#                         cv2.FILLED,
-#                     )
-#                     font = cv2.FONT_HERSHEY_DUPLEX
-#                     text = "Capture Face!"
-#                     cv2.putText(
-#                         frame,
-#                         text,
-#                         (left + 6, bottom - 6),
-#                         font,
-#                         1.0,
-#                         (255, 255, 255),
-#                         1,
-#                     )
-#             try:
-#                 ret, buffer = cv2.imencode(".jpg", frame)
-#                 frame = buffer.tobytes()
-#                 yield (
-#                     b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
-#                 )
-#             except Exception as e:
-#                 pass
-#         else:
-#             pass
-
-#     camera.release()
 
 
 def count_name_in_files(directory_path, name):

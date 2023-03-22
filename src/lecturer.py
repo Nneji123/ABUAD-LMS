@@ -39,9 +39,7 @@ from werkzeug.utils import secure_filename
 
 from constants import *
 from utils import (
-    capture_face,
     get_total_attendance,
-    record_face_attendance,
     base64_to_image,
 )
 
@@ -103,31 +101,11 @@ def record_attendance(course_code):
     return render_template(f"/pages/record_attendance.html", course=course)
 
 
-@lecturer.route("/detect_face_feed/<course_code>")
-@login_required
-def detect_face_feed(course_code):
-    return Response(
-        record_face_attendance(
-            file_path=f"./templates/static/courses/{course_code}/attendance",
-            course=course_code,
-        ),
-        mimetype="multipart/x-mixed-replace; boundary=frame",
-    )
-
-
 # Registering Students
 @lecturer.route("/register_students/<course_code>")
 @login_required
 def index():
     return render_template("/pages/register.html")
-
-
-@lecturer.route("/video_feed")
-# @login_required
-def video_feed():
-    return Response(
-        capture_face(), mimetype="multipart/x-mixed-replace; boundary=frame"
-    )
 
 
 @lecturer.route("/register_student/<course_code>", methods=["POST", "GET"])

@@ -73,7 +73,11 @@
         <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
         <!-- </div> -->
         <div class="col-md-6">
-          <img id="photo" class="img-fluid" alt="Register Face">
+          <div class="card">
+            <div class="card-body">
+              <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
+            </div>
+          </div>
         </div>
         {% endblock %}
 
@@ -125,21 +129,16 @@
           });
       }
 
-      const FPS = 10;
+      const FPS = 1;
       setInterval(() => {
         width = video.width;
         height = video.height;
         context.drawImage(video, 0, 0, width, height);
         var data = canvas.toDataURL('image/jpeg', 0.5);
         context.clearRect(0, 0, width, height);
-        socket.emit('images', data);
         const course = '{{course}}'
-        socket.emit('course', course)
-        console.log(course)
 
-
-
-
+        socket.emit('images', data, course);
 
       }, 1000 / FPS);
 
@@ -148,24 +147,5 @@
 
       });
     </script>
-    <script>
-      Webcam.snap(function (data_uri) {
-        // display the captured image in the canvas element
-        var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
-        var img = new Image();
-        img.onload = function () {
-          context.drawImage(img, 0, 0);
-        }
-        img.src = data_uri;
-
-        // save the captured image
-        var link = document.createElement('a');
-        link.download = 'image.jpg';
-        link.href = data_uri;
-        link.click();
-      });
-    </script>
-
 
 </html>
