@@ -92,7 +92,7 @@ app = create_app(app)
 if __name__ == "__main__":
     socketio.run(
         app,
-        port=configs[SERVER_MODE]["PORT"],
+        port=5000,
         debug=configs[SERVER_MODE]["DEBUG"],
         host="0.0.0.0",
     )
