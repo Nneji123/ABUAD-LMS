@@ -23,14 +23,27 @@ from datetime import datetime
 
 import cv2
 import pandas as pd
-from flask import (Blueprint, Response, flash, jsonify, redirect,
-                   render_template, request, url_for)
+from flask import (
+    Blueprint,
+    Response,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import LoginManager, login_required
 from PIL import Image
 from werkzeug.utils import secure_filename
 
 from constants import *
-from utils import capture_face, get_total_attendance, record_face_attendance
+from utils import (
+    capture_face,
+    get_total_attendance,
+    record_face_attendance,
+    base64_to_image,
+)
 
 lecturer = Blueprint("lecturer", __name__, template_folder="./templates")
 login_manager = LoginManager()
@@ -120,34 +133,29 @@ def video_feed():
 @lecturer.route("/register_student/<course_code>", methods=["POST", "GET"])
 @login_required
 def tasks(course_code):
-    global switch, camera
     if request.method == "POST":
-        names = request.form.get("name")
-        matric = request.form.get("matric")
-        dept = request.form.get("dept")
+        try:
+            data_uri = request.json["data_uri"]
+            names = request.json["name"]
+            matric = request.json["matric"]
+            dept = request.json["dept"]
 
-        names = names.upper()
-        matric = matric.upper()
-        dept = dept.title()
-
-        if request.form.get("click") == "Capture":
-            global capture
-            capture = 1
-            camera = cv2.VideoCapture(0)
-            m, img = camera.read()
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            im_pil = Image.fromarray(img)
-            filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-            if os.path.exists(
-                f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
-            ):
-                flash("This student is already registered!", "danger")
-            else:
-                im_pil.save(
-                    f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
+            names = names.upper()
+            matric = matric.upper()
+            dept = dept.title()
+            if data_uri is not None:
+                filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
+                img_pil = base64_to_image(data_uri)
+                cv2.imwrite(
+                    f"./templates/static/courses/{course_code}/registered_faces/{filenamess}",
+                    img_pil,
                 )
-                flash("Registered Student Successfully!", "success")
-                print("done")
+                print("Done!")
+                flash("Image saved successfully!", "success")
+            else:
+                return render_template("/pages/register.html", course_code=course_code)
+        except TypeError as e:
+            return render_template("/pages/register.html", course_code=course_code)
     elif request.method == "GET":
         return render_template("/pages/register.html", course_code=course_code)
     return render_template("/pages/register.html", course_code=course_code)

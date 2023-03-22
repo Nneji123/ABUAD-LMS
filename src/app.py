@@ -37,7 +37,7 @@ def register_extensions(app):
     login_manager.init_app(app)
     db.init_app(app)
     email.init_app(app)
-    socketio.init_app(app, async_mode="eventlet")
+    socketio.init_app(app)
     create_admin_views(app)
     app.app_context().push()
     return None

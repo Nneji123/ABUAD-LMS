@@ -27,7 +27,7 @@ Note:
 
 """
 
-
+import base64
 import csv
 import os
 from datetime import datetime
@@ -40,15 +40,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from flask import render_template
 from flask_mail import Message
+from flask_socketio import emit
 
 from constants import *
 from extensions import email, socketio
-
-
-@socketio.on("my_event")
-def handle_my_event(data):
-    print("received data: " + str(data))
-    socketio.emit("my_response", data)
 
 
 def send_mail(to, template, subject, link, username, **kwargs):
@@ -211,54 +206,191 @@ def record_face_attendance(file_path, course):
     video_capture.release()
 
 
-def capture_face():
+def base64_to_image(base64_string):
     """
-    The capture_face function is a generator function that captures frames from the camera, encodes them into
-    a JPEG format, and returns the encoded frame. The function also yields each encoded frame as it is captured.
+    The base64_to_image function accepts a base64 encoded string and returns an image.
+    The function extracts the base64 binary data from the input string, decodes it, converts
+    the bytes to numpy array, and then decodes the numpy array as an image using OpenCV.
 
-    :return: A generator object that yields the frame by frame data from a camera
+    :param base64_string: Pass the base64 encoded image string to the function
+    :return: An image
     """
-    global out, capture, rec_frame, frame
-    camera = cv2.VideoCapture(0)
-    while True:
-        success, frame = camera.read()
-        if success:
-            # detect faces
-            face_locations = face_recognition.face_locations(frame)
-            if len(face_locations) > 0:
-                # draw bounding boxes around the faces
-                for top, right, bottom, left in face_locations:
-                    cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-                    cv2.rectangle(
-                        frame,
-                        (left, bottom - 35),
-                        (right, bottom),
-                        (0, 0, 255),
-                        cv2.FILLED,
-                    )
-                    font = cv2.FONT_HERSHEY_DUPLEX
-                    text = "Capture Face!"
-                    cv2.putText(
-                        frame,
-                        text,
-                        (left + 6, bottom - 6),
-                        font,
-                        1.0,
-                        (255, 255, 255),
-                        1,
-                    )
-            try:
-                ret, buffer = cv2.imencode(".jpg", frame)
-                frame = buffer.tobytes()
-                yield (
-                    b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
-                )
-            except Exception as e:
-                pass
-        else:
-            pass
+    base64_data = base64_string.split(",")[1]
+    image_bytes = base64.b64decode(base64_data)
+    image_array = np.frombuffer(image_bytes, dtype=np.uint8)
+    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    return image
 
-    camera.release()
+
+@socketio.on("connect")
+def test_connect():
+    """
+    The test_connect function is used to test the connection between the client and server.
+    It sends a message to the client letting it know that it has successfully connected.
+
+    :return: A 'connected' string
+    """
+    print("Connected")
+    emit("my response", {"data": "Connected"})
+
+
+@socketio.on("image")
+def capture_face(image):
+    """
+    The receive_image function takes in an image from the webcam, converts it to grayscale, and then emits
+    the processed image back to the client.
+
+
+    :param image: Pass the image data to the receive_image function
+    :return: The image that was received from the client
+    """
+    # Decode the base64-encoded image data
+    image = base64_to_image(image)
+    frame = image
+    # detect faces
+    face_locations = face_recognition.face_locations(frame)
+    if len(face_locations) > 0:
+        # draw bounding boxes around the faces
+        for top, right, bottom, left in face_locations:
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.rectangle(
+                frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED
+            )
+            font = cv2.FONT_HERSHEY_DUPLEX
+            text = "Capture Face!"
+            cv2.putText(
+                frame, text, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1
+            )
+    gray = frame
+    frame_resized = cv2.resize(gray, (640, 360))
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+    result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
+    processed_img_data = base64.b64encode(frame_encoded).decode()
+    b64_src = "data:image/jpg;base64,"
+    processed_img_data = b64_src + processed_img_data
+    emit("processed_image", processed_img_data)
+
+
+@socketio.on("images, course")
+def record_face(images, course, file_path):
+    """
+    The receive_image function takes in an image from the webcam, converts it to grayscale, and then emits
+    the processed image back to the client.
+    :param image: Pass the image data to the receive_image function
+    :return: The image that was received from the client
+    """
+    file_path = f"./templates/static/courses/{course}/attendance"
+    # Decode the base64-encoded image data
+    image = base64_to_image(images)
+    print("These are the gotten information: ", image, course, file_path)
+    frame = image
+    # detect faces
+    IMAGE_FILES = []
+    filename = []
+    dir_path = f"./templates/static/courses/{course}/registered_faces"
+
+    for imagess in os.listdir(dir_path):
+        img_path = os.path.join(dir_path, imagess)
+        img_path = face_recognition.load_image_file(
+            img_path
+        )  # reading image and append to list
+        IMAGE_FILES.append(img_path)
+        filename.append(imagess.split(".", 1)[0])
+
+    encodeListknown = encoding_img(IMAGE_FILES)
+    # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+    rgb_frame = frame[:, :, ::-1]
+
+    # Find all the faces and face encodings in the current frame of video
+    face_locations = face_recognition.face_locations(rgb_frame)
+    face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+
+    # Iterate through each face found in the current frame
+    for (top, right, bottom, left), face_encoding in zip(
+        face_locations, face_encodings
+    ):
+        # See if the face is a match for any of the known faces
+        matches = face_recognition.compare_faces(encodeListknown, face_encoding)
+        name = "This Student is not registered"
+
+        # If a match was found in known_face_encodings, use the name of the first one that matches
+        if True in matches:
+            first_match_index = matches.index(True)
+            name = filename[first_match_index]
+            name = (
+                f"{name}"
+                if save_attendance(name, file_path) != False
+                else "Attendance already recorded"
+            )
+
+            # Draw a box around the face
+        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+        # Draw a label with a name below the face
+        cv2.rectangle(
+            frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED
+        )
+        font = cv2.FONT_HERSHEY_DUPLEX
+        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+    gray = frame
+    frame_resized = cv2.resize(gray, (640, 360))
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+    result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
+    processed_img_data = base64.b64encode(frame_encoded).decode()
+    b64_src = "data:image/jpg;base64,"
+    processed_img_data = b64_src + processed_img_data
+    emit("recorded_image", processed_img_data)
+
+
+# def capture_face():
+#     """
+#     The capture_face function is a generator function that captures frames from the camera, encodes them into
+#     a JPEG format, and returns the encoded frame. The function also yields each encoded frame as it is captured.
+
+#     :return: A generator object that yields the frame by frame data from a camera
+#     """
+#     global out, capture, rec_frame, frame
+#     camera = cv2.VideoCapture(0)
+#     while True:
+#         success, frame = camera.read()
+#         if success:
+#             # detect faces
+#             face_locations = face_recognition.face_locations(frame)
+#             if len(face_locations) > 0:
+#                 # draw bounding boxes around the faces
+#                 for top, right, bottom, left in face_locations:
+#                     cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+#                     cv2.rectangle(
+#                         frame,
+#                         (left, bottom - 35),
+#                         (right, bottom),
+#                         (0, 0, 255),
+#                         cv2.FILLED,
+#                     )
+#                     font = cv2.FONT_HERSHEY_DUPLEX
+#                     text = "Capture Face!"
+#                     cv2.putText(
+#                         frame,
+#                         text,
+#                         (left + 6, bottom - 6),
+#                         font,
+#                         1.0,
+#                         (255, 255, 255),
+#                         1,
+#                     )
+#             try:
+#                 ret, buffer = cv2.imencode(".jpg", frame)
+#                 frame = buffer.tobytes()
+#                 yield (
+#                     b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
+#                 )
+#             except Exception as e:
+#                 pass
+#         else:
+#             pass
+
+#     camera.release()
 
 
 def count_name_in_files(directory_path, name):

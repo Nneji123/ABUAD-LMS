@@ -16,20 +16,19 @@
 			integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
 			crossorigin="anonymous"></script>
 		<link rel="icon" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
-
-		<!-- jQuery CDN - Slim version (=without AJAX) -->
-		<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"></script> -->
 		<!-- Popper.JS -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
 			integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
 			crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+			integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
 		<script type="text/javascript" charset="utf8"
 			src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
 		<!-- Bootstrap JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
 			integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
 			crossorigin="anonymous"></script>
@@ -80,12 +79,16 @@
 		</nav>
 		<div class="container mt-5">
 			<div class="row">
+				<!-- <div id="container"> -->
+				<video type="hidden" autoplay playsinline id="videoElement" style="display: none;"></video>
+				<canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+				<!-- </div> -->
 				<div class="col-md-6">
-					<img src="{{url_for('lecturer.video_feed')}}" alt="Course Image" class="img-fluid">
+					<img id="photo" class="img-fluid" alt="Register Face">
 				</div>
 				<div class="col-md-6">
 					<h2>Register Student for COE {{course_code}}</h2>
-					<form method="post" action="/register_student/{{course_code}}">
+					<form method="post">
 						<div class="form-group">
 							<label for="name">Name:</label>
 							<input type="text" class="form-control form-control-lg" id="name" name="name"
@@ -101,9 +104,10 @@
 							<input type="text" class="form-control form-control-lg" id="email" name="dept"
 								required="True">
 						</div>
-						<input type="submit" value="Capture" name="click" class="btn btn-primary
+						<input type="submit" value="Capture" id="capture-button" name="click" class="btn btn-primary
 							btn-lg" style="background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);" />
 					</form>
+
 					{% for message in get_flashed_messages() %}
 					<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
 						aria-labelledby="successModalLabel" aria-hidden="true">
@@ -141,6 +145,71 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<script src="{{ url_for('static',filename='script.js') }}"></script>
+		<script>
+			Webcam.set({
+				width: 640,
+				height: 480,
+				dest_width: 640,
+				dest_height: 480,
+				image_format: 'jpeg',
+				jpeg_quality: 90,
+				force_flash: false,
+				flip_horiz: true,
+				fps: 45
+			});
+
+			Webcam.attach('#canvas');
+
+			var captureButton = document.getElementById('capture-button');
+			captureButton.addEventListener('click', function () {
+				Webcam.snap(function (data_uri) {
+					// display the captured image in the canvas element
+					var canvas = document.getElementById('canvas');
+					var context = canvas.getContext('2d');
+					var img = new Image();
+					img.onload = function () {
+						context.drawImage(img, 0, 0);
+					}
+					img.src = data_uri;
+
+					// save the captured image
+					var link = document.createElement('a');
+					var name = document.getElementsByName("name")[0].value.toUpperCase();
+					var matric = document.getElementsByName("matric")[0].value.replace('/', ' ');
+					var dept = document.getElementsByName("dept")[0].value.toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+
+					// var imagename = name + "-" + matric + "-" + dept + ".jpg"
+					// console.log(imagename)
+					fetch('/register_student/{{course_code}}', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							data_uri: data_uri,
+							name: name,
+							matric: matric,
+							dept: dept
+						})
+
+					})
+						.then(response => {
+							if (response.ok) {
+								console.log('Image saved successfully');
+							} else {
+								console.error('Error saving image:', response.statusText);
+							}
+						})
+						.catch(error => {
+							console.error('Error saving image:', error);
+						});
+				});
+			});
+
+
+		</script>
+
 	</body>
 
 </html>
