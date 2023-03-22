@@ -12,7 +12,7 @@ RUN apt-get -y update && apt-get install -y \
 
 RUN pip install --upgrade setuptools 
 
-ADD ./../requirements.txt /app/requirements.txt
+ADD ./requirements.txt /app/requirements.txt
 
 RUN pip install dlib && pip install -r requirements.txt
 
