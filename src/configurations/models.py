@@ -18,7 +18,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import UserMixin, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from extensions import db
+from .extensions import db
 
 
 class Students(UserMixin, db.Model):

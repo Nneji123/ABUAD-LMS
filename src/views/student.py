@@ -21,10 +21,13 @@ import os
 from flask import Blueprint, render_template
 from flask_login import LoginManager, current_user, login_required
 
+import sys
+sys.path.append("..")
+
 from constants import COURSES_INFO
 from utils import count_name_in_files
 
-student = Blueprint("student", __name__, template_folder="./templates")
+student = Blueprint("student", __name__)
 login_manager = LoginManager()
 login_manager.init_app(student)
 

@@ -5,11 +5,13 @@ from itsdangerous import URLSafeTimedSerializer
 from itsdangerous.exc import BadTimeSignature, BadSignature
 from werkzeug.security import generate_password_hash
 
-from extensions import db
-from models import Lecturers, Students
+import sys
+sys.path.append("..")
+from configurations.extensions import db
+from configurations.models import Lecturers, Students
 from utils import send_mail
 
-reset_passwords = Blueprint("reset_passwords", __name__, template_folder="./templates")
+reset_passwords = Blueprint("reset_passwords", __name__)
 
 serializer = URLSafeTimedSerializer("secret")
 

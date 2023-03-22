@@ -11,7 +11,7 @@ The Blueprint requires users to be logged in to access the logout page, which is
 from flask import Blueprint, redirect, url_for
 from flask_login import LoginManager, login_required, logout_user
 
-logout = Blueprint("logout", __name__, template_folder="./templates")
+logout = Blueprint("logout", __name__)
 login_manager = LoginManager()
 login_manager.init_app(logout)
 

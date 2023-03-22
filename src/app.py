@@ -5,16 +5,29 @@ from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_admin import Admin
 
-from config import configs
-from custom_errors import custom_error
-from extensions import *
-from index import CustomIndexView, index
-from lecturer import lecturer
-from login import login
-from logout import logout
-from models import Admins, AdminsView, Lecturers, LecturersView, Students, StudentsView
-from reset_password import reset_passwords
-from student import student
+# from config import configs
+# from custom_errors import custom_error
+# from extensions import db, email, login_manager, socketio
+# from index import CustomIndexView, index
+# from lecturer import lecturer
+# from login import login
+# from logout import logout
+# from models import Admins, AdminsView, Lecturers, LecturersView, Students, StudentsView
+# from reset_password import reset_passwords
+# from student import student
+
+from configurations.config import configs
+from views.index import index, CustomIndexView
+from views.lecturer import lecturer
+from views.reset_password import reset_passwords
+from views.student import student
+from views.login import login
+from views.lecturer import lecturer
+from views.custom_errors import custom_error
+from views.logout import logout
+from configurations.extensions import db, email, socketio, login_manager
+from configurations.models import Admins, AdminsView, Lecturers, LecturersView, Students, StudentsView
+
 
 load_dotenv()
 

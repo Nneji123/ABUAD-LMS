@@ -37,13 +37,16 @@ from flask_login import LoginManager, login_required
 from PIL import Image
 from werkzeug.utils import secure_filename
 
+import sys
+sys.path.append("..")
+
 from constants import *
 from utils import (
     get_total_attendance,
     base64_to_image,
 )
 
-lecturer = Blueprint("lecturer", __name__, template_folder="./templates")
+lecturer = Blueprint("lecturer", __name__)
 login_manager = LoginManager()
 login_manager.init_app(lecturer)
 

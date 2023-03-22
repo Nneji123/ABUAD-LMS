@@ -12,12 +12,12 @@ RUN apt-get -y update && apt-get install -y \
 
 RUN pip install --upgrade setuptools 
 
-COPY requirements.txt .
+ADD ./../requirements.txt /app/requirements.txt
 
 RUN pip install dlib && pip install -r requirements.txt
 
-ADD . . 
+ADD . /app 
 
-RUN cd src && python init.py
+RUN python init.py
 
 CMD python app.py

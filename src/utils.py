@@ -42,7 +42,7 @@ from flask_mail import Message
 from flask_socketio import emit
 
 from constants import *
-from extensions import email, socketio
+from configurations.extensions import email, socketio
 
 
 def send_mail(to, template, subject, link, username, **kwargs):

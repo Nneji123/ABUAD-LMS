@@ -16,9 +16,9 @@ from dotenv import load_dotenv
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
-from app import db
+from extensions import db
 from constants import *
-from models import Admins, Lecturers, Students
+from extensions.models import Admins, Lecturers, Students
 
 load_dotenv()
 
@@ -56,7 +56,7 @@ def make_dirs():
     for courses in VALID_COURSE_CODES:
         for dir in TYPES:
             # create a new directory for each string
-            os.makedirs(f"./templates/static/courses/{courses}/{dir}", exist_ok=True)
+            os.makedirs(f"../templates/static/courses/{courses}/{dir}", exist_ok=True)
     print("Done")
 
 
