@@ -16,10 +16,9 @@ import uuid
 from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import UserMixin, current_user
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
-db = SQLAlchemy()
+from extensions import db
 
 
 class Students(UserMixin, db.Model):

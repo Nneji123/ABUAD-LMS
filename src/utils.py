@@ -32,12 +32,47 @@ import csv
 import os
 from datetime import datetime
 
+import css_inline
 import cv2
 import face_recognition
 import numpy as np
 import pandas as pd
+from dotenv import load_dotenv
+from flask import render_template
+from flask_mail import Message
 
 from constants import *
+from extensions import email, socketio
+
+
+@socketio.on("my_event")
+def handle_my_event(data):
+    print("received data: " + str(data))
+    socketio.emit("my_response", data)
+
+
+def send_mail(to, template, subject, link, username, **kwargs):
+    """
+    The send_mail_flask function is used to send an email from the Flask app.
+    It takes in a recipient, template, subject and link as its parameters. It also takes in optional arguments that can be passed into the function.
+
+    :param to: Specify the recipient of the email
+    :param template: Specify the html template that will be used to send the email
+    :param subject: Set the subject of the email
+    :param link: Create a unique link for each user
+    :param username: Populate the username field in the email template
+    :param **kwargs: Pass in any additional variables that are needed to be rendered in the email template
+    :return: The html of the email that is being sent
+    """
+    if os.getenv("SERVER_MODE") == "DEV":
+        sender = os.getenv("DEV_SENDER_EMAIL")
+    elif os.getenv("SERVER_MODE") == "PROD":
+        sender = os.getenv("PROD_SENDER_EMAIL")
+    msg = Message(subject=subject, sender=sender, recipients=[to])
+    html = render_template(template, username=username, link=link, **kwargs)
+    inlined = css_inline.inline(html)
+    msg.html = inlined
+    email.send(msg)
 
 
 def save_attendance(attendance_str: str, location: str):
@@ -63,7 +98,6 @@ def save_attendance(attendance_str: str, location: str):
     filename = f"{date_string}-attendance.csv".capitalize()
     # check if the file already exists
     if os.path.exists(f"{location}/{filename}"):
-
         # print("True")
         with open(f"{location}/{filename}", "r") as attendance_file:
             attendance_reader = csv.reader(attendance_file)
@@ -139,14 +173,14 @@ def record_face_attendance(file_path, course):
 
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_frame)
-        face_encodings = face_recognition.face_encodings(
-            rgb_frame, face_locations)
+        face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
 
         # Iterate through each face found in the current frame
-        for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+        for (top, right, bottom, left), face_encoding in zip(
+            face_locations, face_encodings
+        ):
             # See if the face is a match for any of the known faces
-            matches = face_recognition.compare_faces(
-                encodeListknown, face_encoding)
+            matches = face_recognition.compare_faces(encodeListknown, face_encoding)
             name = "This Student is not registered"
 
             # If a match was found in known_face_encodings, use the name of the first one that matches
@@ -163,11 +197,13 @@ def record_face_attendance(file_path, course):
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
             # Draw a label with a name below the face
-            cv2.rectangle(frame, (left, bottom - 35),
-                          (right, bottom), (0, 0, 255), cv2.FILLED)
+            cv2.rectangle(
+                frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED
+            )
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6),
-                        font, 1.0, (255, 255, 255), 1)
+            cv2.putText(
+                frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1
+            )
 
         frame = cv2.imencode(".jpg", frame)[1].tobytes()
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
@@ -191,15 +227,26 @@ def capture_face():
             face_locations = face_recognition.face_locations(frame)
             if len(face_locations) > 0:
                 # draw bounding boxes around the faces
-                for (top, right, bottom, left) in face_locations:
-                    cv2.rectangle(frame, (left, top),
-                                  (right, bottom), (0, 0, 255), 2)
-                    cv2.rectangle(frame, (left, bottom - 35),
-                                  (right, bottom), (0, 0, 255), cv2.FILLED)
+                for top, right, bottom, left in face_locations:
+                    cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+                    cv2.rectangle(
+                        frame,
+                        (left, bottom - 35),
+                        (right, bottom),
+                        (0, 0, 255),
+                        cv2.FILLED,
+                    )
                     font = cv2.FONT_HERSHEY_DUPLEX
                     text = "Capture Face!"
-                    cv2.putText(frame, text, (left + 6, bottom - 6),
-                                font, 1.0, (255, 255, 255), 1)
+                    cv2.putText(
+                        frame,
+                        text,
+                        (left + 6, bottom - 6),
+                        font,
+                        1.0,
+                        (255, 255, 255),
+                        1,
+                    )
             try:
                 ret, buffer = cv2.imencode(".jpg", frame)
                 frame = buffer.tobytes()
@@ -280,8 +327,7 @@ def get_total_attendance(directory_path):
     data = []
     for name, attendance_data in student_attendance.items():
         total_classes = len(os.listdir(directory_path))
-        attendance_percentage = attendance_data["Attendance"] / \
-            total_classes * 100
+        attendance_percentage = attendance_data["Attendance"] / total_classes * 100
         data.append(
             {
                 "Name": name,
@@ -292,7 +338,6 @@ def get_total_attendance(directory_path):
         )
 
     df = pd.DataFrame(
-        data, columns=["Name", "Matric Number",
-                       "Department", "Attendance Percentage"]
+        data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"]
     )
     return df

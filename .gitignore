@@ -1,6 +1,7 @@
 .env
 database.db
 __pycache__/
+env/
 instance/
 *.pdf
 Camera_Flask_App/
