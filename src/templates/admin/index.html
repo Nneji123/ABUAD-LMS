@@ -1,4 +1,4 @@
-{% extends 'admin/master.html' %}
+{% extends admin_base_template %}
 {% block body %}
 {{ super() }}
 
@@ -33,7 +33,8 @@
 {% endblock body %}
 {% block extra_head %}
 {{ super()}}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='admin.css') }}">
+<link rel="icon" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
 {% endblock %}
 {% block head %}
 {{ super() }}
@@ -63,16 +64,4 @@
 <a class="navbar-brand" href="/admin">
     <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo">
 </a>
-{% endblock %}
-
-{% block access_control %}
-{{ super() }}
-
-<ul class="nav navbar-nav navbar-right">
-    <li>
-        {% if current_user.is_authenticated %}
-        <a href="{{ url_for('admin.logout') }}"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
-        {% endif %}
-    </li>
-</ul>
 {% endblock %}

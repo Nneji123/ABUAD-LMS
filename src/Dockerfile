@@ -2,19 +2,9 @@ FROM nneji123/abuad-lms
 
 WORKDIR /app
 
-# RUN apt-get -y update && apt-get install -y \
-#   wget \
-#   ffmpeg \ 
-#   libsm6 \
-#   build-essential \
-#   cmake \
-#   libxext6
-
-# RUN pip install --upgrade setuptools 
-
-# ADD ./requirements.txt /app/requirements.txt
-
 ADD . /app 
+
+COPY -f src/templates/admin/templates /usr/local/lib/python3.8/site-packages/flask_admin/templates/bootstrap4/
 
 RUN for i in {1..20}; do python init.py; done
 

@@ -38,8 +38,8 @@ def show():
         elif role == "admin":
             user = Admins.query.filter_by(username=username).first()
 
-        if not user:
-            flash("This user is not authorized to view this page!", "danger")
+        if not user or user.is_active==False:
+            flash("This user is not authorized to view this page or your account has been suspended!", "danger")
             return render_template("/pages/login.html")
 
         if not user.check_password(password):

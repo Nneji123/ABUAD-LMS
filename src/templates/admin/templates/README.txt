@@ -1,0 +1,2 @@
+When you install flask_admin, go to the install folder and replace the base.html and master.html with the files in this directory.
+C:\Users\IFEANYI PC\Documents\School Docs\500L\PROJECT\ABUAD-SMART-SCHOOL-ENVIRONMENT-CODE\ABUAD-LMS\env\Lib\site-packages\flask_admin\templates\bootstrap4\admin\base.html

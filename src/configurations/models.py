@@ -32,6 +32,7 @@ class Students(UserMixin, db.Model):
     role = db.Column(db.String(10), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_logged_in_at = db.Column(db.DateTime, nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
     hashCode = db.Column(db.String(120), nullable=True)
 
     def check_password(self, password):
@@ -46,6 +47,7 @@ class Lecturers(UserMixin, db.Model):
     role = db.Column(db.String(10), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_logged_in_at = db.Column(db.DateTime, nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
     hashCode = db.Column(db.String(120), nullable=True)
 
     def check_password(self, password):
