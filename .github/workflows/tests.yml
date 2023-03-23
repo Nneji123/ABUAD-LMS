@@ -22,8 +22,7 @@ jobs:
           apt-get update && apt-get ffmpeg libsm6 build-essential cmake libxext6
           pip install --upgrade setuptools
           pip install dlib --verbose
-          cd src
-          pip install -r requirements.txt
+          make install
         shell: bash
       - name: Run Tests      
         run:
