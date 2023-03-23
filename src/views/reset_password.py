@@ -51,9 +51,7 @@ def reset_password():
         )
 
         flash("A password reset link has been sent to your email!", "success")
-        return render_template("/reset_password/index.html")
-    else:
-        return render_template("/reset_password/index.html")
+    return render_template("/reset_password/index.html")
 
 
 @reset_passwords.route("/<string:hashCode>", methods=["GET", "POST"])
@@ -66,30 +64,24 @@ def hashcode(hashCode):
         )
         return redirect(url_for("index.show"))
 
-    # check if user exists in students table
-    student = Students.query.filter_by(email=mail).first()
-    if student:
+    if student := Students.query.filter_by(email=mail).first():
         check = student
+    elif lecturer := Lecturers.query.filter_by(email=mail).first():
+        check = lecturer
     else:
-        # check if user exists in lecturers table
-        lecturer = Lecturers.query.filter_by(email=mail).first()
-        if lecturer:
-            check = lecturer
-        else:
-            flash("User does not exist!", "danger")
-            return render_template("/reset_password/base.html")
+        flash("User does not exist!", "danger")
+        return render_template("/reset_password/base.html")
 
-    if request.method == "POST":
-        passw = request.form["passw"]
-        cpassw = request.form["cpassw"]
-        if passw == cpassw:
-            check.password = generate_password_hash(passw, method="sha256")
-            check.hashCode = None
-            db.session.commit()
-            flash("Your Password has been reset successfully!", "success")
-            return redirect(url_for("index.show"))
-        else:
-            flash("Password fields do not match.", "danger")
-            return render_template("/reset_password/reset.html", hashCode=hashCode)
+    if request.method != "POST":
+        return render_template("/reset_password/reset.html", hashCode=hashCode)
+    passw = request.form["passw"]
+    cpassw = request.form["cpassw"]
+    if passw == cpassw:
+        check.password = generate_password_hash(passw, method="sha256")
+        check.hashCode = None
+        db.session.commit()
+        flash("Your Password has been reset successfully!", "success")
+        return redirect(url_for("index.show"))
     else:
+        flash("Password fields do not match.", "danger")
         return render_template("/reset_password/reset.html", hashCode=hashCode)
