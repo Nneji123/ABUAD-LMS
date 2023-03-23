@@ -30,7 +30,9 @@ Note:
 import base64
 import csv
 import os
+import re
 from datetime import datetime
+
 
 import css_inline
 import cv2
@@ -43,6 +45,23 @@ from flask_socketio import emit
 
 from configurations.extensions import email, socketio
 from constants import *
+
+
+def validate_matric_number(matric_number: str) -> bool:
+    """
+    The validate_matric_number function takes a string as an argument and returns True if the string is in the format of a valid matric number, otherwise it returns False.
+        The function uses regular expressions to check for validity.
+
+    :param matric_number: str: Specify the type of data that is expected to be passed into the function
+    :return: A boolean value
+    """
+
+    pattern = r"^1[6-9]|2[0-2]\/[A-Z]{3}\d{2}\/\d{3}$"
+
+    if re.match(pattern, matric_number.upper()):
+        return True
+    else:
+        return False
 
 
 def send_mail(to, template, subject, link, username, **kwargs):
@@ -58,6 +77,7 @@ def send_mail(to, template, subject, link, username, **kwargs):
     :param **kwargs: Pass in any additional variables that are needed to be rendered in the email template
     :return: The html of the email that is being sent
     """
+    sender = None
     if os.getenv("SERVER_MODE") == "DEV":
         sender = os.getenv("DEV_SENDER_EMAIL")
     elif os.getenv("SERVER_MODE") == "PROD":

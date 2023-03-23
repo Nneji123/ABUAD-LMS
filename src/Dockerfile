@@ -2,20 +2,10 @@ FROM nneji123/abuad-lms
 
 WORKDIR /app
 
-# RUN apt-get -y update && apt-get install -y \
-#   wget \
-#   ffmpeg \ 
-#   libsm6 \
-#   build-essential \
-#   cmake \
-#   libxext6
-
-# RUN pip install --upgrade setuptools 
-
-# ADD ./requirements.txt /app/requirements.txt
-
 ADD . /app 
 
-RUN python init.py
+COPY /templates/admin/templates /usr/local/lib/python3.8/site-packages/flask_admin/templates/bootstrap4/admin/
+
+RUN ./init.sh
 
 CMD gunicorn -b 0.0.0.0:5000 --worker-class eventlet -w 1 app:app

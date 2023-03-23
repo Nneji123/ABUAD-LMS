@@ -1,0 +1,45 @@
+/*
+    DEMO STYLE
+*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.0em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #000000;
+}
+
+
+
+/* set navbar background color */
+  .navbar {
+      background: #fccb90;
+      /* fallback for older browsers */
+      background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+      background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+
+  }
+
+  /* set navigation links to white */
+  .navbar-nav .nav-link {
+      color: #fff !important;
+  }
+
+  /* set logout button text color to black */
+  .btn-primary {
+      color: #000 !important;
+  }
+
+  /* set logout button background color to white */
+  .btn-primary {
+      background-color: #fff !important;
+      border-color: #fff !important;
+  }

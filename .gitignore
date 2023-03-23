@@ -1,6 +1,7 @@
 .env
-database.db
+src/database.db
 __pycache__/
+.pytest_cache/
 env/
 instance/
 *.pdf
