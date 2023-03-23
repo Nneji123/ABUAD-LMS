@@ -77,51 +77,34 @@ In addition to the features available to students and lecturers, the ABUAD LMS a
 
 # :file_folder: Repository Structure
 ```
-|-- Dockerfile
-|-- LICENSE.md
-|-- README.md
-|-- docker-compose.yml
-|-- instance
-|-- render.yaml
-|-- requirements.txt
-|-- screens
-`-- src
-    |-- app.py
-    |-- config.py
-    |-- constants.py
-    |-- database.db
-    |-- index.py
-    |-- init.py
-    |-- instance
-    |-- lecturer.py
-    |-- login.py
-    |-- logout.py
-    |-- models.py
-    |-- student.py
-    |-- templates
-    |   |-- admin
-    |   |   `-- index.html
-    |   |-- pages
-    |   |   |-- attendance.html
-    |   |   |-- coe.html
-    |   |   |-- course_base.html
-    |   |   |-- error.html
-    |   |   |-- lecturer.html
-    |   |   |-- login.html
-    |   |   |-- record_attendance.html
-    |   |   |-- register.html
-    |   |   `-- student.html
-    |   |-- reset_password
-    |   |   |-- base.html
-    |   |   |-- email.html
-    |   |   |-- index.html
-    |   |   `-- reset.html
-    |   `-- static
-    |       |-- courses
-    |       |   `-- logo.png
-    |       |-- main.css
-    |       `-- style.css
-    `-- utils.py
+├── app.py
+├── configurations
+│   ├── config.py
+│   ├── extensions.py
+│   ├── __init__.py
+│   ├── models.py
+├── constants.py
+├── database.db
+├── docker-compose.yml
+├── Dockerfile
+├── __init__.py
+├── init.py
+├── requirements.txt
+├── templates
+│   ├── admin
+│   ├── pages
+│   ├── reset_password
+│   └── static
+├── utils.py
+└── views
+    ├── custom_errors.py
+    ├── index.py
+    ├── __init__.py
+    ├── lecturer.py
+    ├── login.py
+    ├── logout.py
+    ├── reset_password.py
+    └── student.py
 ```
 
 # :wrench: Tools Used 

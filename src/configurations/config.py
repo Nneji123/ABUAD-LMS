@@ -10,6 +10,7 @@ application by accessing the required configuration values from the respective m
 """
 
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,6 +25,7 @@ configs = {
         "LOGIN_DISABLED": False,
         "PORT": 5000,
         "DEBUG": False,
+        "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "MAIL_SERVER": os.getenv("PROD_MAIL_SERVER"),
         "MAIL_PORT": os.getenv("PROD_MAIL_PORT"),
         "MAIL_USERNAME": os.getenv("PROD_MAIL_USERNAME"),
@@ -37,6 +39,7 @@ configs = {
         "LOGIN_DISABLED": True,
         "PORT": 3000,
         "DEBUG": True,
+        "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "MAIL_SERVER": os.getenv("DEV_MAIL_SERVER"),
         "MAIL_PORT": int(os.getenv("DEV_MAIL_PORT")),
         "MAIL_USERNAME": os.getenv("DEV_MAIL_USERNAME"),

@@ -8,14 +8,16 @@ If the user is not authorized or enters incorrect login credentials, an danger m
 """
 
 
+import sys
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user
 
-from models import Admins, Lecturers, Students
+sys.path.append("..")
 
-login = Blueprint(
-    "login", __name__, template_folder="./templates", static_folder="./templates"
-)
+from configurations.models import Admins, Lecturers, Students
+
+login = Blueprint("login", __name__)
 
 login_manager = LoginManager()
 login_manager.init_app(login)
@@ -24,7 +26,6 @@ login_manager.init_app(login)
 @login.route("/login", methods=["GET", "POST"])
 def show():
     if request.method == "POST":
-
         username = request.form["username"]
         password = request.form["password"]
         role = request.form["role"]

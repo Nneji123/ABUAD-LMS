@@ -13,6 +13,8 @@
     <script type="text/javascript" charset="utf8"
       src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{{
         url_for('static',filename='main.css') }}">
     <link rel="icon" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
@@ -66,8 +68,16 @@
       <div class="row">
         <!-- <h1>Record Attendance for COE 501</h1> -->
         {% block content %}
+        <!-- <div id="container"> -->
+        <video type="hidden" autoplay playsinline id="videoElement" style="display: none;"></video>
+        <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+        <!-- </div> -->
         <div class="col-md-6">
-          <img src="/detect_face_feed/{{course}}" alt="Course Image" class="img-fluid">
+          <div class="card">
+            <div class="card-body">
+              <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
+            </div>
+          </div>
         </div>
         {% endblock %}
 
@@ -91,6 +101,51 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
+      socket.on('connect', function () {
+        console.log("Connected...!", socket.connected)
+      });
 
+
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      const video = document.querySelector("#videoElement");
+
+      video.width = 400;
+      video.height = 300;
+
+
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({
+          video: true
+        })
+          .then(function (stream) {
+            video.srcObject = stream;
+            video.play();
+          })
+          .catch(function (err0r) {
+
+          });
+      }
+
+      const FPS = 1;
+      setInterval(() => {
+        width = video.width;
+        height = video.height;
+        context.drawImage(video, 0, 0, width, height);
+        var data = canvas.toDataURL('image/jpeg', 0.5);
+        context.clearRect(0, 0, width, height);
+        const course = '{{course}}'
+
+        socket.emit('images', data, course);
+
+      }, 1000 / FPS);
+
+      socket.on('recorded_image', function (faces) {
+        photo.setAttribute('src', faces);
+
+      });
+    </script>
 
 </html>
