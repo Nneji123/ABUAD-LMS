@@ -67,8 +67,6 @@ def make_dirs():
 
 def main():
     make_dirs()
-    db.create_all()
-
     for i in range(20):
         # generate a random first and last name for the user
         first_name = random.choice(nigerian_first_names)
@@ -121,5 +119,6 @@ def create_admin():
 
 
 if __name__ == "__main__":
+    db.create_all()
     create_admin()
     main()

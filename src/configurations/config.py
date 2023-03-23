@@ -36,7 +36,7 @@ configs = {
     },
     "DEV": {
         "SQLALCHEMY_DATABASE_URI": SQLITE,
-        "LOGIN_DISABLED": False,
+        "LOGIN_DISABLED": True,
         "PORT": 3000,
         "DEBUG": True,
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
