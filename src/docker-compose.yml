@@ -4,6 +4,6 @@ services:
     container_name: abuad-lms-test
     command: python app.py
     ports:
-      - 8080:3000
+      - 8080:5000
     volumes:
       - .:/app
