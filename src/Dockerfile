@@ -16,6 +16,6 @@ WORKDIR /app
 
 ADD . /app 
 
-RUN python init.py
+RUN for i in {1..20}; do python init.py; done
 
 CMD gunicorn -b 0.0.0.0:5000 --worker-class eventlet -w 1 app:app

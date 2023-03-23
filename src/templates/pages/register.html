@@ -83,19 +83,33 @@
 					<form method="post">
 						<div class="form-group">
 							<label for="name">Name:</label>
-							<input type="text" class="form-control form-control-lg" id="name" name="name"
+							<select type="text" class="form-select form-control-lg" id="name" name="name"
 								required="True">
+								{% for student in students %}
+
+								<option value="{{student.username}}">{{student.username}}</option>
+								{% endfor %}
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="matric">Matric Number:</label>
-							<input type="text" class="form-control form-control-lg" id="matric" name="matric"
+							<select type="text" class="form-select form-control-lg" id="matric" name="matric"
 								required="True">
+								{% for student in students %}
+
+								<option value="{{student.matric_number}}">{{student.matric_number}}</option>
+								{% endfor %}
+							</select>
 						</div>
 						<div class="form-group">
-							<label for="email">Department:</label>
-							<input type="text" class="form-control form-control-lg" id="email" name="dept"
-								required="True">
+							<label for="dept">Department:</label>
+							<select type="text" class="form-select" id="email" name="dept" required="True">
+								<!-- {% for student in students %} -->
+								<option value="Computer Engineering">Computer Engineering</option>
+								<!-- {% endfor %} -->
+							</select>
 						</div>
+
 						<input type="submit" value="Capture" id="capture-button" name="click" class="btn btn-primary
 							btn-lg" style="background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);" />
 					</form>

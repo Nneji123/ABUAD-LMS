@@ -39,7 +39,12 @@ def reset_password():
             student.hashCode = hashCode
         else:
             lecturer.hashCode = hashCode
-        server = os.getenv("SERVER_NAME")
+        server = (
+            os.getenv("DEV_SERVER_NAME")
+            if os.getenv("SERVER_MODE") == "DEV"
+            else os.getenv("PROD_SERVER_NAME")
+        )
+        print(server)
         link = f"{server}/{hashCode}"
         db.session.commit()
         send_mail(

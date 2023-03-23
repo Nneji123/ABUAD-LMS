@@ -24,8 +24,16 @@ from datetime import datetime
 
 import cv2
 import pandas as pd
-from flask import (Blueprint, Response, flash, jsonify, redirect,
-                   render_template, request, url_for)
+from flask import (
+    Blueprint,
+    Response,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import LoginManager, login_required
 from PIL import Image
 from werkzeug.utils import secure_filename
@@ -33,6 +41,7 @@ from werkzeug.utils import secure_filename
 sys.path.append("..")
 
 from constants import *
+from configurations.models import Students
 from utils import base64_to_image, get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__)
@@ -97,12 +106,15 @@ def record_attendance(course_code):
 @lecturer.route("/register_students/<course_code>")
 @login_required
 def index():
-    return render_template("/pages/register.html")
+    students = Students.query.all()
+    print(students)
+    return render_template("/pages/register.html", students=students)
 
 
 @lecturer.route("/register_student/<course_code>", methods=["POST", "GET"])
 @login_required
 def tasks(course_code):
+    students = Students.query.all()
     if request.method == "POST":
         try:
             data_uri = request.json["data_uri"]
@@ -119,9 +131,11 @@ def tasks(course_code):
                 mypath = f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
                 if os.path.exists(mypath):
                     flash("This student is already registered!", "danger")
-                    print("True")
+                    print("This student is already registered!")
                     return render_template(
-                        "/pages/register.html", course_code=course_code
+                        "/pages/register.html",
+                        course_code=course_code,
+                        students=students,
                     )
 
                 else:
@@ -132,16 +146,26 @@ def tasks(course_code):
                     print("Done!")
                     flash("Student registered successfully!", "success")
                     return render_template(
-                        "/pages/register.html", course_code=course_code
+                        "/pages/register.html",
+                        course_code=course_code,
+                        students=students,
                     )
 
             else:
-                return render_template("/pages/register.html", course_code=course_code)
+                return render_template(
+                    "/pages/register.html", course_code=course_code, students=students
+                )
         except TypeError as e:
-            return render_template("/pages/register.html", course_code=course_code)
+            return render_template(
+                "/pages/register.html", course_code=course_code, students=students
+            )
     elif request.method == "GET":
-        return render_template("/pages/register.html", course_code=course_code)
-    return render_template("/pages/register.html", course_code=course_code)
+        return render_template(
+            "/pages/register.html", course_code=course_code, students=students
+        )
+    return render_template(
+        "/pages/register.html", course_code=course_code, students=students
+    )
 
 
 # View Attendance Records

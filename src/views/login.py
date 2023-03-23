@@ -7,7 +7,7 @@ If the user is not authorized or enters incorrect login credentials, an danger m
 
 """
 
-
+from datetime import datetime
 import sys
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
@@ -15,7 +15,7 @@ from flask_login import LoginManager, login_user
 
 sys.path.append("..")
 
-from configurations.models import Admins, Lecturers, Students
+from configurations.models import Admins, Lecturers, Students, db
 
 login = Blueprint("login", __name__)
 
@@ -32,7 +32,7 @@ def show():
 
         user = None
         if role == "student":
-            user = Students.query.filter_by(username=username).first()
+            user = Students.query.filter_by(matric_number=username).first()
         elif role == "lecturer":
             user = Lecturers.query.filter_by(username=username).first()
         elif role == "admin":
@@ -47,7 +47,8 @@ def show():
             return render_template("/pages/login.html")
 
         login_user(user)
-
+        user.last_logged_in_at = datetime.utcnow()
+        db.session.commit()
         if role == "student":
             return redirect(url_for("student.show"))
         elif role == "lecturer":
