@@ -7,8 +7,8 @@ If the user is not authorized or enters incorrect login credentials, an danger m
 
 """
 
-from datetime import datetime
 import sys
+from datetime import datetime
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import LoginManager, login_user

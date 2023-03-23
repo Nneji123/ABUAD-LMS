@@ -14,11 +14,11 @@ import random
 from typing import Union
 
 from dotenv import load_dotenv
-from configurations.models import Admins, Lecturers, Students
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
 from app import db
+from configurations.models import Admins, Lecturers, Students
 from constants import *
 
 load_dotenv()
