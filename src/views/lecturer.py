@@ -67,7 +67,7 @@ def upload_file(course_code):
     file_names, file_extensions = os.path.splitext(file_name)
     new_file_name = f"{str(course_code)}-{file_names}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}{file_extensions.lower()}"
 
-    if not any(course_code in valid_code for valid_code in VALID_COURSE_CODES):
+    if all(course_code not in valid_code for valid_code in VALID_COURSE_CODES):
         return "Error: Invalid course code"
 
     file_type = ""
@@ -99,7 +99,7 @@ def upload_file(course_code):
 @login_required
 def record_attendance(course_code):
     course = course_code
-    return render_template(f"/pages/record_attendance.html", course=course)
+    return render_template("/pages/record_attendance.html", course=course)
 
 
 # Registering Students
@@ -132,12 +132,6 @@ def tasks(course_code):
                 if os.path.exists(mypath):
                     flash("This student is already registered!", "danger")
                     print("This student is already registered!")
-                    return render_template(
-                        "/pages/register.html",
-                        course_code=course_code,
-                        students=students,
-                    )
-
                 else:
                     cv2.imwrite(
                         mypath,
@@ -145,16 +139,12 @@ def tasks(course_code):
                     )
                     print("Done!")
                     flash("Student registered successfully!", "success")
-                    return render_template(
-                        "/pages/register.html",
-                        course_code=course_code,
-                        students=students,
-                    )
+            return render_template(
+                "/pages/register.html",
+                course_code=course_code,
+                students=students,
+            )
 
-            else:
-                return render_template(
-                    "/pages/register.html", course_code=course_code, students=students
-                )
         except TypeError as e:
             return render_template(
                 "/pages/register.html", course_code=course_code, students=students
@@ -182,42 +172,33 @@ def attendance(course_code):
         filename = f"{date}-attendance.csv"
         file_path = f"./templates/static/courses/{course_code}/attendance/{filename}"
 
-        if os.path.exists(file_path):
-            text = f"Attendance Report for COE {course_code}"
-            df = pd.read_csv(file_path)
-            if df is not None:
-                html_table = df.to_html(index=False)
-            else:
-                html_table = "No attendance data available."
-            return render_template(
-                "/pages/attendance.html",
-                html_table=html_table,
-                text=text,
-                course=course,
-            )
-        else:
+        if not os.path.exists(file_path):
             return render_template(
                 "/pages/attendance.html",
                 text="No attendance data available for this date",
                 html_table="No attendance data available.",
                 course=course,
             )
+        text = f"Attendance Report for COE {course_code}"
+        df = pd.read_csv(file_path)
     else:
         # return render_template("/pages/attendance_date.html")
         text = f"Attendance Report for COE {course_code}"
         df = get_total_attendance(
             f"./templates/static/courses/{course_code}/attendance"
         )
-        if df is not None:
-            html_table = df.to_html(index=False)
-        else:
-            html_table = "No attendance data available."
-        return render_template(
-            "/pages/attendance.html",
-            html_table=html_table,
-            text=text,
-            course=course,
-        )
+
+    html_table = (
+        df.to_html(index=False)
+        if df is not None
+        else "No attendance data available."
+    )
+    return render_template(
+        "/pages/attendance.html",
+        html_table=html_table,
+        text=text,
+        course=course,
+    )
 
 
 @lecturer.route("/lecturer/view_registered_students/<course>", methods=["POST", "GET"])
@@ -250,17 +231,17 @@ def get_images(course):
 
             # add the image dictionary to the image list
             image_list.append(image_dict)
-    if image_list == []:
-        # return the image details as JSON
-        return jsonify("No students registered for this course!")
-    else:
-        return jsonify(images=image_list)
+    return (
+        jsonify(images=image_list)
+        if image_list
+        else jsonify("No students registered for this course!")
+    )
 
 
 @lecturer.route("/lecturer/view_students/<course>")
 @login_required
 def view_students(course):
-    return render_template(f"/pages/view_students.html", course=course)
+    return render_template("/pages/view_students.html", course=course)
 
 
 @lecturer.route("/lecturer/view_students/delete_student/<course>", methods=["POST"])
@@ -346,7 +327,7 @@ def edit_filename(course):
         )
     ):
         flash("A student with that name and matric number already exists!", "danger")
-        return render_template(f"/pages/view_students.html", course=course)
+        return render_template("/pages/view_students.html", course=course)
 
     directory = os.path.join("./templates/static/courses", course, "attendance")
 

@@ -52,11 +52,11 @@ def test_send_mail():
     name = Flask(__name__, template_folder="./templates")
     with create_app(name).app_context():
         with patch(
-            "configurations.extensions.email.render_template",
-            return_value=expected_html,
-        ):
+                    "configurations.extensions.email.render_template",
+                    return_value=expected_html,
+                ):
             html = send_mail(to, template, subject, link, username, **kwargs)
-            assert html == None
+            assert html is None
 
 
 @pytest.fixture

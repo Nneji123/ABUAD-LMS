@@ -58,10 +58,7 @@ def validate_matric_number(matric_number: str) -> bool:
 
     pattern = r"^1[6-9]|2[0-2]\/[A-Z]{3}\d{2}\/\d{3}$"
 
-    if re.match(pattern, matric_number.upper()):
-        return True
-    else:
-        return False
+    return bool(re.match(pattern, matric_number.upper()))
 
 
 def send_mail(to, template, subject, link, username, **kwargs):
@@ -101,8 +98,7 @@ def base64_to_image(base64_string):
     base64_data = base64_string.split(",")[1]
     image_bytes = base64.b64decode(base64_data)
     image_array = np.frombuffer(image_bytes, dtype=np.uint8)
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-    return image
+    return cv2.imdecode(image_array, cv2.IMREAD_COLOR)
 
 
 @socketio.on("connect")
@@ -317,9 +313,7 @@ def count_name_in_files(directory_path, name):
 
     percentage = count / num_files * 100
     eligibility = "eligible" if percentage >= 70 else "not eligible"
-    # \nYou are {eligibility} to write exams for this course!"
-    message = f"{name}'s Attendance for this course is {percentage}%"
-    return message
+    return f"{name}'s Attendance for this course is {percentage}%"
 
 
 def get_total_attendance(directory_path):
@@ -365,7 +359,12 @@ def get_total_attendance(directory_path):
             }
         )
 
-    df = pd.DataFrame(
-        data, columns=["Name", "Matric Number", "Department", "Attendance Percentage"]
+    return pd.DataFrame(
+        data,
+        columns=[
+            "Name",
+            "Matric Number",
+            "Department",
+            "Attendance Percentage",
+        ],
     )
-    return df

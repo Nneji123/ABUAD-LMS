@@ -102,7 +102,7 @@ def create_admin():
     create_new_user(
         type_of_user="student",
         username="Nneji Ifeanyi Daniel",
-        email=f"ifeanyinneji777@gmail.com",
+        email="ifeanyinneji777@gmail.com",
         password="password",
         matric_number="19/ENG02/077",
         department="Computer Engineering",

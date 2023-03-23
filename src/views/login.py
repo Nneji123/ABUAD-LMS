@@ -32,17 +32,17 @@ def show():
         role = request.form["role"]
 
         user = None
-        if role == "student":
+        if role == "admin":
+            user = Admins.query.filter_by(username=username).first()
+
+        elif role == "lecturer":
+            user = Lecturers.query.filter_by(username=username).first()
+        elif role == "student":
             if validate_matric_number(username):
                 user = Students.query.filter_by(matric_number=username).first()
             else:
                 flash("Invalid Matric Number!", "danger")
                 return render_template("/pages/login.html")
-        elif role == "lecturer":
-            user = Lecturers.query.filter_by(username=username).first()
-        elif role == "admin":
-            user = Admins.query.filter_by(username=username).first()
-
         if not user:
             flash("This user is not authorized to view this page!", "danger")
             return render_template("/pages/login.html")
