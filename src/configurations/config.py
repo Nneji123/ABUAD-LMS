@@ -21,7 +21,7 @@ SQLITE = os.getenv("SQLITE")
 
 configs = {
     "PROD": {
-        "SQLALCHEMY_DATABASE_URI": POSTGRES,
+        "SQLALCHEMY_DATABASE_URI": SQLITE,
         "LOGIN_DISABLED": False,
         "PORT": 5000,
         "DEBUG": False,
