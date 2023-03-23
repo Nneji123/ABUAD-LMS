@@ -25,7 +25,7 @@ jobs:
           make install
         shell: bash
       - name: Run Tests      
-        run:
+        run: |
           echo "${{ secrets.ENV_FILE }}" > .env
           cp -R .env src
           make test
