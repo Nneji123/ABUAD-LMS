@@ -14,6 +14,7 @@
 ![Docker](https://img.shields.io/badge/Docker-blue?style=flat&logo=docker&logoColor=white)
 [![Gitpod](https://img.shields.io/badge/Gitpod-orange?style=flat&logo=gitpod&logoColor=white)](https://gitpod.io/#https://github.com/Nneji123/abuad-lms)
 ![reposize](https://img.shields.io/github/repo-size/Nneji123/abuad-lms)
+[![Python Tests](https://github.com/Nneji123/ABUAD-LMS/actions/workflows/tests.yml/badge.svg)](https://github.com/Nneji123/ABUAD-LMS/actions/workflows/tests.yml)
 
 </div>
 
