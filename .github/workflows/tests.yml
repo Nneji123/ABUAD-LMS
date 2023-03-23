@@ -26,4 +26,6 @@ jobs:
         shell: bash
       - name: Run Tests      
         run:
+          echo "${{ secrets.ENV_FILE }}" > .env
+          cp -R .env src
           make test
