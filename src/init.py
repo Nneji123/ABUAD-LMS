@@ -56,7 +56,7 @@ def make_dirs():
     for courses in VALID_COURSE_CODES:
         for dir in TYPES:
             # create a new directory for each string
-            os.makedirs(f"../templates/static/courses/{courses}/{dir}", exist_ok=True)
+            os.makedirs(f"./templates/static/courses/{courses}/{dir}", exist_ok=True)
     print("Done")
 
 
