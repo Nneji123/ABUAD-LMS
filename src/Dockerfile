@@ -4,7 +4,7 @@ WORKDIR /app
 
 ADD . /app 
 
-COPY -f src/templates/admin/templates /usr/local/lib/python3.8/site-packages/flask_admin/templates/bootstrap4/
+COPY src/templates/admin/templates /usr/local/lib/python3.8/site-packages/flask_admin/templates/bootstrap4/
 
 RUN for i in {1..20}; do python init.py; done
 
