@@ -7,8 +7,14 @@ from flask_admin import Admin
 
 from configurations.config import configs
 from configurations.extensions import db, email, login_manager, socketio
-from configurations.models import (Admins, AdminsView, Lecturers,
-                                   LecturersView, Students, StudentsView)
+from configurations.models import (
+    Admins,
+    AdminsView,
+    Lecturers,
+    LecturersView,
+    Students,
+    StudentsView,
+)
 from views.custom_errors import custom_error
 from views.index import CustomIndexView, index
 from views.lecturer import lecturer

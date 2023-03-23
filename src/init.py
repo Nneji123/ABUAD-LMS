@@ -118,11 +118,6 @@ def create_admin():
 
 if __name__ == "__main__":
     db.create_all()
-    print("Created Database!")
     create_admin()
-    print("Created Admin!")
     create_dummy_users()
-    ("Print created Users!")
     make_dirs()
-    print("Created Directories")
-    print("APPLICATION SETUP COMPLETE!..")
