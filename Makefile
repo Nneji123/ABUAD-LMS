@@ -15,7 +15,8 @@ activate:
 .PHONY: lint
 
 lint:
-	sh -c 'black src && isort src'
+	sh -c 'black src'
+	sh -c 'isort src'
 
 # Install requirements
 .PHONY: install
@@ -39,14 +40,13 @@ start:
 .PHONY: test
 
 test:
-	pip install pytest pytest-html
 	sh -c 'cd src/tests && pytest . -W ignore::DeprecationWarning --verbose --html=report.html'
 
 # Cleanup
 .PHONY: clean
 
 clean:
-	sh -c 'rm -rf env && cd src && rm -rf database.db'
+	sh -c 'rm -rf env'
 
 # Default target
 all: venv activate install init start

@@ -33,7 +33,6 @@ import os
 import re
 from datetime import datetime
 
-
 import css_inline
 import cv2
 import face_recognition

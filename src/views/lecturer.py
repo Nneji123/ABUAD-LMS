@@ -24,16 +24,8 @@ from datetime import datetime
 
 import cv2
 import pandas as pd
-from flask import (
-    Blueprint,
-    Response,
-    flash,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
+from flask import (Blueprint, Response, flash, jsonify, redirect,
+                   render_template, request, url_for)
 from flask_login import LoginManager, login_required
 from PIL import Image
 from werkzeug.utils import secure_filename

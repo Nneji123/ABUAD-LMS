@@ -1,7 +1,7 @@
-from flask import Flask
-import pytest
-
 import sys
+
+import pytest
+from flask import Flask
 
 sys.path.append("..")
 from app import create_app

@@ -1,24 +1,17 @@
+import base64
 import sys
-import pytest
 from unittest.mock import Mock, patch
-from flask_mail import Message
-from flask import Flask
-
 
 import numpy as np
-import base64
 import pytest
-
+from flask import Flask
+from flask_mail import Message
 
 sys.path.append("..")
 
-from utils import (
-    validate_matric_number,
-    send_mail,
-    count_name_in_files,
-    base64_to_image,
-)
 from app import create_app
+from utils import (base64_to_image, count_name_in_files, send_mail,
+                   validate_matric_number)
 
 
 def test_validate_matric_number():
