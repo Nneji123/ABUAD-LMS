@@ -17,24 +17,30 @@ It includes the following functions:
     attendance: Renders the page for viewing attendance records.
 """
 
-
+import glob
 import os
 import sys
 from datetime import datetime
 
 import cv2
 import pandas as pd
-from flask import (Blueprint, Response, flash, jsonify, redirect,
-                   render_template, request, url_for)
+from flask import (
+    Blueprint,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import LoginManager, login_required
-from PIL import Image
 from werkzeug.utils import secure_filename
 
 sys.path.append("..")
 
 from configurations.models import Students
 from constants import *
-from utils import base64_to_image, get_total_attendance
+from utils import base64_to_image, get_total_attendance, validate_matric_number
 
 lecturer = Blueprint("lecturer", __name__)
 login_manager = LoginManager()
@@ -311,6 +317,7 @@ def edit_filename(course):
     # get the new name, matric number, and department from the request
     new_name = request.form["name"].upper()
     new_matricnumber = request.form["matricnumber"].replace("/", " ").upper()
+
     new_department = request.form["department"].title()
 
     if new_name == "":
@@ -321,6 +328,10 @@ def edit_filename(course):
 
     if new_matricnumber == "":
         new_matricnumber = old_matricnumber
+
+    if validate_matric_number(new_matricnumber) == False:
+        flash("Invalid Matric Number!", "danger")
+        return render_template(f"/pages/view_students.html", course=course)
 
     # replace any forward slashes with spaces in the new name, matric number, and department
     new_name = new_name.replace("/", " ")
@@ -341,32 +352,27 @@ def edit_filename(course):
         return render_template(f"/pages/view_students.html", course=course)
 
     directory = os.path.join("./templates/static/courses", course, "attendance")
+    csv_files = glob.glob(os.path.join(directory, "*.csv"))
 
-    # loop through all CSV files in the directory and subdirectories
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            # check if the file is a CSV file
-            if file.endswith(".csv"):
-                # get the path to the CSV file
-                path = os.path.join(root, file)
+    for file in csv_files:
+        # read the CSV file into a DataFrame
+        df = pd.read_csv(file)
+        # check if the student's details are in the DataFrame
+        mask = (
+            (df["Name"] == old_name)
+            & (df["Matric Number"] == old_matricnumber)
+            & (df["Department"] == old_department)
+        )
+        # print("True")
 
-                # read the CSV file into a DataFrame
-                df = pd.read_csv(path)
-                # check if the student's details are in the DataFrame
-                mask = (
-                    (df["Name"] == old_name)
-                    & (df["Matric Number"] == old_matricnumber)
-                    & (df["Department"] == old_department)
-                )
+        if mask.any():
+            # update the student's details in the DataFrame
+            df.loc[mask, "Name"] = new_name
+            df.loc[mask, "Matric Number"] = new_matricnumber.replace(" ", "/")
+            df.loc[mask, "Department"] = new_department
 
-                if mask.any():
-                    # update the student's details in the DataFrame
-                    df.loc[mask, "Name"] = new_name
-                    df.loc[mask, "Matric Number"] = new_matricnumber
-                    df.loc[mask, "Department"] = new_department
-
-                    # write the updated DataFrame back to the CSV file
-                    df.to_csv(path, index=False)
+            # write the updated DataFrame back to the CSV file
+            df.to_csv(file, index=False)
 
     # get the path to the old image file
     old_filename = f"{old_name}-{old_matricnumber}-{old_department}.jpg".replace(

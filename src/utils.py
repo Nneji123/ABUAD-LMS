@@ -200,7 +200,13 @@ def save_attendance(attendance_str: str, location: str):
             attendance_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
         attendance_writer.writerow(
-            [name, matric_number, department, current_date, current_time]
+            [
+                name,
+                matric_number.replace(" ", "/"),
+                department,
+                current_date,
+                current_time,
+            ]
         )
 
 

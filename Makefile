@@ -46,6 +46,7 @@ test:
 .PHONY: clean
 
 clean:
+	deactivate
 	sh -c 'rm -rf env'
 
 # Default target

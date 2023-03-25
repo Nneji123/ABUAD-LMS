@@ -62,6 +62,7 @@ class Admins(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_logged_in_at = db.Column(db.DateTime, nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -96,7 +97,7 @@ class LecturersView(ModelView):
 
 class AdminsView(ModelView):
     column_searchable_list = ["username", "created_at", "last_logged_in_at"]
-    column_filters = ["username"]
+    column_filters = ["username", "created_at", "last_logged_in_at"]
     column_exclude_list = ["password"]
     form_excluded_columns = ["id"]
 
@@ -107,4 +108,8 @@ class AdminsView(ModelView):
 
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.is_admin
+        return (
+            current_user.is_authenticated
+            and current_user.is_admin
+            and current_user.is_active
+        )
