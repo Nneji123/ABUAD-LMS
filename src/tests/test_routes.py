@@ -54,7 +54,7 @@ def test_login_lecturer():
     response_lecturer = client.post(
         "/login",
         data={
-            "username": "Afolabi Gbadamosi",
+            "username": "Adebayo Adigun",
             "password": "password",
             "role": "lecturer",
         },
