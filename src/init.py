@@ -1,12 +1,4 @@
-"""
-This script contains functions to initialize and populate the database for the application.
-
-Functions:
-
-    create_new_user: create a new user of the given type with the given attributes
-    make_dirs: create directories for storing static files for each course
-    main: initialize the database and create some example users (admin, lecturer and student)
-"""
+"""Initialize Database and Create Application Folders"""
 
 
 import os
@@ -57,6 +49,7 @@ def create_new_user(type_of_user: str, **kwargs: Union[str, bool]) -> None:
 
 
 def make_dirs():
+    """Create course folders"""
     # loop through the list of strings
     for courses in VALID_COURSE_CODES:
         for dir in TYPES:

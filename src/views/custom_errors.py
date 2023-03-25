@@ -1,3 +1,5 @@
+"""Custom Error Routes"""
+
 from flask import Blueprint, abort, render_template
 
 custom_error = Blueprint("custom_error", __name__, template_folder="./templates")

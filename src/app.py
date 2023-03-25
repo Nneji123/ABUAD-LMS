@@ -1,3 +1,5 @@
+"""Main Application"""
+
 import os
 
 import sqlalchemy

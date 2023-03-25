@@ -1,14 +1,4 @@
-"""
-This module defines the database models and views for the Flask web application. 
-
-It uses SQLAlchemy to interact with the database, which stores information about students, lecturers, and admins. 
-
-The models define the schema for each table, and the views define how the data should be displayed and edited in the Flask-Admin dashboard. 
-
-The views also handle password hashing and authentication. 
-
-The MyAdminIndexView class restricts access to the dashboard to authenticated admins only.
-"""
+"""Database Models"""
 
 
 import uuid

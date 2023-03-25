@@ -1,31 +1,4 @@
-"""
-The code is a facial recognition attendance system that uses OpenCV, face_recognition and other libraries to recognize faces in real-time, match them to pre-registered faces, and save attendance records to a CSV file.
-
-The script contains two functions:
-
-    `save_attendance` - This function saves the attendance data to a CSV file. It takes in an input string of the format: "Name-Matric Number-Department" and saves it to a CSV file with the current date as its name. If there is already an existing attendance record for that student on that day, it will not save another one.
-
-    `gen` - This function generates the video feed. It takes in a file path as an argument and uses that to save the attendance data. If no file path is given, it defaults to using 'attendance_data/attendance_data.csv'.
-
-Parameters:
-
-    attendance_str (str): Pass in the string that was captured from the camera.
-    location (str): Specify the location of the attendance file.
-    file_path (str): Save the attendance in a csv file.
-    course (str): The name of the course to get registered faces.
-
-Returns:
-
-    False if the name and date are already in the file.
-
-Note:
-
-    Before running the script, make sure to create the attendance_data directory in the same location as the script, and a subdirectory called registered_faces within the courses directory.
-
-
-
-
-"""
+"""Utility Functions"""
 
 import base64
 import csv
@@ -118,14 +91,6 @@ def test_connect():
 
 @socketio.on("image")
 def capture_face(image):
-    """
-    The receive_image function takes in an image from the webcam, converts it to grayscale, and then emits
-    the processed image back to the client.
-
-
-    :param image: Pass the image data to the receive_image function
-    :return: The image that was received from the client
-    """
     # Decode the base64-encoded image data
     image = base64_to_image(image)
     frame = image
@@ -223,13 +188,7 @@ def encoding_img(IMAGE_FILES):
 
 
 @socketio.on("images")
-def record_face(images, course):
-    """
-    The receive_image function takes in an image from the webcam, converts it to grayscale, and then emits
-    the processed image back to the client.
-    :param image: Pass the image data to the receive_image function
-    :return: The image that was received from the client
-    """
+def recognise_face(images, course):
     file_path = f"./templates/static/courses/{course}/attendance"
     # Decode the base64-encoded image data
     image = base64_to_image(images)

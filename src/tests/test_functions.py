@@ -1,3 +1,5 @@
+"""Functional Tests"""
+
 import base64
 import sys
 from unittest.mock import Mock, patch

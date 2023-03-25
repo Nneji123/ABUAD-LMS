@@ -253,7 +253,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
 }
 </script>
     <h1>report.html</h1>
-    <p>Report generated on 25-Mar-2023 at 10:04:07 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
+    <p>Report generated on 25-Mar-2023 at 15:55:31 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
     <h2>Environment</h2>
     <table id="environment">
       <tr>
@@ -269,8 +269,8 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <td>Python</td>
         <td>3.8.10</td></tr></table>
     <h2>Summary</h2>
-    <p>14 tests ran in 6.05 seconds. </p>
-    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">12 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">2 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <p>14 tests ran in 22.09 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">14 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
     <h2>Results</h2>
     <table id="results-table">
       <thead id="results-table-head">
@@ -281,25 +281,6 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
           <th class="sortable links" col="links">Links</th></tr>
         <tr hidden="true" id="not-found-message">
           <th colspan="4">No results found. Try to check the filters</th></tr></thead>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">test_functions.py::test_send_mail</td>
-          <td class="col-duration">0.06</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">def test_send_mail():<br/>        to = &quot;test@example.com&quot;<br/>        template = &quot;test_template.html&quot;<br/>        subject = &quot;Test Subject&quot;<br/>        link = &quot;https://example.com/test_link&quot;<br/>        username = &quot;Test User&quot;<br/>        kwargs = {&quot;variable1&quot;: &quot;value1&quot;, &quot;variable2&quot;: &quot;value2&quot;}<br/>        expected_html = &quot;&lt;html&gt;&lt;body&gt;Test HTML&lt;/body&gt;&lt;/html&gt;&quot;<br/>        from flask import Flask<br/>    <br/>        name = Flask(__name__, template_folder=&quot;./templates&quot;)<br/>        with create_app(name).app_context():<br/>            with patch(<br/>                &quot;configurations.extensions.email.render_template&quot;,<br/>                return_value=expected_html,<br/>            ):<br/>&gt;               html = send_mail(to, template, subject, link, username, **kwargs)<br/><br/>test_functions.py:51: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>..\utils.py:88: in send_mail<br/>    email.send(msg)<br/>..\..\env\lib\site-packages\flask_mail.py:491: in send<br/>    with self.connect() as connection:<br/>..\..\env\lib\site-packages\flask_mail.py:144: in __enter__<br/>    self.host = self.configure_host()<br/>..\..\env\lib\site-packages\flask_mail.py:158: in configure_host<br/>    host = smtplib.SMTP(self.mail.server, self.mail.port)<br/>C:\Users\IFEANYI PC\.pyenv\pyenv-win\versions\3.8.10\lib\smtplib.py:255: in __init__<br/>    (code, msg) = self.connect(host, port)<br/>C:\Users\IFEANYI PC\.pyenv\pyenv-win\versions\3.8.10\lib\smtplib.py:339: in connect<br/>    self.sock = self._get_socket(host, port, self.timeout)<br/>C:\Users\IFEANYI PC\.pyenv\pyenv-win\versions\3.8.10\lib\smtplib.py:310: in _get_socket<br/>    return socket.create_connection((host, port), timeout,<br/>C:\Users\IFEANYI PC\.pyenv\pyenv-win\versions\3.8.10\lib\socket.py:787: in create_connection<br/>    for res in getaddrinfo(host, port, 0, SOCK_STREAM):<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>host = &#x27;sandbox.smtp.mailtrap.io&#x27;, port = 2525, family = 0, type = &lt;SocketKind.SOCK_STREAM: 1&gt;, proto = 0, flags = 0<br/><br/>    def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):<br/>        &quot;&quot;&quot;Resolve host and port into list of address info entries.<br/>    <br/>        Translate the host/port argument into a sequence of 5-tuples that contain<br/>        all the necessary arguments for creating a socket connected to that service.<br/>        host is a domain name, a string representation of an IPv4/v6 address or<br/>        None. port is a string service name such as &#x27;http&#x27;, a numeric port number or<br/>        None. By passing None as the value of host and port, you can pass NULL to<br/>        the underlying C API.<br/>    <br/>        The family, type and proto arguments can be optionally specified in order to<br/>        narrow the list of addresses returned. Passing zero as a value for each of<br/>        these arguments selects the full range of results.<br/>        &quot;&quot;&quot;<br/>        # We override this function since we want to translate the numeric family<br/>        # and socket type values to enum constants.<br/>        addrlist = []<br/>&gt;       for res in _socket.getaddrinfo(host, port, family, type, proto, flags):<br/><span class="error">E       socket.gaierror: [Errno 11001] getaddrinfo failed</span><br/><br/>C:\Users\IFEANYI PC\.pyenv\pyenv-win\versions\3.8.10\lib\socket.py:918: gaierror<br/></div></td></tr></tbody>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">test_routes.py::test_reset_password_lecturer</td>
-          <td class="col-duration">0.06</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">def test_reset_password_lecturer():<br/>        name = Flask(__name__, template_folder=&quot;../templates&quot;)<br/>    <br/>        name = create_app(name)<br/>    <br/>        client = name.test_client()<br/>    <br/>        response_lecturer = client.get(&quot;reset_password&quot;)<br/>        assert response_lecturer.status_code == 200<br/>    <br/>        # Send a POST request to the login route with form data<br/>&gt;       response_lecturer = client.post(<br/>            &quot;/reset_password&quot;,<br/>            data={&quot;mail&quot;: &quot;ifeanyinneji777@gmail.com&quot;},<br/>        )<br/><br/>test_routes.py:79: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>..\..\env\lib\site-packages\werkzeug\test.py:1136: in post<br/>    return self.open(*args, **kw)<br/>..\..\env\lib\site-packages\flask\testing.py:235: in open<br/>    return super().open(<br/>..\..\env\lib\site-packages\werkzeug\test.py:1076: in open<br/>    response = self.run_wsgi_app(request.environ, buffered=buffered)<br/>..\..\env\lib\site-packages\werkzeug\test.py:945: in run_wsgi_app<br/>    rv = run_wsgi_app(self.application, environ, buffered=buffered)<br/>..\..\env\lib\site-packages\werkzeug\test.py:1233: in run_wsgi_app<br/>    app_rv = app(environ, start_response)<br/>..\..\env\lib\site-packages\flask\app.py:2091: in __call__<br/>    return self.wsgi_app(environ, start_response)<br/>..\..\env\lib\site-packages\flask_socketio\__init__.py:45: in __call__<br/>    return super(_SocketIOMiddleware, self).__call__(environ,<br/>..\..\env\lib\site-packages\engineio\middleware.py:74: in __call__<br/>    return self.wsgi_app(environ, start_response)<br/>..\..\env\lib\site-packages\flask\app.py:2076: in wsgi_app<br/>    response = self.handle_exception(e)<br/>..\..\env\lib\site-packages\flask\app.py:2073: in wsgi_app<br/>    response = self.full_dispatch_request()<br/>..\..\env\lib\site-packages\flask\app.py:1518: in full_dispatch_request<br/>    rv = self.handle_user_exception(e)<br/>..\..\env\lib\site-packages\flask\app.py:1516: in full_dispatch_request<br/>    rv = self.dispatch_request()<br/>..\..\env\lib\site-packages\flask\app.py:1502: in dispatch_request<br/>    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)<br/>..\views\reset_password.py:50: in reset_password<br/>    send_mail(<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>to = &#x27;ifeanyinneji777@gmail.com&#x27;, template = &#x27;/reset_password/email.html&#x27;, subject = &#x27;Reset Password&#x27;<br/>link = &#x27;http://127.0.0.1:5000/ImlmZWFueWlubmVqaTc3N0BnbWFpbC5jb20i.ZB65Bg.356vYPmf3umy45nPxGgQJlQXXfc&#x27;, username = &#x27;Nneji Ifeanyi Daniel&#x27;<br/>kwargs = {}, sender = &#x27;95aa32dd5b9955&#x27;, msg = &lt;flask_mail.Message object at 0x000001F1AD84FD30&gt;<br/>html = &#x27;&lt;!DOCTYPE html&gt;\n&lt;html lang=&quot;en&quot;&gt;\n\n    &lt;head&gt;\n        &lt;meta charset=&quot;UTF-8&quot;&gt;\n        &lt;title&gt;Reset Password&lt;/title...Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl&quot; crossorigin=&quot;anonymous&quot;&gt;\n        &lt;/script&gt;\n    &lt;/body&gt;&#x27;<br/><br/>    def send_mail(to, template, subject, link, username, **kwargs):<br/>        &quot;&quot;&quot;<br/>        The send_mail_flask function is used to send an email from the Flask app.<br/>        It takes in a recipient, template, subject and link as its parameters. It also takes in optional arguments that can be passed into the function.<br/>    <br/>        :param to: Specify the recipient of the email<br/>        :param template: Specify the html template that will be used to send the email<br/>        :param subject: Set the subject of the email<br/>        :param link: Create a unique link for each user<br/>        :param username: Populate the username field in the email template<br/>        :param **kwargs: Pass in any additional variables that are needed to be rendered in the email template<br/>        :return: The html of the email that is being sent<br/>        &quot;&quot;&quot;<br/>        sender = None<br/>        if os.getenv(&quot;SERVER_MODE&quot;) == &quot;DEV&quot;:<br/>            sender = os.getenv(&quot;DEV_SENDER_EMAIL&quot;)<br/>        elif os.getenv(&quot;SERVER_MODE&quot;) == &quot;PROD&quot;:<br/>            sender = os.getenv(&quot;PROD_SENDER_EMAIL&quot;)<br/>        msg = Message(subject=subject, sender=sender, recipients=[to])<br/>        html = render_template(template, username=username, link=link, **kwargs)<br/>&gt;       inlined = css_inline.inline(html)<br/><span class="error">E       css_inline.InlineError: Io Error: No such host is known. (os error 11001)</span><br/><br/>..\utils.py:86: InlineError<br/> ------------------------------Captured stdout call------------------------------ <br/>http://127.0.0.1:5000
-<br/></div></td></tr></tbody>
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
@@ -312,8 +293,62 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
+          <td class="col-name">test_functions.py::test_send_mail</td>
+          <td class="col-duration">3.87</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>send: &#x27;ehlo [192.168.123.52]\r\n&#x27;
+reply: b&#x27;250-smtp.mailtrap.io\r\n&#x27;
+reply: b&#x27;250-SIZE 5242880\r\n&#x27;
+reply: b&#x27;250-PIPELINING\r\n&#x27;
+reply: b&#x27;250-ENHANCEDSTATUSCODES\r\n&#x27;
+reply: b&#x27;250-8BITMIME\r\n&#x27;
+reply: b&#x27;250-DSN\r\n&#x27;
+reply: b&#x27;250-AUTH PLAIN LOGIN CRAM-MD5\r\n&#x27;
+reply: b&#x27;250 STARTTLS\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;smtp.mailtrap.io\nSIZE 5242880\nPIPELINING\nENHANCEDSTATUSCODES\n8BITMIME\nDSN\nAUTH PLAIN LOGIN CRAM-MD5\nSTARTTLS&#x27;
+send: &#x27;STARTTLS\r\n&#x27;
+reply: b&#x27;220 2.0.0 Start TLS\r\n&#x27;
+reply: retcode (220); Msg: b&#x27;2.0.0 Start TLS&#x27;
+send: &#x27;ehlo [192.168.123.52]\r\n&#x27;
+reply: b&#x27;250-smtp.mailtrap.io\r\n&#x27;
+reply: b&#x27;250-SIZE 5242880\r\n&#x27;
+reply: b&#x27;250-PIPELINING\r\n&#x27;
+reply: b&#x27;250-ENHANCEDSTATUSCODES\r\n&#x27;
+reply: b&#x27;250-8BITMIME\r\n&#x27;
+reply: b&#x27;250-DSN\r\n&#x27;
+reply: b&#x27;250 AUTH PLAIN LOGIN CRAM-MD5\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;smtp.mailtrap.io\nSIZE 5242880\nPIPELINING\nENHANCEDSTATUSCODES\n8BITMIME\nDSN\nAUTH PLAIN LOGIN CRAM-MD5&#x27;
+send: &#x27;AUTH CRAM-MD5\r\n&#x27;
+reply: b&#x27;334 PDkyMTg4NDQ2My4xNjc5NzU2MTE3QHNtdHAubWFpbHRyYXAuaW8+\r\n&#x27;
+reply: retcode (334); Msg: b&#x27;PDkyMTg4NDQ2My4xNjc5NzU2MTE3QHNtdHAubWFpbHRyYXAuaW8+&#x27;
+send: &#x27;OTVhYTMyZGQ1Yjk5NTUgZjU2NzYyNzUwZjY0N2FhZDY4MTUwNTUxYzY0NjBiYWI=\r\n&#x27;
+reply: b&#x27;235 2.0.0 OK\r\n&#x27;
+reply: retcode (235); Msg: b&#x27;2.0.0 OK&#x27;
+send: &#x27;mail FROM:&lt;95aa32dd5b9955&gt; size=841\r\n&#x27;
+reply: b&#x27;250 2.1.0 Ok\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;2.1.0 Ok&#x27;
+send: &#x27;rcpt TO:&lt;test@example.com&gt;\r\n&#x27;
+reply: b&#x27;250 2.1.0 Ok\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;2.1.0 Ok&#x27;
+send: &#x27;data\r\n&#x27;
+reply: b&#x27;354 Go ahead\r\n&#x27;
+reply: retcode (354); Msg: b&#x27;Go ahead&#x27;
+data: (354, b&#x27;Go ahead&#x27;)
+send: b&#x27;Content-Type: multipart/mixed; boundary=&quot;===============3423051829864937784==&quot;\r\nMIME-Version: 1.0\r\nSubject: Test Subject\r\nFrom: 95aa32dd5b9955\r\nTo: test@example.com\r\nDate: Sat, 25 Mar 2023 15:55:17 +0100\r\nMessage-ID: &lt;167975611446.16464.9759564785178474704@LAPTOP-T1HPDDBK&gt;\r\n\r\n--===============3423051829864937784==\r\nContent-Type: multipart/alternative;\r\n boundary=&quot;===============1546208805104750090==&quot;\r\nMIME-Version: 1.0\r\n\r\n--===============1546208805104750090==\r\nContent-Type: text/plain; charset=&quot;utf-8&quot;\r\nMIME-Version: 1.0\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\r\n--===============1546208805104750090==\r\nContent-Type: text/html; charset=&quot;utf-8&quot;\r\nMIME-Version: 1.0\r\nContent-Transfer-Encoding: 7bit\r\n\r\n&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Test HTML\r\n\r\n&lt;/body&gt;&lt;/html&gt;\r\n--===============1546208805104750090==--\r\n\r\n--===============3423051829864937784==--\r\n.\r\n&#x27;
+reply: b&#x27;250 2.0.0 Ok: queued\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;2.0.0 Ok: queued&#x27;
+data: (250, b&#x27;2.0.0 Ok: queued&#x27;)
+send: &#x27;quit\r\n&#x27;
+reply: b&#x27;221 2.0.0 Bye\r\n&#x27;
+reply: retcode (221); Msg: b&#x27;2.0.0 Bye&#x27;
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
           <td class="col-name">test_functions.py::test_base64_to_image</td>
-          <td class="col-duration">0.02</td>
+          <td class="col-duration">0.03</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -331,7 +366,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_login_student</td>
-          <td class="col-duration">0.10</td>
+          <td class="col-duration">0.11</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -340,7 +375,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_student</td>
-          <td class="col-duration">0.04</td>
+          <td class="col-duration">0.08</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -349,7 +384,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_login_lecturer</td>
-          <td class="col-duration">0.05</td>
+          <td class="col-duration">0.13</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -357,8 +392,63 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
+          <td class="col-name">test_routes.py::test_reset_password_lecturer</td>
+          <td class="col-duration">12.14</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>http://127.0.0.1:5000
+<br/> ------------------------------Captured stderr call------------------------------ <br/>send: &#x27;ehlo [192.168.123.52]\r\n&#x27;
+reply: b&#x27;250-smtp.mailtrap.io\r\n&#x27;
+reply: b&#x27;250-SIZE 5242880\r\n&#x27;
+reply: b&#x27;250-PIPELINING\r\n&#x27;
+reply: b&#x27;250-ENHANCEDSTATUSCODES\r\n&#x27;
+reply: b&#x27;250-8BITMIME\r\n&#x27;
+reply: b&#x27;250-DSN\r\n&#x27;
+reply: b&#x27;250-AUTH PLAIN LOGIN CRAM-MD5\r\n&#x27;
+reply: b&#x27;250 STARTTLS\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;smtp.mailtrap.io\nSIZE 5242880\nPIPELINING\nENHANCEDSTATUSCODES\n8BITMIME\nDSN\nAUTH PLAIN LOGIN CRAM-MD5\nSTARTTLS&#x27;
+send: &#x27;STARTTLS\r\n&#x27;
+reply: b&#x27;220 2.0.0 Start TLS\r\n&#x27;
+reply: retcode (220); Msg: b&#x27;2.0.0 Start TLS&#x27;
+send: &#x27;ehlo [192.168.123.52]\r\n&#x27;
+reply: b&#x27;250-smtp.mailtrap.io\r\n&#x27;
+reply: b&#x27;250-SIZE 5242880\r\n&#x27;
+reply: b&#x27;250-PIPELINING\r\n&#x27;
+reply: b&#x27;250-ENHANCEDSTATUSCODES\r\n&#x27;
+reply: b&#x27;250-8BITMIME\r\n&#x27;
+reply: b&#x27;250-DSN\r\n&#x27;
+reply: b&#x27;250 AUTH PLAIN LOGIN CRAM-MD5\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;smtp.mailtrap.io\nSIZE 5242880\nPIPELINING\nENHANCEDSTATUSCODES\n8BITMIME\nDSN\nAUTH PLAIN LOGIN CRAM-MD5&#x27;
+send: &#x27;AUTH CRAM-MD5\r\n&#x27;
+reply: b&#x27;334 PDc2NTY2NTI0MS4xNjc5NzU2MTMwQHNtdHAubWFpbHRyYXAuaW8+\r\n&#x27;
+reply: retcode (334); Msg: b&#x27;PDc2NTY2NTI0MS4xNjc5NzU2MTMwQHNtdHAubWFpbHRyYXAuaW8+&#x27;
+send: &#x27;OTVhYTMyZGQ1Yjk5NTUgNzRhMTI2MGVmODNmZDk2YjIwNzdlOGFjNDFmZDAyMGM=\r\n&#x27;
+reply: b&#x27;235 2.0.0 OK\r\n&#x27;
+reply: retcode (235); Msg: b&#x27;2.0.0 OK&#x27;
+send: &#x27;mail FROM:&lt;95aa32dd5b9955&gt; size=13005\r\n&#x27;
+reply: b&#x27;250 2.1.0 Ok\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;2.1.0 Ok&#x27;
+send: &#x27;rcpt TO:&lt;ifeanyinneji777@gmail.com&gt;\r\n&#x27;
+reply: b&#x27;250 2.1.0 Ok\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;2.1.0 Ok&#x27;
+send: &#x27;data\r\n&#x27;
+reply: b&#x27;354 Go ahead\r\n&#x27;
+reply: retcode (354); Msg: b&#x27;Go ahead&#x27;
+data: (354, b&#x27;Go ahead&#x27;)
+send: b&#x27;Content-Type: multipart/mixed; boundary=&quot;===============9036692084365579752==&quot;\r\nMIME-Version: 1.0\r\nSubject: Reset Password\r\nFrom: 95aa32dd5b9955\r\nTo: ifeanyinneji777@gmail.com\r\nDate: Sat, 25 Mar 2023 15:55:29 +0100\r\nMessage-ID: &lt;167975611874.16464.4296280884718230857@LAPTOP-T1HPDDBK&gt;\r\n\r\n--===============9036692084365579752==\r\nContent-Type: multipart/alternative;\r\n boundary=&quot;===============7449765355546770803==&quot;\r\nMIME-Version: 1.0\r\n\r\n--===============7449765355546770803==\r\nContent-Type: text/plain; charset=&quot;utf-8&quot;\r\nMIME-Version: 1.0\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\r\n--===============7449765355546770803==\r\nContent-Type: text/html; charset=&quot;utf-8&quot;\r\nMIME-Version: 1.0\r\nContent-Transfer-Encoding: 7bit\r\n\r\n&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot; style=&quot;box-sizing:border-box;--fa-font-brands:normal 400 1em/1 &amp;quot;Font Awesome 6 Brands&amp;quot;;--fa-font-regular:normal 400 1em/1 &amp;quot;Font Awesome 6 Free&amp;quot;;--fa-font-solid:normal 900 1em/1 &amp;quot;Font Awesome 6 Free&amp;quot;;--mdb-red:#f44336;--mdb-pink:#e91e63;--mdb-purple:purple-500;--mdb-indigo:#3f51b5;--mdb-blue:#2196f3;--mdb-cyan:#00bcd4;--mdb-teal:#009688;--mdb-green:#4caf50;--mdb-yellow:#ffeb3b;--mdb-orange:#ff9800;--mdb-white:#fff;--mdb-black:#000;--mdb-gray:#757575;--mdb-gray-dark:#4f4f4f;--mdb-gray-50:#fbfbfb;--mdb-gray-100:#f5f5f5;--mdb-gray-200:#eee;--mdb-gray-300:#e0e0e0;--mdb-gray-400:#bdbdbd;--mdb-gray-500:#9e9e9e;--mdb-gray-600:#757575;--mdb-gray-700:#616161;--mdb-gray-800:#4f4f4f;--mdb-gray-900:#262626;--mdb-primary:#3b71ca;--mdb-secondary:#9fa6b2;--mdb-success:#14a44d;--mdb-danger:#dc4c64;--mdb-warning:#e4a11b;--mdb-info:#54b4d3;--mdb-light:#fbfbfb;--mdb-dark:#332d2d;--mdb-primary-rgb:59,113,202;--mdb-secondary-rgb:159,166,178;--mdb-success-rgb:20,164,77;--mdb-danger-rgb:220,76,100;--mdb-warning-rgb:228,161,27;--mdb-info-rgb:84,180,211;--mdb-light-rgb:251,251,251;--mdb-dark-rgb:51,45,45;--mdb-white-rgb:255,255,255;--mdb-black-rgb:0,0,0;--mdb-body-color-rgb:79,79,79;--mdb-body-bg-rgb:255,255,255;--mdb-font-sans-serif:system-ui,-apple-system,&amp;quot;Segoe UI&amp;quot;,Roboto,&amp;quot;Helvetica Neue&amp;quot;,&amp;quot;Noto Sans&amp;quot;,&amp;quot;Liberation Sans&amp;quot;,Arial,sans-serif,&amp;quot;Apple Color Emoji&amp;quot;,&amp;quot;Segoe UI Emoji&amp;quot;,&amp;quot;Segoe UI Symbol&amp;quot;,&amp;quot;Noto Color Emoji&amp;quot;;--mdb-font-monospace:SFMono-Regular,Menlo,Monaco,Consolas,&amp;quot;Liberation Mono&amp;quot;,&amp;quot;Courier New&amp;quot;,monospace;--mdb-gradient:linear-gradient(180deg,hsla(0,0%,100%,0.15),hsla(0,0%,100%,0));--mdb-body-font-family:var(--mdb-font-roboto);--mdb-body-font-size:1rem;--mdb-body-font-weight:400;--mdb-body-line-height:1.6;--mdb-body-color:#4f4f4f;--mdb-body-bg:#fff;--mdb-border-width:1px;--mdb-border-style:solid;--mdb-border-color:#e0e0e0;--mdb-border-color-translucent:rgba(0,0,0,0.175);--mdb-border-radius:0.25rem;--mdb-border-radius-sm:0.25rem;--mdb-border-radius-lg:0.5rem;--mdb-border-radius-xl:1rem;--mdb-border-radius-2xl:2rem;--mdb-border-radius-pill:50rem;--mdb-link-color:#3b71ca;--mdb-link-hover-color:#386bc0;--mdb-code-color:#e91e63;--mdb-highlight-bg:#fff9c4;--mdb-font-roboto:&amp;quot;Roboto&amp;quot;,sans-serif;--mdb-bg-opacity:1;&quot;&gt;&lt;head style=&quot;box-sizing:border-box;&quot;&gt;\r\n        &lt;meta charset=&quot;UTF-8&quot; style=&quot;box-sizing:border-box;&quot;&gt;\r\n        &lt;title style=&quot;box-sizing:border-box;&quot;&gt;Reset Password&lt;/title&gt;\r\n        &lt;!-- Bootstrap CSS --&gt;\r\n        &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&quot; rel=&quot;stylesheet&quot; style=&quot;box-sizing:border-box;&quot;&gt;\r\n\r\n\r\n\r\n\r\n        &lt;link href=&quot;https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css&quot; rel=&quot;stylesheet&quot; style=&quot;box-sizing:border-box;&quot;&gt;\r\n\r\n\r\n        &lt;link href=&quot;https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5&quot; id=&quot;roboto-subset.css-css&quot; media=&quot;all&quot; rel=&quot;stylesheet&quot; style=&quot;box-sizing:border-box;&quot; type=&quot;text/css&quot;&gt;\r\n    &lt;/head&gt;\r\n\r\n    &lt;body style=&quot;box-sizing:border-box;font-family:var(--mdb-body-font-family);background: #fafafa;margin:0;font-size:var(--mdb-body-font-size);font-weight:var(--mdb-body-font-weight);line-height:var(--mdb-body-line-height);color:var(--mdb-body-color);text-align:var(--mdb-body-text-align);background-color:var(--mdb-body-bg);-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:rgba(0,0,0,0);&quot;&gt;\r\n        &lt;style style=&quot;box-sizing:border-box;&quot;&gt;\r\n            /*\r\n    DEMO STYLE\r\n    */\r\n\r\n            @import &quot;https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&quot;;\r\n\r\n            body {\r\n                font-family: \&#x27;Poppins\&#x27;, sans-serif;\r\n                background: #fafafa;\r\n            }\r\n\r\n            p {\r\n                font-family: \&#x27;Poppins\&#x27;, sans-serif;\r\n                font-size: 1.1em;\r\n                font-weight: 300;\r\n                line-height: 1.7em;\r\n                color: #999;\r\n            }\r\n\r\n            a {\r\n                font-family: \&#x27;Poppins\&#x27;, sans-serif;\r\n                color: #999;\r\n            }\r\n\r\n            .card {\r\n                margin: 0 auto;\r\n                margin-top: 100px;\r\n            }\r\n\r\n            .card-header {\r\n                font-family: \&#x27;Poppins\&#x27;, sans-serif;\r\n                font-size: 24px;\r\n                font-weight: 600;\r\n                line-height: 1.2;\r\n                color: #fff;\r\n                background-color: #e91e63;\r\n                display: flex;\r\n                align-items: center;\r\n                justify-content: center;\r\n                padding: 20px;\r\n            }\r\n\r\n            .bg-pink {\r\n                /* fallback for old browsers */\r\n                background: #fccb90;\r\n\r\n                /* Chrome 10-25, Safari 5.1-6 */\r\n                background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);\r\n\r\n                /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\r\n                background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);\r\n                color: white;\r\n            }\r\n\r\n            .bg-pink:hover {\r\n                background-color: black;\r\n            }\r\n\r\n            .btn-primary {\r\n                background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);\r\n\r\n            }\r\n\r\n            .register-link {\r\n                color: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);\r\n            }\r\n\r\n\r\n\r\n\r\n            .btn-primary:hover {\r\n                /* background-color:linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593); */\r\n                color: black;\r\n            }\r\n\r\n            .form-outline {\r\n                position: relative;\r\n                margin-bottom: 1.5rem;\r\n            }\r\n        &lt;/style&gt;\r\n        &lt;div class=&quot;container mt-4&quot; style=&quot;box-sizing:border-box;--mdb-gutter-x:1.5rem;--mdb-gutter-y:0;width:100%;padding-right:calc(var(--mdb-gutter-x)*0.5);padding-left:calc(var(--mdb-gutter-x)*0.5);margin-right:auto;margin-left:auto;margin-top:1.5rem!important;&quot;&gt;\r\n            &lt;div class=&quot;card text-center&quot; style=&quot;width: 300px;box-sizing: border-box;--mdb-card-bg: #fff;--mdb-card-cap-padding-y: 0.75rem;--mdb-card-spacer-y: 1.5rem;--mdb-card-spacer-x: 1.5rem;--mdb-card-title-spacer-y: 0.5rem;--mdb-card-border-width: 1px;--mdb-card-border-color: var(--mdb-border-color-translucent);--mdb-card-border-radius: 0.5rem;--mdb-card-box-shadow: 0 2px 15px -3px rgba(0,0,0,0.07),0 10px 20px -2px rgba(0,0,0,0.04);--mdb-card-inner-border-radius: calc(0.5rem - 1px);margin: 0 auto;--mdb-card-cap-padding-x: 1.5rem;border-radius: var(--mdb-card-border-radius);--mdb-card-img-overlay-padding: 1.5rem;margin-top: 100px;--mdb-card-group-margin: 0.75rem;position: relative;display: flex;flex-direction: column;min-width: 0;height: var(--mdb-card-height);word-wrap: break-word;background-color: var(--mdb-card-bg);background-clip: border-box;border: 0;--mdb-card-cap-bg: hsla(0,0%,100%,0);box-shadow: var(--mdb-card-box-shadow);text-align: center&quot;&gt;\r\n                &lt;div class=&quot;card-header h5 text-white bg-pink&quot; style=&quot;box-sizing:border-box;font-family: \&#x27;Poppins\&#x27;, sans-serif;font-size:1.25rem;font-weight:500;line-height:1.2;color:rgba(var(--mdb-white-rgb),var(--mdb-text-opacity))!important;background-color:var(--mdb-card-cap-bg);display: flex;align-items: center;justify-content: center;padding:var(--mdb-card-cap-padding-y) var(--mdb-card-cap-padding-x);background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);margin-top:0;margin-bottom:0;border-bottom:var(--mdb-card-header-border-width) solid var(--mdb-card-header-border-color);--mdb-text-opacity:1;--mdb-card-header-border-width:2px;--mdb-card-header-border-color:#f5f5f5;border-radius:var(--mdb-card-inner-border-radius) var(--mdb-card-inner-border-radius) 0 0;&quot;&gt;&lt;i class=&quot;fa fa-envelope&quot; style=&quot;box-sizing:border-box;font-family:var(--fa-style-family,\&#x27;Font Awesome 6 Free\&#x27;);font-weight:var(--fa-style,900);-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto;&quot;&gt;&lt;/i&gt;&lt;span style=&quot;box-sizing:border-box;&quot;&gt;Reset Password for\r\n                        ABUAD\r\n                        LMS&lt;/span&gt;&lt;/div&gt;\r\n                &lt;div class=&quot;card-body px-5&quot; style=&quot;box-sizing:border-box;flex:1 1 auto;padding:var(--mdb-card-spacer-y) var(--mdb-card-spacer-x);color:var(--mdb-card-color);padding-right:3rem!important;padding-left:3rem!important;&quot;&gt;\r\n                    &lt;p class=&quot;card-text py-2&quot; style=&quot;box-sizing:border-box;font-family: \&#x27;Poppins\&#x27;, sans-serif;font-size: 1.1em;font-weight: 300;line-height: 1.7em;color: #999;margin-top:0;margin-bottom:1rem;padding-top:.5rem!important;padding-bottom:.5rem!important;&quot;&gt;\r\n                        Hello Nneji Ifeanyi Daniel, We\&#x27;ve received a request to reset your password. If you want to\r\n                        reset your\r\n                        password,\r\n                        click the link\r\n                        below.&lt;/p&gt;\r\n                    &lt;a class=&quot;btn text-white bg-pink w-100&quot; href=&quot;http://127.0.0.1:5000/ImlmZWFueWlubmVqaTc3N0BnbWFpbC5jb20i.ZB8LVg.BSHiTJSNNHjGfico4wmQol2o2pA&quot; style=&quot;font-family: \&#x27;Poppins\&#x27;, sans-serif;box-sizing: border-box;text-decoration: none;vertical-align: bottom;--mdb-btn-border-color: none;--mdb-btn-padding-x: 1.5rem;--mdb-btn-padding-y: 0.375rem;--mdb-btn-font-size: 0.75rem;--mdb-btn-font-weight: 500;-webkit-user-select: none;--mdb-btn-bg: transparent;--mdb-btn-border-width: 0;cursor: pointer;--mdb-btn-hover-border-color: transparent;--mdb-btn-disabled-opacity: 0.65;--mdb-btn-focus-box-shadow: 0 8px 9px -4px rgba(0,0,0,0.15),0 4px 18px 0 rgba(0,0,0,0.1);display: inline-block;padding: var(--mdb-btn-padding-y) var(--mdb-btn-padding-x);font-size: var(--mdb-btn-font-size);font-weight: var(--mdb-btn-font-weight);line-height: var(--mdb-btn-line-height);text-align: center;--mdb-btn-color: #4f4f4f;background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);--mdb-btn-line-height: 1.5;-moz-user-select: none;user-select: none;border: 0;background-color: var(--mdb-btn-bg);transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;width: 100%;--mdb-text-opacity: 1;color: rgba(var(--mdb-white-rgb),var(--mdb-text-opacity));--mdb-btn-padding-top: 0.625rem;--mdb-btn-padding-bottom: 0.5rem;--mdb-btn-border-radius: 0.25rem;--mdb-btn-box-shadow: 0 4px 9px -4px rgba(0,0,0,0.35);--mdb-btn-hover-box-shadow: 0 8px 9px -4px rgba(0,0,0,0.15),0 4px 18px 0 rgba(0,0,0,0.1);--mdb-btn-active-box-shadow: 0 8px 9px -4px rgba(0,0,0,0.15),0 4px 18px 0 rgba(0,0,0,0.1);padding-top: var(--mdb-btn-padding-top);padding-bottom: var(--mdb-btn-padding-bottom);text-transform: uppercase;border-radius: var(--mdb-btn-border-radius);box-shadow: var(--mdb-btn-box-shadow)&quot;&gt;Reset password&lt;/a&gt;\r\n                    &lt;div class=&quot;d-flex justify-content-between mt-4&quot; style=&quot;box-sizing:border-box;display:flex!important;justify-content:space-between!important;margin-top:1.5rem!important;&quot;&gt;\r\n                    &lt;/div&gt;\r\n                    \r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n\r\n        &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;\r\n        &lt;script crossorigin=&quot;anonymous&quot; integrity=&quot;sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN&quot; src=&quot;https://code.jquery.com/jquery-3.2.1.slim.min.js&quot; style=&quot;box-sizing:border-box;&quot;&gt;\r\n        &lt;/script&gt;\r\n        &lt;script crossorigin=&quot;anonymous&quot; integrity=&quot;sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js&quot; style=&quot;box-sizing:border-box;&quot;&gt;\r\n        &lt;/script&gt;\r\n        &lt;script crossorigin=&quot;anonymous&quot; integrity=&quot;sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl&quot; src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js&quot; style=&quot;box-sizing:border-box;&quot;&gt;\r\n        &lt;/script&gt;\r\n    &lt;/body&gt;&lt;/html&gt;\r\n--===============7449765355546770803==--\r\n\r\n--===============9036692084365579752==--\r\n.\r\n&#x27;
+reply: b&#x27;250 2.0.0 Ok: queued\r\n&#x27;
+reply: retcode (250); Msg: b&#x27;2.0.0 Ok: queued&#x27;
+data: (250, b&#x27;2.0.0 Ok: queued&#x27;)
+send: &#x27;quit\r\n&#x27;
+reply: b&#x27;221 2.0.0 Bye\r\n&#x27;
+reply: retcode (221); Msg: b&#x27;2.0.0 Bye&#x27;
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_login_admin</td>
-          <td class="col-duration">0.06</td>
+          <td class="col-duration">0.04</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -367,7 +457,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_logout</td>
-          <td class="col-duration">0.06</td>
+          <td class="col-duration">0.05</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -376,7 +466,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_index</td>
-          <td class="col-duration">0.03</td>
+          <td class="col-duration">0.04</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -403,7 +493,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">test_routes.py::test_lecturer_register_student_route</td>
-          <td class="col-duration">0.04</td>
+          <td class="col-duration">0.05</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">

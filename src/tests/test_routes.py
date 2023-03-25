@@ -1,3 +1,5 @@
+"""Application Route Tests"""
+
 import sys
 
 import pytest

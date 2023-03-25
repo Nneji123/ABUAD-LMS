@@ -1,8 +1,4 @@
-"""
-This module defines the index blueprint, which provides the routes and views for the application's index page. 
-
-It also includes a custom CustomIndexView class that extends the Flask-Admin MyAdminIndexView to add a logout route.
-"""
+"""Index Routes"""
 
 
 import sys

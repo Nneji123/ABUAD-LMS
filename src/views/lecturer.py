@@ -1,21 +1,4 @@
-"""
-This module contains the code for the lecturer's view of the web application. It includes functionalities such as uploading files, recording attendance, registering students, and viewing attendance records.
-
-The lecturer blueprint is registered with the login manager to ensure that the pages are only accessible by authenticated users.
-
-This module uses Flask for the web framework, OpenCV for video processing, and Pandas and PIL for data handling and image processing, respectively.
-
-It includes the following functions:
-
-    show: Renders the lecturer homepage.
-    upload_file: Uploads files to the application's file system.
-    record_attendance: Renders the page for recording attendance and provides a video feed for the facial recognition.
-    detect_face_feed: Generates a video feed for the facial recognition.
-    index: Renders the page for registering students.
-    video_feed: Provides a video feed for the webcam.
-    tasks: Saves the images of registered students in the application's file system.
-    attendance: Renders the page for viewing attendance records.
-"""
+"""Lecturer Page Routes and Functions"""
 
 import glob
 import os

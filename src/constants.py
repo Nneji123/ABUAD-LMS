@@ -1,20 +1,4 @@
-"""
-This module contains constants that are used in various parts of the project.
-
-Global variables such as capture, rec_frame, grey, switch, neg, face, and rec are initialized to zero and used in the face recognition system.
-
-The following constants are defined in this module:
-
-
-- VALID_COURSE_CODES: A list of valid course codes for the lecturer.py module.
-- TYPES: A list of strings representing the types of directories that can be created.
-- VIDEO_EXTENSIONS: A list of video file extensions.
-- DOC_EXTENSIONS: A list of document file extensions.
-- ASSIGNMENT_EXTENSIONS: A list of file extensions that are valid for assignment submissions.
-- ALLOWED_EXTENSIONS: A set of file extensions that are allowed for file uploads.
-- COURSES_INFO: A dictionary containing information about each course offered in the project.
-
-"""
+"""Constants"""
 
 
 # constants for lecturer.py

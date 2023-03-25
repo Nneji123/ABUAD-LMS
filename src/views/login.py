@@ -1,11 +1,4 @@
-"""
-This module contains a Flask blueprint for handling user authentication and login. 
-
-It provides a login page where users can enter their username, password, and role (student, lecturer, or admin). Upon successful login, the user is redirected to the appropriate page based on their role. 
-
-If the user is not authorized or enters incorrect login credentials, an danger message is displayed.
-
-"""
+"""Login Route"""
 
 import sys
 from datetime import datetime

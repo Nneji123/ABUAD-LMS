@@ -1,3 +1,5 @@
+"""Reset Password Routes"""
+
 import os
 import sys
 
