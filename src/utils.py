@@ -323,7 +323,7 @@ def count_name_in_files(directory_path, name):
     percentage = count / num_files * 100
     eligibility = "eligible" if percentage >= 70 else "not eligible"
     # \nYou are {eligibility} to write exams for this course!"
-    message = f"{name}'s Attendance for this course is {percentage}%"
+    message = f"{name.lower().title()}'s Attendance for this course is {round(percentage, 1)}%"
     return message
 
 
@@ -360,13 +360,15 @@ def get_total_attendance(directory_path):
     data = []
     for name, attendance_data in student_attendance.items():
         total_classes = len(os.listdir(directory_path))
-        attendance_percentage = attendance_data["Attendance"] / total_classes * 100
+        attendance_percentage = round(
+            attendance_data["Attendance"] / total_classes * 100, 1
+        )
         data.append(
             {
                 "Name": name,
                 "Matric Number": attendance_data["Matric Number"],
                 "Department": attendance_data["Department"],
-                "Attendance Percentage": attendance_percentage,
+                "Attendance Percentage": f"{attendance_percentage}%",
             }
         )
 

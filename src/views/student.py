@@ -50,7 +50,7 @@ def get_page(course_code):
     doc_dir = course_info.get("doc_dir", "")
     doc_exts = course_info.get("doc_exts", ())
     attendance_path = f"./templates/static/courses/{course_code}/attendance"
-    attendance_record = count_name_in_files(attendance_path, student_name)
+    attendance_record = count_name_in_files(attendance_path, student_name.upper())
 
     videos = [
         f
