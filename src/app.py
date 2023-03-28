@@ -9,8 +9,14 @@ from flask_admin import Admin
 
 from configurations.config import configs
 from configurations.extensions import db, email, login_manager, socketio
-from configurations.models import (Admins, AdminsView, Lecturers,
-                                   LecturersView, Students, StudentsView)
+from configurations.models import (
+    Admins,
+    AdminsView,
+    Lecturers,
+    LecturersView,
+    Students,
+    StudentsView,
+)
 from views.custom_errors import custom_error
 from views.index import CustomIndexView, index
 from views.lecturer import lecturer
@@ -26,6 +32,7 @@ SERVER_MODE = os.getenv("SERVER_MODE")
 
 
 def create_app(app):
+    """Create Flask application."""
     if SERVER_MODE in configs:
         app.config.update(configs[SERVER_MODE])
     else:
@@ -47,6 +54,7 @@ def register_extensions(app):
 
 
 def create_admin_views(app):
+    """Create Admin Page Views"""
     admin = Admin(
         app, name="ABUAD", template_mode="bootstrap4", index_view=CustomIndexView()
     )

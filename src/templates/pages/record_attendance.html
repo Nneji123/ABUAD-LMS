@@ -102,7 +102,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-      var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
+      var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port, { transports: ['websocket'] });
       socket.on('connect', function () {
         console.log("Connected...!", socket.connected)
       });
