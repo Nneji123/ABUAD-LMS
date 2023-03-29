@@ -1,3 +1,18 @@
+# Install pyenv and python 3.8.10
+.PHONY: setup-linux
+
+setup-linux:
+	sh -c 'sudo apt-get update'
+	sh -c 'sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git'
+	sh -c 'curl https://pyenv.run | bash'
+	sh -c 'echo "export PATH="$HOME/.pyenv/bin:$PATH"" >> ~/.bashrc'
+	sh -c 'echo "eval "$(pyenv init -)"" >> ~/.bashrc'
+	sh -c 'echo "eval "$(pyenv virtualenv-init -)"" >> ~/.bashrc'
+	sh -c 'source ~/.bashrc'
+	sh -c 'pyenv install 3.8.10'
+	sh -c 'pyenv global 3.8.10'
+
+
 # Create virtual environment
 .PHONY: venv
 
