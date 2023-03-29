@@ -34,6 +34,24 @@ def validate_matric_number(matric_number: str) -> bool:
         return True
     else:
         return False
+    
+
+def validate_abuad_email(email: str) -> bool:
+    """
+    The validate_abuad_email function checks if an email address is valid and ends with @abuad.com
+    
+    :param email: str: Specify the type of data that is expected to be passed into the function
+    :return: A boolean value
+    """
+    # check if email is a valid email address
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return False
+
+    # check if email domain is abuad.com
+    if not email.endswith("@abuad.com"):
+        return False
+
+    return True
 
 
 def send_mail(to, template, subject, link, username, **kwargs):

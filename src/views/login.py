@@ -9,7 +9,7 @@ from flask_login import LoginManager, login_user
 sys.path.append("..")
 
 from configurations.models import Admins, Lecturers, Students, db
-from utils import validate_matric_number
+from utils import validate_matric_number, validate_abuad_email
 
 login = Blueprint("login", __name__)
 
@@ -32,7 +32,11 @@ def show():
                 flash("Invalid Matric Number!", "danger")
                 return render_template("/pages/login.html")
         elif role == "lecturer":
-            user = Lecturers.query.filter_by(username=username).first()
+            if validate_abuad_email(username):
+                user = Lecturers.query.filter_by(email=username).first()
+            else:
+                flash("Invalid ABUAD Email!", "danger")
+                return render_template("/pages/login.html")
         elif role == "admin":
             user = Admins.query.filter_by(username=username).first()
 

@@ -1,35 +1,38 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Student Home</title>
-  <!-- Bootstrap CSS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
-  <script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="{{
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Student Home</title>
+    <!-- Bootstrap CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+      integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+      src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{
     url_for('static',filename='main.css') }}">
-  <link
-    rel="icon"
-    type="image/ico"
-    href="{{ url_for('static',filename='img/logo.png') }}"
-    />
-</head>
-<body>
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-md navbar-light navbar-bg gradient-custom-2">
-    <div class="container">
-      <a class="navbar-brand" href="/student">
-        <style>
-          .navbar-brand img {
+    <link rel="icon" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
+  </head>
+
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-md navbar-light navbar-bg gradient-custom-2">
+      <div class="container">
+        <a class="navbar-brand" href="/student">
+          <style>
+            .navbar-brand img {
               height: 50px;
               width: auto;
-          }
-          .gradient-custom-2 {
+            }
+
+            .gradient-custom-2 {
               /* fallback for old browsers */
               background: #fccb90;
 
@@ -38,59 +41,409 @@
 
               /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
               background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
-              }
+            }
+          </style>
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" id="profile" href="#">View Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Add this to your HTML code to show the modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel"
+      aria-hidden="true">
+      <!-- The modal HTML code -->
+      <style>
+        body {
+          background-color: #f9f9fa
+        }
+
+        .padding {
+          padding: 3rem !important
+        }
+
+        .user-card-full {
+          overflow: hidden;
+        }
+
+        .card {
+          border-radius: 5px;
+          -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+          box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+          border: none;
+          margin-bottom: 30px;
+        }
+
+        .m-r-0 {
+          margin-right: 0px;
+        }
+
+        .m-l-0 {
+          margin-left: 0px;
+        }
+
+        .user-card-full .user-profile {
+          border-radius: 5px 0 0 5px;
+        }
+
+        .bg-c-lite-green {
+          background: #fccb90;
+
+          /* Chrome 10-25, Safari 5.1-6 */
+          background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+          /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+          background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+        }
+
+
+        .user-profile {
+          padding: 20px 0;
+        }
+
+        .card-block {
+          padding: 1.25rem;
+        }
+
+        .m-b-25 {
+          margin-bottom: 25px;
+        }
+
+        .img-radius {
+          border-radius: 5px;
+        }
+
+
+
+        h6 {
+          font-size: 12px;
+          color: black;
+        }
+
+        .card .card-block p {
+          line-height: 25px;
+        }
+
+        @media only screen and (min-width: 1400px) {
+          p {
+            font-size: 14px;
+            color: black;
+          }
+        }
+
+        .card-block {
+          padding: 1.25rem;
+        }
+
+        .b-b-default {
+          border-bottom: 1px solid #e0e0e0;
+        }
+
+        .m-b-20 {
+          margin-bottom: 20px;
+        }
+
+        .p-b-5 {
+          padding-bottom: 5px !important;
+        }
+
+        .card .card-block p {
+          line-height: 25px;
+        }
+
+        .m-b-10 {
+          margin-bottom: 10px;
+        }
+
+        .text-muted {
+          color: black !important;
+        }
+
+        .b-b-default {
+          border-bottom: 1px solid #e0e0e0;
+        }
+
+        .f-w-600 {
+          font-weight: 600;
+        }
+
+        .m-b-20 {
+          margin-bottom: 20px;
+        }
+
+        .m-t-40 {
+          margin-top: 20px;
+        }
+
+        .p-b-5 {
+          padding-bottom: 5px !important;
+        }
+
+        .m-b-10 {
+          margin-bottom: 10px;
+        }
+
+        .m-t-40 {
+          margin-top: 20px;
+        }
+
+        .user-card-full .social-link li {
+          display: inline-block;
+        }
+
+        .user-card-full .social-link li a {
+          font-size: 20px;
+          margin: 0 10px 0 0;
+          -webkit-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out;
+        }
       </style>
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ABUAD LMS Logo">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+      <!-- <div class="modal-dialog" role="document"> -->
+      <!-- <div> -->
+      <div class="page-content page-container" id="page-content">
+        <div class="padding">
+          <div class="row container d-flex justify-content-center">
+            <div class="col-xl-6 col-md-12">
+              <div class="card user-card-full">
+                <div class="row m-l-0 m-r-0">
+                  <div class="col-sm-4 bg-c-lite-green user-profile">
+                    <div class="card-block text-center text-white">
+                      <div class="m-b-25">
+                        <img
+                          src="{{url_for('static', filename='NNEJI IFEANYI DANIEL-19 ENG02 077-Computer Engineering.jpg')}}"
+                          class="img-radius" alt="User-Profile-Image" style="width: 100px; height: 100px;">
+                      </div>
+                      <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;" src="https://img.icons8.com/bubbles/100/000000/user.png"> -->
+                      <!-- <h6 class="f-w-600">{{current_user.username}}</h6>
+                      <p style="color: black;"><b>Matric Number: </b> {{current_user.matric_number}}</p> -->
+                      <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+                      <!-- Button to trigger the modal -->
+                      <style>
+                        .btn-group-sm {
+                          margin-top: 10px;
+                          margin-bottom: 10px;
+                          padding: auto;
+                        }
 
-  <!-- Main Content -->
-  <div class="container my-5">
-    <h1 class="text-center mb-5">Welcome, {{current_user.username}}!</h1>
+                        .btn-group-sm button {
+                          font-size: 5px;
+                        }
+                      </style>
 
-  <!-- Features Section for Students -->
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">View Documents</h5>
-          <p class="card-text">Access course materials uploaded by your lecturer and download them for future reference.</p>
+                      <div class="btn-group btn-group-sm btn-group-justified" role="group" aria-label="Button group">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                          data-target="#passwordModal" style="font-size: 11px;">
+                          Change Password
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"
+                          style="font-size: 11px; margin-left: 10px;">
+                          Change Profile Picture
+                        </button>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="card-block">
+                      <div class="d-flex" style="align-items: center;">
+                        <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Student Profile</h6>
+                        <button type="button" class="close" data-dismiss="modal" id="closeModal" aria-label="Close"
+                          style="margin-left: auto; margin-top: -10px;">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <p class="m-b-10 f-w-600">Matric Number</p>
+                          <h6 class="text-muted f-w-400">{{current_user.matric_number}}</h6>
+                        </div>
+                        <div class="col-sm-6">
+                          <p class="m-b-10 f-w-600">Department</p>
+                          <h6 class="text-muted f-w-400">{{current_user.department}}</h6>
+                        </div>
+                      </div>
+                      <!-- <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Projects</h6> -->
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <p class="m-b-10 f-w-600">Email</p>
+                          <h6 class="text-muted f-w-400">{{current_user.email}}</h6>
+                        </div>
+                        <div class="col-sm-6">
+                          <p class="m-b-10 f-w-600">Created at</p>
+                          <h6 class="text-muted f-w-400">{{date}}</h6>
+                        </div>
+                      </div>
+                      <ul class="social-link list-unstyled m-t-40 m-b-10">
+                        <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title=""
+                            data-original-title="facebook" data-abc="true"><i
+                              class="mdi mdi-facebook feather icon-facebook facebook" aria-hidden="true"></i></a>
+                        </li>
+                        <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title=""
+                            data-original-title="twitter" data-abc="true"><i
+                              class="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a>
+                        </li>
+                        <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title=""
+                            data-original-title="instagram" data-abc="true"><i
+                              class="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Video Lectures</h5>
-          <p class="card-text">Watch video lectures for your courses at your convenience and pace.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Attendance and Eligibility</h5>
-          <p class="card-text">Check your attendance and eligibility status for course exams and assignments.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-        <!-- Course Table -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Change Profile Picture</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body">
+            <div class="card">
+              <video type="hidden" autoplay playsinline id="videoElement" style="display: none;"></video>
+              <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+              <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
+              <div class="card-body">
+                <div class="row">
+                  <form>
+                    <div class="col-sm-6">
+                      <button class="btn btn-primary btn-block" type="submit" value="Capture" id="capture-button"
+                        name="click">Capture</button>
+                    </div>
+                  </form>
+
+                  <div class="col-sm-6">
+                    <button type="button" class="btn btn-secondary btn-block">Upload Profile Picture</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="passwordModalLabel">Change Password</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body">
+            <form action="/student/change_password" method="post">
+              <div class="form-group">
+                <label for="oldPassword">Old Password</label>
+                <input type="password" class="form-control" id="oldPassword" placeholder="Enter old password"
+                  name="old_password">
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" class="form-control" id="newPassword" placeholder="Enter new password"
+                  name="new_password">
+              </div>
+              <div class="form-group">
+                <label for="confirmNewPassword">Confirm New Password</label>
+                <input type="password" class="form-control" id="confirmNewPassword" placeholder="Confirm new password"
+                  name="confirm_new_password">
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Main Content -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}}" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <div class="container my-5">
+      <h1 class="text-center mb-5">Welcome, {{current_user.username}}!</h1>
+
+      <!-- Features Section for Students -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">View Documents</h5>
+              <p class="card-text">Access course materials uploaded by your lecturer and download them for future
+                reference.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Video Lectures</h5>
+              <p class="card-text">Watch video lectures for your courses at your convenience and pace.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Attendance and Eligibility</h5>
+              <p class="card-text">Check your attendance and eligibility status for course exams and assignments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Table -->
       <div class="document-list" id="course-table">
         <h2 class="text-center my-5">Course List</h2>
         <table class="table">
@@ -149,14 +502,112 @@
           </tbody>
         </table>
       </div>
-    
-        <!-- jQuery and Bootstrap JS -->
-        <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-        <script>
-          $('#course-table table').DataTable();
-        </script>
-      </body>
-    </html>
-    
+
+      <script>
+        $('#course-table table').DataTable();
+      </script>
+      <script>
+        const modal = document.getElementById("profileModal");
+
+        $(document).ready(function () {
+          $('#profile').click(function () {
+
+            $('#profileModal').modal('show');
+            modal.style.display = "block";
+            modal.setAttribute("aria-hidden", "false");
+            document.body.classList.add("modal-open");
+            const style = document.createElement("style");
+
+            style.textContent = `
+              .modal-backdrop {
+                display: block !important;
+              }
+            `;
+            document.head.appendChild(style);
+          });
+        });
+
+        const closeButton = document.getElementById("closeModal");
+        const showModalButton = document.getElementById("showModal");
+
+        closeButton.addEventListener("click", function () {
+          modal.style.display = "none";
+          modal.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("modal-open");
+          const style = document.createElement("style");
+          style.textContent = `
+            .modal-backdrop {
+              display: none !important;
+            }
+          `;
+          document.head.appendChild(style);
+        });
+
+      </script>
+
+      <!-- jQuery and Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script src="{{ url_for('static',filename='script.js') }}"></script>
+      <script>
+        var myModal = document.getElementById('myModal');
+
+        // Listen for the 'shown.bs.modal' event on the modal element
+        myModal.addEventListener('shown.bs.modal', function () {
+          Webcam.set({
+            width: 640,
+            height: 480,
+            dest_width: 640,
+            dest_height: 480,
+            image_format: 'jpeg',
+            jpeg_quality: 90,
+            force_flash: false,
+            flip_horiz: true,
+            fps: 45
+          });
+
+          Webcam.attach('#canvas');
+
+          var captureButton = document.getElementById('capture-button');
+          captureButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            Webcam.snap(function (data_uri) {
+              // display the captured image in the canvas element
+              var canvas = document.getElementById('canvas');
+              var context = canvas.getContext('2d');
+              var img = new Image();
+              img.onload = function () {
+                context.drawImage(img, 0, 0);
+              }
+              img.src = data_uri;
+              console.log("Captured image");
+
+              fetch('/student/take_picture/{{current_user.username}}', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  data_uri: data_uri,
+                })
+
+              })
+                .then(response => {
+                  if (response.ok) {
+                    console.log('Image saved successfully');
+                    console.log("Success");
+                  } else {
+                    console.error('Error saving image:', response.statusText);
+                  }
+                })
+                .catch(error => {
+                  console.error('Error saving image:', error);
+                });
+            });
+          });
+        });
+      </script>
+  </body>
+
+</html>

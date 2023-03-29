@@ -58,6 +58,25 @@ class Admins(UserMixin, db.Model):
         return check_password_hash(self.password, password)
 
 
+class Announcements(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    lecturer_id = db.Column(
+        db.String(36), db.ForeignKey("lecturers.id"), nullable=False
+    )
+    message = db.Column(db.String(500), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @property
+    def time_diff(self):
+        diff = datetime.utcnow() - self.created_at
+        if diff.days == 0:
+            return "Posted today"
+        elif diff.days == 1:
+            return "Posted yesterday"
+        else:
+            return f"Posted {diff.days} days ago"
+
+
 class StudentsView(ModelView):
     column_searchable_list = [
         "username",
