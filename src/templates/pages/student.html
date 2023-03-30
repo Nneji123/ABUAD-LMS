@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Student Home</title>
     <!-- Bootstrap CSS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
-      integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8"
       src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+      integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{
     url_for('static',filename='main.css') }}">
@@ -225,9 +225,8 @@
                   <div class="col-sm-4 bg-c-lite-green user-profile">
                     <div class="card-block text-center text-white">
                       <div class="m-b-25">
-                        <img
-                          src="{{url_for('static', filename='NNEJI IFEANYI DANIEL-19 ENG02 077-Computer Engineering.jpg')}}"
-                          class="img-radius" alt="User-Profile-Image" style="width: 100px; height: 100px;">
+                        <img src={{profile_pic}} class="img-radius" alt="User-Profile-Image"
+                          style="width: 100px; height: 100px;">
                       </div>
                       <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;" src="https://img.icons8.com/bubbles/100/000000/user.png"> -->
                       <!-- <h6 class="f-w-600">{{current_user.username}}</h6>
@@ -336,26 +335,25 @@
               <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
               <div class="card-body">
                 <div class="row">
-                  <form>
-                    <div class="col-sm-6">
-                      <button class="btn btn-primary btn-block" type="submit" value="Capture" id="capture-button"
+                  <div class="col-sm-6">
+                    <form>
+                      <button class="btn btn-primary btn-block" type="button" value="Capture" id="capture-button"
                         name="click">Capture</button>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
 
                   <div class="col-sm-6">
-                    <button type="button" class="btn btn-secondary btn-block">Upload Profile Picture</button>
+                    <form action="/student/upload_profile_picture" method="post" enctype="multipart/form-data">
+                      <label for="file-upload-501" class="btn btn-primary btn-sm">Choose
+                        file</label>
+                      <input id="file-upload-501" type="file" name="file" style="display:none;">
+                      <button type="submit" class="btn btn-secondary btn-block">Upload Profile Picture</button>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-
         </div>
       </div>
     </div>
@@ -398,6 +396,35 @@
       </div>
     </div>
 
+    <!-- <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% for message in get_flashed_messages() %}
+
+            <p>{{ message }}</p>
+            {% endfor %}
+
+            <p>Do you want to register another student?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="/student" class="btn btn-primary"
+              style="background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593); color: white;">No</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              style="background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593); color: white;">Yes</button>
+
+          </div>
+        </div>
+      </div>
+    </div> -->
+
 
     <!-- Main Content -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -410,6 +437,7 @@
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
+
     <div class="container my-5">
       <h1 class="text-center mb-5">Welcome, {{current_user.username}}!</h1>
 
@@ -453,6 +481,7 @@
               <th>Course Name</th>
               <th>Level</th>
               <th>Action</th>
+              <th>Register</th>
             </tr>
           </thead>
           <tbody>
@@ -461,42 +490,56 @@
               <td>Neural Networks and Fuzzy Logic Programming</td>
               <td>500</td>
               <td><a href="/student/501">View Course Home</a></td>
+              <td><a href="/student/register/501">Register</a></td>
+
             </tr>
             <tr>
               <td>COE 503</td>
               <td>Modelling and Simulation</td>
               <td>500</td>
               <td><a href="/student/503">View Course Home</a></td>
+              <td><a href="/student/register/503">Register</a></td>
+
             </tr>
             <tr>
               <td>COE 505</td>
               <td>Software Engineering</td>
               <td>500</td>
               <td><a href="/student/505">View Course Home</a></td>
+              <td><a href="/student/register/505">Register</a></td>
+
             </tr>
             <tr>
               <td>COE 507</td>
               <td>Digital Signal Processing</td>
               <td>500</td>
               <td><a href="/student/507">View Course Home</a></td>
+              <td><a href="/student/register/507">Register</a></td>
+
             </tr>
             <tr>
               <td>COE 511</td>
               <td>Computer Graphics</td>
               <td>500</td>
               <td><a href="/student/511">View Course Home</a></td>
+              <td><a href="/student/register/511">Register</a></td>
+
             </tr>
             <tr>
               <td>COE 515</td>
               <td>Natural Language Processing</td>
               <td>500</td>
               <td><a href="/student/515">View Course Home</a></td>
+              <td><a href="/student/register/515">Register</a></td>
+
             </tr>
             <tr>
               <td>COE 519</td>
               <td>Robotics</td>
               <td>500</td>
               <td><a href="/student/519">View Course Home</a></td>
+              <td><a href="/student/register/519">Register</a></td>
+
             </tr>
             <!-- Add more courses here -->
           </tbody>
@@ -551,60 +594,59 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
       <script src="{{ url_for('static',filename='script.js') }}"></script>
       <script>
-        var myModal = document.getElementById('myModal');
+        Webcam.set({
+          width: 640,
+          height: 480,
+          dest_width: 640,
+          dest_height: 480,
+          image_format: 'jpeg',
+          jpeg_quality: 90,
+          force_flash: false,
+          flip_horiz: true,
+          fps: 45
+        });
 
-        // Listen for the 'shown.bs.modal' event on the modal element
-        myModal.addEventListener('shown.bs.modal', function () {
-          Webcam.set({
-            width: 640,
-            height: 480,
-            dest_width: 640,
-            dest_height: 480,
-            image_format: 'jpeg',
-            jpeg_quality: 90,
-            force_flash: false,
-            flip_horiz: true,
-            fps: 45
-          });
+        Webcam.attach('#canvas');
 
-          Webcam.attach('#canvas');
+        var captureButton = document.getElementById('capture-button');
+        captureButton.addEventListener('click', function (event) {
+          // event.preventDefault();
 
-          var captureButton = document.getElementById('capture-button');
-          captureButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            Webcam.snap(function (data_uri) {
-              // display the captured image in the canvas element
-              var canvas = document.getElementById('canvas');
-              var context = canvas.getContext('2d');
-              var img = new Image();
-              img.onload = function () {
-                context.drawImage(img, 0, 0);
-              }
-              img.src = data_uri;
-              console.log("Captured image");
+          // Capture the image
+          Webcam.snap(function (data_uri) {
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function () {
+              context.drawImage(img, 0, 0);
+            }
+            img.src = data_uri;
+            console.log("Captured image");
 
-              fetch('/student/take_picture/{{current_user.username}}', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  data_uri: data_uri,
-                })
-
+            // Send the captured image as a POST request
+            fetch('/student/take_picture/{{current_user.username}}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                data_uri: data_uri,
               })
-                .then(response => {
-                  if (response.ok) {
-                    console.log('Image saved successfully');
-                    console.log("Success");
-                  } else {
-                    console.error('Error saving image:', response.statusText);
-                  }
-                })
-                .catch(error => {
-                  console.error('Error saving image:', error);
-                });
-            });
+
+            })
+              .then(response => {
+                if (response.ok) {
+                  console.log('Image saved successfully');
+                  // $('#success-modal').modal('show');	 // Show modal after successful submission
+
+                  console.log("Success");
+                } else {
+                  console.error('Error saving image:', response.statusText);
+                }
+              })
+              .catch(error => {
+                console.error('Error saving image:', error);
+              });
           });
         });
       </script>
