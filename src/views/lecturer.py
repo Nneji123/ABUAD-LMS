@@ -1,11 +1,9 @@
 """Lecturer Page Routes and Functions"""
 
-import glob
 import os
 import sys
 from datetime import datetime
 
-import cv2
 import pandas as pd
 from flask import (
     Blueprint,
@@ -16,14 +14,16 @@ from flask import (
     request,
     url_for,
 )
-from flask_login import LoginManager, login_required
+from flask_login import LoginManager, login_required, current_user
+from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 
 sys.path.append("..")
 
-from configurations.models import Students
+from configurations.models import Announcements, db, Lecturers
 from constants import *
-from utils import base64_to_image, get_total_attendance, validate_matric_number
+from utils import get_total_attendance
 
 lecturer = Blueprint("lecturer", __name__)
 login_manager = LoginManager()
@@ -33,7 +33,86 @@ login_manager.init_app(lecturer)
 @lecturer.route("/lecturer", methods=["GET"])
 @login_required
 def show():
-    return render_template("/pages/lecturer.html")
+    dt_str = str(current_user.created_at)
+    dt_obj = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S.%f")
+    date = dt_obj.strftime("%A, %d %B %Y")
+    name = current_user.username
+    email = current_user.email
+    filename = f"{name}-{email}.jpg".replace("/", " ")
+    mypath = f"./templates/static/profile_pics/{filename}"
+    profile_pic = None
+    if not os.path.exists(mypath):
+        profile_pic = url_for("static", filename=f"profile_pics/generic_profile.png")
+    else:
+        profile_pic = url_for("static", filename=f"profile_pics/{filename}")
+
+    return render_template("/pages/lecturer.html", date=date, profile_pic=profile_pic)
+
+
+@login_required
+@lecturer.route("/lecturer/change_password", methods=["GET", "POST"])
+def change_password_lecturer():
+    if request.method == "POST":
+        user = Lecturers.query.filter_by(username=current_user.username).first()
+        if user:
+            old_password = request.form["old_password"]
+            if user.check_password(old_password):
+                new_password = request.form["new_password"]
+                confirm_password = request.form["confirm_new_password"]
+                if new_password == confirm_password:
+                    user.password = generate_password_hash(
+                        new_password, method="sha256"
+                    )
+                    db.session.commit()
+                    flash("Password Changed Successfully", "success")
+                    return redirect(
+                        url_for("lecturer.show") + "?success=change-password-succesful"
+                    )
+                else:
+                    flash("Your password does not match please try again!", "danger")
+                    return redirect(
+                        url_for("lecturer.show") + "?error=password-does-not-match"
+                    )
+            else:
+                flash("Your old password is incorrect! Please try again", "danger")
+                return redirect(url_for("lecturer.show") + "?error=password-incorrect")
+        else:
+            flash("User does not exist!", "danger")
+            return redirect(url_for("lecturer.show") + "?error=user-does-not-exist")
+    else:
+        return redirect(url_for("lecturer.show"))
+
+
+@lecturer.route("/lecturer/upload_profile_picture", methods=["POST"])
+@login_required
+def upload_profile_picture_lecturer():
+    file = request.files["file"]
+    if file.filename == "":
+        flash("Error! No file selected", "danger")
+    name = current_user.username
+    email = current_user.email
+    filename = f"{name}-{email}.jpg".replace("/", " ")
+    mypath = f"./templates/static/profile_pics/{filename}"
+
+    file_name = secure_filename(file.filename)
+    file_extension = os.path.splitext(file_name)[-1].lower()
+
+    if file_extension not in [".jpeg", ".jpg", ".png"]:
+        flash(
+            "Invalid filetype uploaded! Please only upload jpeg, jpg or png file formats!",
+            "danger",
+        )
+        return redirect(url_for("lecturer.show"))
+
+    mypath = f"./templates/static/profile_pics/{filename}"
+
+    if os.path.exists(mypath):
+        os.remove(mypath)
+        print("file deleted!")
+
+    file.save(mypath)
+    flash("Profile Picture Uploaded Successfully!", "success")
+    return redirect(url_for("lecturer.show"))
 
 
 @lecturer.route("/upload/<course_code>", methods=["POST"])
@@ -81,72 +160,6 @@ def upload_file(course_code):
 def record_attendance(course_code):
     course = course_code
     return render_template(f"/pages/record_attendance.html", course=course)
-
-
-# Registering Students
-@lecturer.route("/register_students/<course_code>")
-@login_required
-def index():
-    students = Students.query.all()
-    print(students)
-    return render_template("/pages/register.html", students=students)
-
-
-@lecturer.route("/register_student/<course_code>", methods=["POST", "GET"])
-@login_required
-def tasks(course_code):
-    students = Students.query.all()
-    if request.method == "POST":
-        try:
-            data_uri = request.json["data_uri"]
-            names = request.json["name"]
-            matric = request.json["matric"]
-            dept = request.json["dept"]
-
-            names = names.upper()
-            matric = matric.upper()
-            dept = dept.title()
-            if data_uri is not None:
-                filenamess = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-                img_pil = base64_to_image(data_uri)
-                mypath = f"./templates/static/courses/{course_code}/registered_faces/{filenamess}"
-                if os.path.exists(mypath):
-                    flash("This student is already registered!", "danger")
-                    print("This student is already registered!")
-                    return render_template(
-                        "/pages/register.html",
-                        course_code=course_code,
-                        students=students,
-                    )
-
-                else:
-                    cv2.imwrite(
-                        mypath,
-                        img_pil,
-                    )
-                    print("Done!")
-                    flash("Student registered successfully!", "success")
-                    return render_template(
-                        "/pages/register.html",
-                        course_code=course_code,
-                        students=students,
-                    )
-
-            else:
-                return render_template(
-                    "/pages/register.html", course_code=course_code, students=students
-                )
-        except TypeError as e:
-            return render_template(
-                "/pages/register.html", course_code=course_code, students=students
-            )
-    elif request.method == "GET":
-        return render_template(
-            "/pages/register.html", course_code=course_code, students=students
-        )
-    return render_template(
-        "/pages/register.html", course_code=course_code, students=students
-    )
 
 
 # View Attendance Records
@@ -244,136 +257,35 @@ def view_students(course):
     return render_template(f"/pages/view_students.html", course=course)
 
 
-@lecturer.route("/lecturer/view_students/delete_student/<course>", methods=["POST"])
+@lecturer.route("/lecturer/make_announcement/<course>", methods=["GET", "POST"])
 @login_required
-def delete_image(course):
-    # get the filename from the request
-    name = request.form["name"]
-    matricnumber = request.form["matricnumber"]
-    department = request.form["department"]
-
-    filename = f"{name}-{matricnumber}-{department}.jpg".replace("/", " ")
-    directory = os.path.join("./templates/static/courses", course, "attendance")
-
-    # loop through all CSV files in the directory and subdirectories
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            # check if the file is a CSV file
-            if file.endswith(".csv"):
-                # get the path to the CSV file
-                path = os.path.join(root, file)
-
-                # read the CSV file into a DataFrame
-                df = pd.read_csv(path)
-
-                # check if the student's name is in the DataFrame
-                if name in df["Name"].values:
-                    # delete the row containing the student's name
-                    df = df[df["Name"] != name]
-
-                    # write the updated DataFrame back to the CSV file
-                    df.to_csv(path, index=False)
-
-    # get the path to the image file
-    path = f"./templates/static/courses/{course}/registered_faces/{filename}"
-    # delete the image file
-    try:
-        os.remove(path)
-        flash("Deleted Successfully", "success")
-    except FileNotFoundError as e:
-        print(e)
-        flash("No files found!", "danger")
-
-    return redirect(url_for("lecturer.view_students", course=course))
-
-
-@lecturer.route(
-    "/lecturer/view_students/edit_filename/<course>", methods=["POST", "GET"]
-)
-@login_required
-def edit_filename(course):
-    # get the old name, matric number, and department from the request
-    old_name = request.form["old_name"]
-    old_matricnumber = request.form["old_matricnumber"]
-    old_department = request.form["old_department"]
-
-    # get the new name, matric number, and department from the request
-    new_name = request.form["name"].upper()
-    new_matricnumber = request.form["matricnumber"].replace("/", " ").upper()
-
-    new_department = request.form["department"].title()
-
-    if new_name == "":
-        new_name = old_name
-
-    if new_department == "":
-        new_department = old_department
-
-    if new_matricnumber == "":
-        new_matricnumber = old_matricnumber
-
-    if validate_matric_number(new_matricnumber) == False:
-        flash("Invalid Matric Number!", "danger")
-        return render_template(f"/pages/view_students.html", course=course)
-
-    # replace any forward slashes with spaces in the new name, matric number, and department
-    new_name = new_name.replace("/", " ")
-    new_department = new_department.replace("/", " ")
-
-    # set the new filename based on the new name, matric number, and department
-    new_filename = f"{new_name}-{new_matricnumber}-{new_department}.jpg".replace(
-        "/", " "
-    )
-
-    # check if the new filename already exists, and return an error message if it does
-    if os.path.exists(
-        os.path.join(
-            "./templates/static/courses", course, "registered_faces", new_filename
+def make_announcement(course):
+    if request.method == "POST":
+        title = request.form["announcementTitle"]
+        message = request.form["announcementText"]
+        announcement = Announcements(
+            lecturer_id=current_user.id,
+            message=message,
+            title=title,
+            course_code=course,
         )
-    ):
-        flash("A student with that name and matric number already exists!", "danger")
-        return render_template(f"/pages/view_students.html", course=course)
+        try:
+            db.session.add(announcement)
+            db.session.commit()
+            flash("Announcement posted successfully!", "success")
+            return redirect(url_for("lecturer.show"))
+        except IntegrityError as e:
+            flash("Error occured! Please try again later!", "danger")
+            db.session.rollback()
+            return redirect(url_for("lecturer.show"))
+        finally:
+            db.session.close()
 
-    directory = os.path.join("./templates/static/courses", course, "attendance")
-    csv_files = glob.glob(os.path.join(directory, "*.csv"))
+    return redirect(url_for("lecturer.show"))
 
-    for file in csv_files:
-        # read the CSV file into a DataFrame
-        df = pd.read_csv(file)
-        # check if the student's details are in the DataFrame
-        mask = (
-            (df["Name"] == old_name)
-            & (df["Matric Number"] == old_matricnumber)
-            & (df["Department"] == old_department)
-        )
-        # print("True")
+    # ...
 
-        if mask.any():
-            # update the student's details in the DataFrame
-            df.loc[mask, "Name"] = new_name
-            df.loc[mask, "Matric Number"] = new_matricnumber.replace(" ", "/")
-            df.loc[mask, "Department"] = new_department
-
-            # write the updated DataFrame back to the CSV file
-            df.to_csv(file, index=False)
-
-    # get the path to the old image file
-    old_filename = f"{old_name}-{old_matricnumber}-{old_department}.jpg".replace(
-        "/", " "
-    )
-    old_path = os.path.join(
-        "./templates/static/courses", course, "registered_faces", old_filename
-    )
-
-    # get the path to the new image file
-    new_path = os.path.join(
-        "./templates/static/courses", course, "registered_faces", new_filename
-    )
-
-    # rename the old image file to the new image file
-    os.rename(old_path, new_path)
-
-    flash("Student details saved successfully!", "success")
-
-    # return the view_students page with the updated course data
-    return redirect(url_for("lecturer.view_students", course=course))
+    # announcements = Announcements.query.all()
+    # for announcement in announcements:
+    #     print(announcement.message)
+    #     print(announcement.time_diff)

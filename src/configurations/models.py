@@ -64,6 +64,8 @@ class Announcements(db.Model):
         db.String(36), db.ForeignKey("lecturers.id"), nullable=False
     )
     message = db.Column(db.String(500), nullable=False)
+    title = db.Column(db.String(30), nullable=False)
+    course_code = db.Column(db.String(10), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     @property
@@ -113,6 +115,16 @@ class AdminsView(ModelView):
     def on_model_change(self, form, model, is_created):
         model.password = generate_password_hash(model.password, method="sha256")
         return super(AdminsView, self).on_model_change(form, model, is_created)
+
+
+class AnnouncementsView(ModelView):
+    column_searchable_list = [
+        "lecturer_id",
+        "message",
+        "title",
+        "course_code",
+        "created_at",
+    ]
 
 
 class MyAdminIndexView(AdminIndexView):

@@ -12,6 +12,8 @@ from configurations.extensions import db, email, login_manager, socketio
 from configurations.models import (
     Admins,
     AdminsView,
+    Announcements,
+    AnnouncementsView,
     Lecturers,
     LecturersView,
     Students,
@@ -61,6 +63,7 @@ def create_admin_views(app):
     admin.add_view(StudentsView(Students, db.session))
     admin.add_view(LecturersView(Lecturers, db.session))
     admin.add_view(AdminsView(Admins, db.session))
+    admin.add_view(AnnouncementsView(Announcements, db.session))
 
     return admin
 

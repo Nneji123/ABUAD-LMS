@@ -1,6 +1,5 @@
 """Student Page Routes"""
 
-
 import os
 import sys
 import shutil
@@ -10,6 +9,7 @@ from datetime import datetime
 import cv2
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import LoginManager, current_user, login_required
+import pandas as pd
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 
@@ -199,6 +199,49 @@ def register_course_student(course_code):
     else:
         flash("Error!", "danger")
         return redirect(url_for("student.show"))
+
+
+@student.route("/student/unregister/<course>", methods=["POST", "GET"])
+@login_required
+def unregister_course(course):
+    # get the filename from the request
+    name = current_user.username
+    matricnumber = current_user.matric_number
+    department = current_user.department
+
+    filename = f"{name}-{matricnumber}-{department}.jpg".replace("/", " ")
+    directory = os.path.join("./templates/static/courses", course, "attendance")
+
+    # loop through all CSV files in the directory and subdirectories
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            # check if the file is a CSV file
+            if file.endswith(".csv"):
+                # get the path to the CSV file
+                path = os.path.join(root, file)
+
+                # read the CSV file into a DataFrame
+                df = pd.read_csv(path)
+
+                # check if the student's name is in the DataFrame
+                if name in df["Name"].values:
+                    # delete the row containing the student's name
+                    df = df[df["Name"] != name]
+
+                    # write the updated DataFrame back to the CSV file
+                    df.to_csv(path, index=False)
+
+    # get the path to the image file
+    path = f"./templates/static/courses/{course}/registered_faces/{filename}"
+    # delete the image file
+    try:
+        os.remove(path)
+        flash(f"Unregistered for COE {course} successfully!", "success")
+    except FileNotFoundError as e:
+        print(e)
+        flash("No files found!", "danger")
+
+    return redirect(url_for("student.show"))
 
 
 @student.route("/student/<course_code>")
