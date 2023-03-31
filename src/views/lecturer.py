@@ -5,7 +5,8 @@ import sys
 from datetime import datetime
 
 import pandas as pd
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, url_for)
 from flask_login import LoginManager, current_user, login_required
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash

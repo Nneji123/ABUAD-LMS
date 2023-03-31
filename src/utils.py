@@ -25,11 +25,8 @@ def is_face_detected(frame):
 
     print("Image shape:", frame.shape)
     print("Image size:", frame.size)
-
     face_locations = face_recognition.face_locations(frame)
-
     print("Number of faces detected:", len(face_locations))
-
     if len(face_locations) > 0:
         return True
     else:
