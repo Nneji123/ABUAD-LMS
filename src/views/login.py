@@ -9,7 +9,7 @@ from flask_login import LoginManager, login_user
 sys.path.append("..")
 
 from configurations.models import Admins, Lecturers, Students, db
-from utils import validate_matric_number, validate_abuad_email
+from utils import validate_abuad_email, validate_matric_number
 
 login = Blueprint("login", __name__)
 

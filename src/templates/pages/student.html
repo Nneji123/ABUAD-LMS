@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
       integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html5-webcam@1.0.2/dist/html5-webcam.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{
     url_for('static',filename='main.css') }}">
@@ -255,7 +256,7 @@
                           Change Password
                         </button>
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"
-                          style="font-size: 11px; margin-left: 10px;">
+                          style="font-size: 11px; margin-left: 10px;" onclick="openCamera()">
                           Change Profile Picture
                         </button>
                       </div>
@@ -327,14 +328,14 @@
           <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">Change Profile Picture</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" onclick="closeCamera()">&times;</span>
             </button>
           </div>
 
           <!-- Body -->
           <div class="modal-body">
             <div class="card">
-              <video type="hidden" autoplay playsinline id="videoElement" style="display: none;"></video>
+              <video autoplay="false" playsinline id="videoElement" style="display: none;"></video>
               <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
               <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
               <div class="card-body">
@@ -351,7 +352,8 @@
                       <label for="file-upload-501" class="btn btn-primary btn-sm">Choose
                         file</label>
                       <input id="file-upload-501" type="file" name="file" style="display:none;">
-                      <button type="submit" class="btn btn-secondary btn-block">Upload Profile Picture</button>
+                      <button type="submit" class="btn btn-secondary btn-block" onclick="closeCamera()">Upload Profile
+                        Picture</button>
                     </form>
                   </div>
                 </div>
@@ -603,7 +605,51 @@
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-      <script src="{{ url_for('static',filename='script.js') }}"></script>
+      <script>
+        var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port, {
+          transports: ['websocket']
+        });
+        socket.on('connect', function () {
+          console.log("Connected...!", socket.connected)
+        });
+
+        function setupWebcam() {
+          Webcam.set({
+            width: 400,
+            height: 300,
+            dest_width: 400,
+            dest_height: 300,
+            image_format: 'jpeg',
+            jpeg_quality: 90,
+            force_flash: false,
+            flip_horiz: true,
+            fps: 45
+          });
+        }
+
+        function openCamera() {
+          setupWebcam();
+          Webcam.attach('#videoElement');
+        }
+
+        function closeCamera() {
+          Webcam.reset();
+        }
+
+        const FPS = 1;
+        setInterval(() => {
+          if (Webcam.live) {
+            Webcam.snap(function (data) {
+              socket.emit('image', data);
+            });
+          }
+        }, 1000 / FPS);
+
+        socket.on('processed_image', function (image) {
+          photo.setAttribute('src', image);
+        });
+
+      </script>
       <script>
         Webcam.set({
           width: 640,

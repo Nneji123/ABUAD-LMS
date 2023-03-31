@@ -4,6 +4,7 @@ import base64
 import csv
 import os
 import re
+import shutil
 from datetime import datetime
 
 import css_inline
@@ -17,6 +18,33 @@ from flask_socketio import emit
 
 from configurations.extensions import email, socketio
 from constants import *
+
+
+def is_face_detected(frame):
+    """Check if a face is detected in an uploaded flask image"""
+
+    print("Image shape:", frame.shape)
+    print("Image size:", frame.size)
+
+    face_locations = face_recognition.face_locations(frame)
+
+    print("Number of faces detected:", len(face_locations))
+
+    if len(face_locations) > 0:
+        return True
+    else:
+        return False
+
+
+def check_and_copy_file(src_folder, dst_folder, filename):
+    src_path = os.path.join(src_folder, filename)
+    dst_path = os.path.join(dst_folder, filename)
+
+    if os.path.exists(src_path):
+        shutil.copy(src_path, dst_path)
+        return True
+    else:
+        return False
 
 
 def validate_matric_number(matric_number: str) -> bool:
@@ -34,12 +62,12 @@ def validate_matric_number(matric_number: str) -> bool:
         return True
     else:
         return False
-    
+
 
 def validate_abuad_email(email: str) -> bool:
     """
     The validate_abuad_email function checks if an email address is valid and ends with @abuad.com
-    
+
     :param email: str: Specify the type of data that is expected to be passed into the function
     :return: A boolean value
     """

@@ -1,24 +1,29 @@
 """Student Page Routes"""
 
 import os
-import sys
 import shutil
+import sys
 from datetime import datetime
 
-
 import cv2
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import LoginManager, current_user, login_required
+import numpy as np
 import pandas as pd
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import LoginManager, current_user, login_required
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 
 sys.path.append("..")
 
-from constants import COURSES_INFO
-from configurations.models import Students
 from configurations.extensions import db
-from utils import count_name_in_files, base64_to_image
+from configurations.models import Students, Announcements, Lecturers
+from constants import COURSES_INFO
+from utils import (
+    base64_to_image,
+    count_name_in_files,
+    check_and_copy_file,
+    is_face_detected,
+)
 
 student = Blueprint("student", __name__)
 login_manager = LoginManager()
@@ -128,6 +133,7 @@ def upload_profile_picture():
     file = request.files["file"]
     if file.filename == "":
         flash("Error! No file selected", "danger")
+
     matric = current_user.matric_number
     dept = current_user.department
     name = current_user.username
@@ -147,26 +153,31 @@ def upload_profile_picture():
         return redirect(url_for("student.show"))
 
     filename = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
-    mypath = f"./templates/static/profile_pics/{filename}"
+    mypath = os.path.join(
+        os.path.abspath("."), "templates", "static", "profile_pics", filename
+    )
+
+    filestr = file.read()
+    npimg = np.frombuffer(filestr, np.uint8)
+    frame = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+
+    if not is_face_detected(frame):
+        flash(
+            "No face detected in image. Please Upload image with your face in it!",
+            "danger",
+        )
+        return redirect(url_for("student.show"))
+
+    if not os.path.exists(os.path.dirname(mypath)):
+        os.makedirs(os.path.dirname(mypath))
 
     if os.path.exists(mypath):
         os.remove(mypath)
         print("file deleted!")
 
-    file.save(mypath)
+    cv2.imwrite(mypath, frame)
     flash("File uploaded successfully!", "success")
     return redirect(url_for("student.show"))
-
-
-def check_and_copy_file(src_folder, dst_folder, filename):
-    src_path = os.path.join(src_folder, filename)
-    dst_path = os.path.join(dst_folder, filename)
-
-    if os.path.exists(src_path):
-        shutil.copy(src_path, dst_path)
-        return True
-    else:
-        return False
 
 
 @student.route("/student/register/<course_code>", methods=["POST", "GET"])
@@ -247,10 +258,26 @@ def unregister_course(course):
 @student.route("/student/<course_code>")
 @login_required
 def get_page(course_code):
+    announcements = Announcements.query.filter_by(course_code=course_code)
+    data = []
+    for announcement in announcements:
+        lecturer = Lecturers.query.get(announcement.lecturer_id)
+        data.append(
+            {
+                "message": announcement.message,
+                "title": announcement.title,
+                "lecturer_name": lecturer.username,
+                "profile_pic": announcement.profile_pic,
+                "time_diff": announcement.time_diff,
+            }
+        )
+
     student_name = current_user.username
     course_info = COURSES_INFO.get(course_code, {})
     video_dir = course_info.get("video_dir", "")
     video_ext = course_info.get("video_ext", ".mp4")
+    ass_dir = course_info.get("ass_dir", "")
+    ass_ext = course_info.get("ass_exts", ())
     course_name = course_info.get("course_name")
     info = course_info.get("info")
     doc_dir = course_info.get("doc_dir", "")
@@ -268,6 +295,11 @@ def get_page(course_code):
         for f in os.listdir(f"./templates/static/courses/{doc_dir}")
         if f.endswith(doc_exts)
     ]
+    assignments = [
+        f
+        for f in os.listdir(f"./templates/static/courses/{ass_dir}")
+        if f.endswith(ass_ext)
+    ]
 
     return render_template(
         "/pages/coe.html",
@@ -275,7 +307,9 @@ def get_page(course_code):
         course_name=course_name,
         videos=videos,
         docs=docs,
+        assignments=assignments,
         course=course_code,
         student=student_name,
         attendance=attendance_record,
+        data=data,
     )

@@ -63,6 +63,7 @@ class Announcements(db.Model):
     lecturer_id = db.Column(
         db.String(36), db.ForeignKey("lecturers.id"), nullable=False
     )
+    profile_pic = db.Column(db.String(100), nullable=False)
     message = db.Column(db.String(500), nullable=False)
     title = db.Column(db.String(30), nullable=False)
     course_code = db.Column(db.String(10), nullable=False)

@@ -1,21 +1,15 @@
 import sys
-
-import pytest
 from datetime import datetime, timedelta
 
+import pytest
 from werkzeug.security import generate_password_hash
 
 sys.path.append("..")
 
-from configurations.models import Lecturers, Announcements, Students, Admins
-
-from app import db, create_app
-from utils import (
-    base64_to_image,
-    count_name_in_files,
-    send_mail,
-    validate_matric_number,
-)
+from app import create_app, db
+from configurations.models import Admins, Announcements, Lecturers, Students
+from utils import (base64_to_image, count_name_in_files, send_mail,
+                   validate_matric_number)
 
 
 @pytest.fixture(scope="module")

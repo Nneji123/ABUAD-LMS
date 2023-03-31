@@ -5,23 +5,15 @@ import sys
 from datetime import datetime
 
 import pandas as pd
-from flask import (
-    Blueprint,
-    flash,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
-from flask_login import LoginManager, login_required, current_user
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask_login import LoginManager, current_user, login_required
 from sqlalchemy.exc import IntegrityError
-from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 
 sys.path.append("..")
 
-from configurations.models import Announcements, db, Lecturers
+from configurations.models import Announcements, Lecturers, db
 from constants import *
 from utils import get_total_attendance
 
@@ -261,10 +253,22 @@ def view_students(course):
 @login_required
 def make_announcement(course):
     if request.method == "POST":
+        name = current_user.username
+        email = current_user.email
+        filename = f"{name}-{email}.jpg".replace("/", " ")
+        mypath = f"./templates/static/profile_pics/{filename}"
+        profile_pic = None
+        if not os.path.exists(mypath):
+            profile_pic = url_for(
+                "static", filename=f"profile_pics/generic_profile.png"
+            )
+        else:
+            profile_pic = url_for("static", filename=f"profile_pics/{filename}")
         title = request.form["announcementTitle"]
         message = request.form["announcementText"]
         announcement = Announcements(
             lecturer_id=current_user.id,
+            profile_pic=str(profile_pic),
             message=message,
             title=title,
             course_code=course,
@@ -282,10 +286,3 @@ def make_announcement(course):
             db.session.close()
 
     return redirect(url_for("lecturer.show"))
-
-    # ...
-
-    # announcements = Announcements.query.all()
-    # for announcement in announcements:
-    #     print(announcement.message)
-    #     print(announcement.time_diff)
