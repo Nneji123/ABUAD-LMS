@@ -17,6 +17,7 @@ load_dotenv()
 
 
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 
@@ -104,8 +105,8 @@ def create_admin():
     create_new_user(
         type_of_user="admin",
         username=ADMIN_USERNAME,
+        email=ADMIN_EMAIL,
         password=ADMIN_PASSWORD,
-        role="admin",
     )
 
 

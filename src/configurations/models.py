@@ -47,9 +47,8 @@ class Lecturers(UserMixin, db.Model):
 class Admins(UserMixin, db.Model):
     id = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
     username = db.Column(db.String(15), unique=True, nullable=False)
+    email = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    role = db.Column(db.String(10), nullable=False)
-    is_admin = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_logged_in_at = db.Column(db.DateTime, nullable=True)
     is_active = db.Column(db.Boolean, default=True)
@@ -130,8 +129,4 @@ class AnnouncementsView(ModelView):
 
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
-        return (
-            current_user.is_authenticated
-            and current_user.is_admin
-            and current_user.is_active
-        )
+        return current_user.is_authenticated and current_user.is_active
