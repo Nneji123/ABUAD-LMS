@@ -674,6 +674,14 @@
                 videoElem.play();
                 isPlaying = true;
                 Webcam.attach('#videoElement');
+                Webcam.set({
+                  width: 640,
+                  height: 480,
+                  dest_width: 640,
+                  dest_height: 480,
+                  image_format: 'jpeg',
+                  jpeg_quality: 90
+                });
 
                 captureButton.addEventListener('click', function (event) {
                   // Capture the image
