@@ -9,14 +9,9 @@ from flask_admin import Admin
 
 from configurations.config import configs
 from configurations.extensions import db, email, login_manager, socketio
-from configurations.models import (
-    Admins,
-    AdminsView,
-    Lecturers,
-    LecturersView,
-    Students,
-    StudentsView,
-)
+from configurations.models import (Admins, AdminsView, Announcements,
+                                   AnnouncementsView, Lecturers, LecturersView,
+                                   Students, StudentsView)
 from views.custom_errors import custom_error
 from views.index import CustomIndexView, index
 from views.lecturer import lecturer
@@ -61,6 +56,7 @@ def create_admin_views(app):
     admin.add_view(StudentsView(Students, db.session))
     admin.add_view(LecturersView(Lecturers, db.session))
     admin.add_view(AdminsView(Admins, db.session))
+    admin.add_view(AnnouncementsView(Announcements, db.session))
 
     return admin
 

@@ -37,35 +37,6 @@ ASSIGNMENT_EXTENSIONS = [
     ".docx",
     ".doc",
     ".csv",
-    ".txt",
-    ".pptx",
-    ".ppt",
-    ".xlsx",
-    ".xls",
-    ".zip",
-    ".rar",
-    ".7z",
-    ".tar",
-    ".gz",
-    ".bz2",
-    ".xz",
-    ".iso",
-    ".mp4",
-    ".mkv",
-    ".avi",
-    ".mov",
-    ".flv",
-    ".wmv",
-    ".webm",
-    ".mpeg",
-    ".mpg",
-    ".m4v",
-    ".3gp",
-    ".3g2",
-    ".f4v",
-    ".f4p",
-    ".f4a",
-    ".f4b",
 ]
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
@@ -96,6 +67,8 @@ COURSES_INFO = {
         For example, a neural network can be trained using fuzzy logic-based
         inputs and outputs to make more accurate predictions or classifications
         in situations with uncertain or imprecise data.""",
+        "ass_dir": "501/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "501/documents",
         "doc_exts": (
             ".doc",
@@ -117,6 +90,8 @@ COURSES_INFO = {
         modified and shared, making the design process more efficient and
         collaborative.
         """,
+        "ass_dir": "503/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "503/documents",
         "doc_exts": (".doc", ".pdf"),
         "video_dir": "503/video",
@@ -138,6 +113,8 @@ COURSES_INFO = {
         hardware devices called Digital Signal Processors (DSPs), which are
         optimized for high-speed, low-power signal processing tasks.        
         """,
+        "ass_dir": "507/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "507/documents",
         "doc_exts": (".doc", ".pdf", ".docx"),
         "video_dir": "507/video",
@@ -148,6 +125,8 @@ COURSES_INFO = {
         "info": """
         Computer graphics refers to the field of computer science that involves creating, manipulating, and displaying visual content using computers. It involves using software tools and algorithms to create and modify digital images, animations, and videos. Computer graphics can be used for a wide range of purposes, including creating visual effects for movies, designing video games, creating 3D models for product design, and producing scientific visualizations. Computer graphics can be created using a variety of techniques, including 2D and 3D modeling, rendering, and animation.     
         """,
+        "ass_dir": "511/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "511/documents",
         "doc_exts": (".doc", ".pdf", ".docx"),
         "video_dir": "511/video",
@@ -161,6 +140,8 @@ COURSES_INFO = {
         development of software, with a focus on producing high-quality,
         reliable, and efficient software products that meet the needs of users.
         """,
+        "ass_dir": "505/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "505/documents",
         "doc_exts": (".doc", ".pdf", ".docx"),
         "video_dir": "505/video",
@@ -171,6 +152,8 @@ COURSES_INFO = {
         "info": """
         Natural Language Processing (NLP) is a field of study focused on developing algorithms and techniques that enable computers to understand, interpret, and generate human language. NLP involves combining techniques from linguistics, computer science, and artificial intelligence to create software that can analyze, process, and generate natural language text and speech. NLP algorithms can be used to perform tasks such as text classification, sentiment analysis, machine translation, speech recognition, and language generation. NLP has numerous applications in areas such as customer service, healthcare, education, and finance, and is a rapidly evolving field that continues to advance with the development of new machine learning models and data-driven approaches.       
         """,
+        "ass_dir": "515/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "515/documents",
         "doc_exts": (".doc", ".pdf", ".docx"),
         "video_dir": "515/video",
@@ -181,6 +164,8 @@ COURSES_INFO = {
         "info": """
         Robotics is a field of study and practice that involves the design, construction, and operation of robots. A robot is a machine that is capable of carrying out complex tasks, often with some degree of autonomy. Robotics draws on knowledge from multiple fields, including mechanical engineering, electrical engineering, and computer science. Robots can be designed for a wide range of applications, including manufacturing, healthcare, transportation, and exploration.     
         """,
+        "ass_dir": "519/assignment",
+        "ass_exts": (".doc", ".docx", ".pdf", ".mp4"),
         "doc_dir": "519/documents",
         "doc_exts": (".doc", ".pdf", ".docx"),
         "video_dir": "519/video",

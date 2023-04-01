@@ -4,6 +4,7 @@ import base64
 import csv
 import os
 import re
+import shutil
 from datetime import datetime
 
 import css_inline
@@ -17,6 +18,31 @@ from flask_socketio import emit
 
 from configurations.extensions import email, socketio
 from constants import *
+
+
+def is_face_detected(frame):
+    """Check if a face is detected in an uploaded flask image"""
+
+    print("Image shape:", frame.shape)
+    print("Image size:", frame.size)
+    face_locations = face_recognition.face_locations(frame)
+    print("Number of faces detected:", len(face_locations))
+    if len(face_locations) > 0:
+        return True
+    else:
+        return False
+
+
+def check_and_copy_file(src_folder, dst_folder, filename):
+    """Check if a file exists and copy the file to another folder"""
+    src_path = os.path.join(src_folder, filename)
+    dst_path = os.path.join(dst_folder, filename)
+
+    if os.path.exists(src_path):
+        shutil.copy(src_path, dst_path)
+        return True
+    else:
+        return False
 
 
 def validate_matric_number(matric_number: str) -> bool:
@@ -34,6 +60,24 @@ def validate_matric_number(matric_number: str) -> bool:
         return True
     else:
         return False
+
+
+def validate_abuad_email(email: str) -> bool:
+    """
+    The validate_abuad_email function checks if an email address is valid and ends with @abuad.com
+
+    :param email: str: Specify the type of data that is expected to be passed into the function
+    :return: A boolean value
+    """
+    # check if email is a valid email address
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return False
+
+    # check if email domain is abuad.com
+    if not email.endswith("@abuad.com"):
+        return False
+
+    return True
 
 
 def send_mail(to, template, subject, link, username, **kwargs):
@@ -89,33 +133,18 @@ def test_connect():
     emit("my response", {"data": "Connected"})
 
 
-@socketio.on("image")
-def capture_face(image):
-    # Decode the base64-encoded image data
-    image = base64_to_image(image)
-    frame = image
-    # detect faces
-    face_locations = face_recognition.face_locations(frame)
-    if len(face_locations) > 0:
-        # draw bounding boxes around the faces
-        for top, right, bottom, left in face_locations:
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-            cv2.rectangle(
-                frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED
-            )
-            font = cv2.FONT_HERSHEY_DUPLEX
-            text = "Capture Face!"
-            cv2.putText(
-                frame, text, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1
-            )
-    gray = frame
-    frame_resized = cv2.resize(gray, (640, 360))
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-    result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
-    processed_img_data = base64.b64encode(frame_encoded).decode()
-    b64_src = "data:image/jpg;base64,"
-    processed_img_data = b64_src + processed_img_data
-    emit("processed_image", processed_img_data)
+# @socketio.on("image")
+# def capture_face(image):
+#     # Decode the base64-encoded image data
+#     image = base64_to_image(image)
+#     gray = image
+#     frame_resized = cv2.resize(gray, (640, 360))
+#     encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+#     result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
+#     processed_img_data = base64.b64encode(frame_encoded).decode()
+#     b64_src = "data:image/jpg;base64,"
+#     processed_img_data = b64_src + processed_img_data
+#     emit("processed_image", processed_img_data)
 
 
 def save_attendance(attendance_str: str, location: str):
