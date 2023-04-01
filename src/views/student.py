@@ -1,7 +1,6 @@
 """Student Page Routes"""
 
 import os
-import shutil
 import sys
 from datetime import datetime
 
@@ -18,8 +17,12 @@ sys.path.append("..")
 from configurations.extensions import db
 from configurations.models import Announcements, Lecturers, Students
 from constants import COURSES_INFO
-from utils import (base64_to_image, check_and_copy_file, count_name_in_files,
-                   is_face_detected)
+from utils import (
+    base64_to_image,
+    check_and_copy_file,
+    count_name_in_files,
+    is_face_detected,
+)
 
 student = Blueprint("student", __name__)
 login_manager = LoginManager()
@@ -84,13 +87,12 @@ def change_password():
         return redirect(url_for("student.show"))
 
 
+from flask import jsonify
+
+
 @student.route("/student/take_picture/<name>", methods=["POST", "GET"])
 @login_required
 def take_pictures(name):
-    dt_str = str(current_user.created_at)
-    dt_obj = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S.%f")
-    date = dt_obj.strftime("%A, %d %B %Y")
-
     if request.method == "POST":
         try:
             data_uri = request.json["data_uri"]
@@ -104,23 +106,35 @@ def take_pictures(name):
             if data_uri is not None:
                 filename = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
                 img_pil = base64_to_image(data_uri)
-                mypath = f"./templates/static/profile_pics/{filename}"
-                cv2.imwrite(mypath, img_pil)
-                print("Student registered successfully")
-                flash("Student registered successfully!", "success")
+                if not is_face_detected(img_pil):
+                    response = {
+                        "status": "error",
+                        "message": "Face not detected in image. Please take picture again!",
+                    }
+                    return jsonify(response)
+                else:
+                    mypath = f"./templates/static/profile_pics/{filename}"
+                    cv2.imwrite(mypath, img_pil)
+                    response = {
+                        "status": "success",
+                        "message": "Student registered successfully!",
+                    }
+                    return jsonify(response)
+
             else:
-                print("data_uri is None")
+                response = {"status": "error", "message": "data_uri is None"}
+                return jsonify(response)
 
         except TypeError as e:
-            print(f"Error: {e}")
-
+            response = {"status": "error", "message": str(e)}
+            return jsonify(response)
     elif request.method == "GET":
-        print("Request method is GET")
+        response = {"status": "error", "message": "Invalid request method"}
+        return jsonify(response)
 
     else:
-        print("Unknown request method")
-
-    return render_template("/pages/student.html", date=date)
+        response = {"status": "error", "message": "Unknown request method"}
+        return jsonify(response)
 
 
 @student.route("/student/upload_profile_picture", methods=["POST"])

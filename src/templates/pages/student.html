@@ -15,7 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
       integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html5-webcam@1.0.2/dist/html5-webcam.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{
     url_for('static',filename='main.css') }}">
@@ -233,9 +232,8 @@
                         <img src={{profile_pic}} class="img-radius" alt="User-Profile-Image"
                           style="width: 100px; height: 100px;">
                       </div>
-                      <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;" src="https://img.icons8.com/bubbles/100/000000/user.png"> -->
-                      <!-- <h6 class="f-w-600">{{current_user.username}}</h6>
-                      <p style="color: black;"><b>Matric Number: </b> {{current_user.matric_number}}</p> -->
+                      <h6 class="f-w-600" style="font-size: 13px;">{{current_user.username}}</h6>
+                      <!-- <p style="color: black;"><b>Matric Number: </b> {{current_user.matric_number}}</p> -->
                       <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                       <!-- Button to trigger the modal -->
                       <style>
@@ -256,7 +254,7 @@
                           Change Password
                         </button>
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"
-                          style="font-size: 11px; margin-left: 10px;" onclick="openCamera()">
+                          style="font-size: 11px; margin-left: 10px;" onclick="cameraon()">
                           Change Profile Picture
                         </button>
                       </div>
@@ -327,17 +325,18 @@
           <!-- Header -->
           <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">Change Profile Picture</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" onclick="closeCamera()">&times;</span>
+            <button type="button" class="close" aria-label="Close" onclick="cameraoff(); $('#myModal').modal('hide');">
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
           <!-- Body -->
           <div class="modal-body">
             <div class="card">
-              <video autoplay="false" playsinline id="videoElement" style="display: none;"></video>
-              <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
-              <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600">
+              <video autoplay id="videoElement" style="display: block;" id="photo"
+                class="card-img-top img-fluid"></video>
+              <canvas id="canvas" style="display: none;"></canvas>
+              <!-- <img id="photo" class="card-img-top img-fluid" alt="Register Face" height="600"> -->
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-6">
@@ -349,8 +348,7 @@
 
                   <div class="col-sm-6">
                     <form action="/student/upload_profile_picture" method="post" enctype="multipart/form-data">
-                      <label for="file-upload-501" class="btn btn-primary btn-sm">Choose
-                        file</label>
+                      <label for="file-upload-501" class="btn btn-primary btn-sm">Choose file</label>
                       <input id="file-upload-501" type="file" name="file" style="display:none;">
                       <button type="submit" class="btn btn-secondary btn-block" onclick="closeCamera()">Upload Profile
                         Picture</button>
@@ -363,6 +361,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel">
@@ -397,6 +396,60 @@
               </div>
               <button type="submit" class="btn btn-primary btn-block">Submit</button>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label"
+      aria-hidden="true">
+      <style>
+        .modal-backdrop {
+          background-color: rgba(0, 0, 0, 0.9) !important;
+          /* Set the background color to a very dark shade of black */
+        }
+      </style>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="error-modal-label">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>There was an error saving the image. Please try again.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="success-modal-label"
+      aria-hidden="true">
+      <style>
+        .modal-backdrop {
+          background-color: rgba(0, 0, 0, 0.5);
+          /* Set the background color to a very dark shade of black */
+        }
+      </style>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="success-modal-label">Success</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>The image was saved successfully.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -606,108 +659,86 @@
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
       <script>
-        var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port, {
-          transports: ['websocket']
-        });
-        socket.on('connect', function () {
-          console.log("Connected...!", socket.connected)
-        });
-
-        function setupWebcam() {
-          Webcam.set({
-            width: 400,
-            height: 300,
-            dest_width: 400,
-            dest_height: 300,
-            image_format: 'jpeg',
-            jpeg_quality: 90,
-            force_flash: false,
-            flip_horiz: true,
-            fps: 45
-          });
-        }
-
-        function openCamera() {
-          setupWebcam();
-          Webcam.attach('#videoElement');
-        }
-
-        function closeCamera() {
-          Webcam.reset();
-        }
-
-        const FPS = 1;
-        setInterval(() => {
-          if (Webcam.live) {
-            Webcam.snap(function (data) {
-              socket.emit('image', data);
-            });
-          }
-        }, 1000 / FPS);
-
-        socket.on('processed_image', function (image) {
-          photo.setAttribute('src', image);
-        });
-
-      </script>
-      <script>
-        Webcam.set({
-          width: 640,
-          height: 480,
-          dest_width: 640,
-          dest_height: 480,
-          image_format: 'jpeg',
-          jpeg_quality: 90,
-          force_flash: false,
-          flip_horiz: true,
-          fps: 45
-        });
-
-        Webcam.attach('#canvas');
-
+        var videoElem = document.getElementById("videoElement");
+        var isPlaying = !!videoElem.srcObject;
         var captureButton = document.getElementById('capture-button');
-        captureButton.addEventListener('click', function (event) {
-          // event.preventDefault();
 
-          // Capture the image
-          Webcam.snap(function (data_uri) {
-            var canvas = document.getElementById('canvas');
-            var context = canvas.getContext('2d');
-            var img = new Image();
-            img.onload = function () {
-              context.drawImage(img, 0, 0);
-            }
-            img.src = data_uri;
-            console.log("Captured image");
-
-            // Send the captured image as a POST request
-            fetch('/student/take_picture/{{current_user.username}}', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                data_uri: data_uri,
+        function cameraon() {
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices
+              .getUserMedia({
+                video: true
               })
+              .then(function (stream) {
+                videoElem.srcObject = stream;
+                videoElem.play();
+                isPlaying = true;
+                Webcam.attach('#videoElement');
 
-            })
-              .then(response => {
-                if (response.ok) {
-                  console.log('Image saved successfully');
-                  // $('#success-modal').modal('show');	 // Show modal after successful submission
+                captureButton.addEventListener('click', function (event) {
+                  // Capture the image
+                  Webcam.snap(function (data_uri) {
+                    var canvas = document.getElementById('canvas');
+                    var context = canvas.getContext('2d');
+                    var img = new Image();
+                    img.onload = function () {
+                      context.drawImage(img, 0, 0);
+                    }
+                    img.src = data_uri;
+                    console.log("Captured image");
 
-                  console.log("Success");
-                } else {
-                  console.error('Error saving image:', response.statusText);
-                }
-              })
-              .catch(error => {
-                console.error('Error saving image:', error);
+                    // Send the captured image as a POST request
+                    fetch('/student/take_picture/{{current_user.username}}', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        data_uri: data_uri,
+                      })
+                    })
+                      .then(response => response.json())
+                      .then(response => {
+                        if (response.status === "success") {
+                          console.log('Image saved successfully');
+                          $('#success-modal .modal-body').text(response.message);
+                          $('#success-modal').modal('show');	 // Show modal after successful submission
+                          console.log("Success");
+                          // submit the form after successful submission
+                          event.target.closest('form').submit();
+                        } else {
+                          console.error('Error saving image:', response.message);
+                          $('#error-modal .modal-body').text(response.message);
+                          $('#error-modal').modal('show');	 // Show modal after unsuccessful submission
+                        }
+                      })
+                      .catch(error => {
+                        console.error('Error saving image:', error);
+                      });
+
+                  });
+                });
               });
-          });
-        });
-      </script>
+          }
+        }
 
+
+        function cameraoff() {
+          const videoElem = document.getElementById("videoElement");
+          const stream = videoElem.srcObject;
+          if (stream) {
+            const tracks = stream.getTracks();
+
+            tracks.forEach(function (track) {
+              track.stop();
+            });
+
+            videoElem.srcObject = null;
+            Webcam.reset() // set isPlaying to false after camera is turned off
+          }
+        }
+
+      </script>
       <script>
 
         // Get all unregister buttons
