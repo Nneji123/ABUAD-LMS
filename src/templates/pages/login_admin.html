@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>ABUAD LMS ADMIN</title>
+    <link rel="icon" type="image/ico" href="{{ url_for('static',filename='img/logo.png') }}" />
+
+
+    <script src="https://kit.fontawesome.com/5285e374b0.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet"
+      href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+    <!-- <section class="background-radial-gradient overflow-hidden"> -->
+    <style>
+      @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: #ffffff;
+      }
+
+      p,
+      ul,
+      li {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #ffffff;
+      }
+
+
+      .gradient-custom-2 {
+        /* fallback for old browsers */
+        background: #fccb90;
+
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right, #9d24ee, #d836c2, #dd36ab, #b44593);
+      }
+
+      @media (min-width: 768px) {
+        .gradient-form {
+          height: 100vh !important;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .gradient-custom-2 {
+          border-top-right-radius: .3rem;
+          border-bottom-right-radius: .3rem;
+        }
+      }
+
+      .card {
+        max-width: 500px;
+        margin: 0 auto;
+        /* Optional: to center the card */
+      }
+
+      /*
+    DEMO STYLE
+*/
+    </style>
+
+  <body>
+    <section class="h-100 gradient-form" style="background-image:
+      url('https://portal.abuad.edu.ng/admin/images/index.jpg');">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="card rounded-3 text-black">
+            <div class="row g-0">
+              <div class="card-body p-md-5" style="width: 200px;">
+
+                <div class="text-center">
+                  <img src="{{ url_for('static', filename='img/logo.png')
+                        }}" alt="ABUAD LMS Logo" style="width: 70px;">
+                  <h4 class="mt-1 mb-5 pb-1">Welcome to ABUAD LMS</h4>
+                </div>
+
+                <form method="POST" action="/login/admin">
+                  <p>Please login to your account</p>
+
+                  <div class="form-outline mb-4">
+                    <input type="username" id="form2Example11" class="form-control" placeholder="username"
+                      name="username" placeholder="Matric number for Students, ABUAD email for Lecturers" />
+                    <label class="form-label" for="form2Example11">Username</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="password" id="form2Example22" class="form-control" name="password" />
+                    <label class="form-label" for="form2Example22">Password</label>
+                  </div>
+
+
+                  {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                  {% for category, message in messages %}
+                  <div class="alert alert-{{category}}" role="alert">
+                    {{ message }}
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+                  {% endwith %}
+                  {% block content %}{% endblock %}
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button type="submit" class="btn btn-primary btn-block fa-lg
+                          gradient-custom-2 mb-3" value="LOGIN">Login</button>
+                    <a class="text-muted" href="/reset_password">Forgot
+                      password?</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- Section: Design Block -->
+            <!-- MDB -->
+            <script type="text/javascript"
+              src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+  </body>
+
+</html>

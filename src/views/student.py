@@ -17,12 +17,8 @@ sys.path.append("..")
 from configurations.extensions import db
 from configurations.models import Announcements, Lecturers, Students
 from constants import COURSES_INFO
-from utils import (
-    base64_to_image,
-    check_and_copy_file,
-    count_name_in_files,
-    is_face_detected,
-)
+from utils import (base64_to_image, check_and_copy_file, count_name_in_files,
+                   is_face_detected)
 
 student = Blueprint("student", __name__)
 login_manager = LoginManager()

@@ -37,8 +37,6 @@ def show():
             else:
                 flash("Invalid ABUAD Email!", "danger")
                 return render_template("/pages/login.html")
-        elif role == "admin":
-            user = Admins.query.filter_by(username=username).first()
 
         if not user:
             flash("This user is not authorized to view this page!", "danger")
@@ -59,7 +57,33 @@ def show():
             return redirect(url_for("student.show"))
         elif role == "lecturer":
             return redirect(url_for("lecturer.show"))
-        elif role == "admin":
-            return redirect(url_for("admin.index"))
 
     return render_template("/pages/login.html")
+
+
+@login.route("/login/admin", methods=["GET", "POST"])
+def login_admin():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        user = Admins.query.filter_by(username=username).first()
+
+        if not user:
+            flash("This user is not authorized to view this page!", "danger")
+            return render_template("/pages/login_admin.html")
+
+        if user.is_active == False:
+            flash("Your account has been deactivated!", "danger")
+            return render_template("/pages/login_admin.html")
+
+        if not user.check_password(password):
+            flash("Incorrect password!", "danger")
+            return render_template("/pages/login_admin.html")
+
+        login_user(user)
+        user.last_logged_in_at = datetime.utcnow()
+        db.session.commit()
+        return redirect(url_for("admin.index"))
+
+    return render_template("/pages/login_admin.html")
