@@ -41,46 +41,46 @@ def show():
     filename = f"{names}-{str(matric)}-{dept}.jpg".replace("/", " ")
     mypath = f"./templates/static/profile_pics/{filename}"
     profile_pic = None
-    if not os.path.exists(mypath):
-        profile_pic = url_for("static", filename=f"profile_pics/generic_profile.png")
-    else:
-        profile_pic = url_for("static", filename=f"profile_pics/{filename}")
-
+    profile_pic = (
+        url_for("static", filename=f"profile_pics/{filename}")
+        if os.path.exists(mypath)
+        else url_for("static", filename="profile_pics/generic_profile.png")
+    )
     return render_template("/pages/student.html", date=date, profile_pic=profile_pic)
 
 
 @login_required
 @student.route("/student/change_password", methods=["GET", "POST"])
 def change_password():
-    if request.method == "POST":
-        user = Students.query.filter_by(username=current_user.username).first()
-        if user:
-            old_password = request.form["old_password"]
-            if user.check_password(old_password):
-                new_password = request.form["new_password"]
-                confirm_password = request.form["confirm_new_password"]
-                if new_password == confirm_password:
-                    user.password = generate_password_hash(
-                        new_password, method="sha256"
-                    )
-                    db.session.commit()
-                    flash("Password Changed Successfully", "success")
-                    return redirect(
-                        url_for("student.show") + "?success=change-password-succesful"
-                    )
-                else:
-                    flash("Your password does not match please try again!", "danger")
-                    return redirect(
-                        url_for("student.show") + "?error=password-does-not-match"
-                    )
-            else:
-                flash("Your old password is incorrect! Please try again", "danger")
-                return redirect(url_for("student.show") + "?error=password-incorrect")
-        else:
-            flash("User does not exist!", "danger")
-            return redirect(url_for("student.show") + "?error=user-does-not-exist")
-    else:
+    if request.method != "POST":
         return redirect(url_for("student.show"))
+    if user := Students.query.filter_by(
+        username=current_user.username
+    ).first():
+        old_password = request.form["old_password"]
+        if user.check_password(old_password):
+            new_password = request.form["new_password"]
+            confirm_password = request.form["confirm_new_password"]
+            if new_password == confirm_password:
+                user.password = generate_password_hash(
+                    new_password, method="sha256"
+                )
+                db.session.commit()
+                flash("Password Changed Successfully", "success")
+                return redirect(
+                    url_for("student.show") + "?success=change-password-succesful"
+                )
+            else:
+                flash("Your password does not match please try again!", "danger")
+                return redirect(
+                    url_for("student.show") + "?error=password-does-not-match"
+                )
+        else:
+            flash("Your old password is incorrect! Please try again", "danger")
+            return redirect(url_for("student.show") + "?error=password-incorrect")
+    else:
+        flash("User does not exist!", "danger")
+        return redirect(url_for("student.show") + "?error=user-does-not-exist")
 
 
 from flask import jsonify
@@ -107,7 +107,6 @@ def take_pictures(name):
                         "status": "error",
                         "message": "Face not detected in image. Please take picture again!",
                     }
-                    return jsonify(response)
                 else:
                     mypath = f"./templates/static/profile_pics/{filename}"
                     cv2.imwrite(mypath, img_pil)
@@ -115,12 +114,9 @@ def take_pictures(name):
                         "status": "success",
                         "message": "Student registered successfully!",
                     }
-                    return jsonify(response)
-
             else:
                 response = {"status": "error", "message": "data_uri is None"}
-                return jsonify(response)
-
+            return jsonify(response)
         except TypeError as e:
             response = {"status": "error", "message": str(e)}
             return jsonify(response)
@@ -206,16 +202,12 @@ def register_course_student(course_code):
         return redirect(url_for("student.show"))
 
     check_and_copy_file(
-        src_folder=f"./templates/static/profile_pics",
+        src_folder="./templates/static/profile_pics",
         dst_folder=course_path,
         filename=filename,
     )
-    if True:
-        flash(f"Successfully registered for COE {course_code}!", "success")
-        return redirect(url_for("student.show"))
-    else:
-        flash("Error!", "danger")
-        return redirect(url_for("student.show"))
+    flash(f"Successfully registered for COE {course_code}!", "success")
+    return redirect(url_for("student.show"))
 
 
 @student.route("/student/unregister/<course>", methods=["POST", "GET"])
